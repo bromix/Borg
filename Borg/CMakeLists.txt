@@ -23,3 +23,10 @@ target_include_directories(${PROJECT_NAME}
 
 # include platform specific sources.
 add_subdirectory(src/Platform)
+
+set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "include/Borg/Base.h")
+include(GNUInstallDirs)
+install(TARGETS ${PROJECT_NAME}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Borg
+)
