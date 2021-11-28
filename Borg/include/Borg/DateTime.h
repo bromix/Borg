@@ -112,6 +112,13 @@ namespace Borg
          */
         int32 Millisecond() const;
 
+        /**
+         * @brief Gets the day of the year represented by this instance.
+         * 
+         * @return int32 
+         */
+        int32 DayOfYear() const;
+
         DateTimeKind Kind() const;
 
     private:
@@ -123,6 +130,7 @@ namespace Borg
         uint32 m_Minute = 0;
         uint32 m_Second = 0;
         uint32 m_Millisecond;
+        uint32 m_DayOfYear = 0;
         uint64 m_UnixEpochMilliseconds = 0;
         DateTimeKind m_Kind = DateTimeKind::Utc;
     };

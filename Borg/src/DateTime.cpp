@@ -46,6 +46,7 @@ namespace Borg
         dt.m_Minute = tm.tm_min;
         dt.m_Second = tm.tm_sec;
         dt.m_Millisecond = milliseconds;
+        dt.m_DayOfYear = tm.tm_yday;
         dt.m_UnixEpochMilliseconds = millisecondsSinceEpoch;
         dt.m_Kind = kind;
 
@@ -110,6 +111,11 @@ namespace Borg
     int32 DateTime::Millisecond() const
     {
         return m_Millisecond;
+    }
+
+    int32 DateTime::DayOfYear() const
+    {
+        return m_DayOfYear;
     }
 
     DateTimeKind DateTime::Kind() const
