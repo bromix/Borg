@@ -56,6 +56,14 @@ namespace Borg
         DateTime ToUniversalTime() const;
 
         /**
+         * @brief Returns a new DateTime that adds the specified number of days to the value of this instance.
+         * 
+         * @param days 
+         * @return DateTime 
+         */
+        DateTime AddDays(double days) const;
+
+        /**
          * @brief Gets the year component of the date represented by this instance.
          * 
          * @return int32 

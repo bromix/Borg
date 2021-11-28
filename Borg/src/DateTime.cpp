@@ -1,5 +1,6 @@
 #include "Borg/DateTime.h"
 #include <chrono>
+#include <cmath>
 
 namespace Borg
 {
@@ -65,6 +66,15 @@ namespace Borg
             return *this;
 
         return FromUnixEpochMilliseconds(m_UnixEpochMilliseconds, DateTimeKind::Utc);
+    }
+
+    DateTime DateTime::AddDays(double days) const
+    {
+        if (m_Kind != DateTimeKind::Utc)
+            return ToUniversalTime().AddDays(days).ToLocalTime();
+
+        uint64 daysInMilliseconds = std::llround(days * 24.0) * 60 * 60 * 1000;
+        return FromUnixEpochMilliseconds(m_UnixEpochMilliseconds + daysInMilliseconds, m_Kind);
     }
 
     int32 DateTime::Year() const

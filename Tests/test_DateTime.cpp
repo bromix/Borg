@@ -33,3 +33,12 @@ TEST(DateTime, ToUniversalTime)
     auto utcNow = now.ToUniversalTime();
     ASSERT_EQ(utcNow.Kind(), DateTimeKind::Utc);
 }
+
+TEST(DateTime, AddDays)
+{
+    auto now = DateTime::Now();
+    auto days1 = now.AddDays(1);
+    auto oneDayAndAHalf = now.AddDays(1.5);
+    auto days3 = now.AddDays(3);
+    auto negativeDays1 = now.AddDays(-1);
+}
