@@ -4,8 +4,23 @@
 namespace Borg
 {
     /**
+     * @brief Specifies whether a DateTime object represents a local time or a Coordinated Universal Time (UTC).
+     */
+    enum class DateTimeKind
+    {
+        /**
+         * @brief The time represented is local time.
+         */
+        Local,
+
+        /**
+         * @brief The time represented is UTC.
+         */
+        Utc
+    };
+
+    /**
      * @brief Represents an instant in time, typically expressed as a date and time of day.
-     * 
      */
     class DateTime
     {
@@ -16,6 +31,8 @@ namespace Borg
          * @return DateTime 
          */
         static DateTime UtcNow();
+
+        static DateTime Now();
 
         /**
          * @brief Gets the year component of the date represented by this instance.
@@ -66,6 +83,8 @@ namespace Borg
          */
         int32 Millisecond() const;
 
+        DateTimeKind Kind() const;
+
     private:
         DateTime();
         uint32 m_Year = 0;
@@ -76,5 +95,6 @@ namespace Borg
         uint32 m_Second = 0;
         uint32 m_Millisecond;
         uint64 m_UnixEpochMilliseconds = 0;
+        DateTimeKind m_Kind = DateTimeKind::Utc;
     };
 }

@@ -3,6 +3,7 @@
 
 namespace Borg
 {
+
     DateTime::DateTime()
     {
     }
@@ -27,6 +28,32 @@ namespace Borg
         dt.m_Second = tm.tm_sec;
         dt.m_Millisecond = milliseconds;
         dt.m_UnixEpochMilliseconds = millisecondsSinceEpoch;
+        dt.m_Kind = DateTimeKind::Utc;
+
+        return dt;
+    }
+
+    DateTime DateTime::Now()
+    {
+        using namespace std::chrono;
+        auto now = system_clock::now().time_since_epoch();
+        auto millisecondsSinceEpoch = duration_cast<milliseconds>(now).count();
+        auto milliseconds = millisecondsSinceEpoch % 1000;
+        auto secondsSinceEpoch = millisecondsSinceEpoch / 1000;
+
+        std::tm tm = {};
+        localtime_s(&tm, &secondsSinceEpoch);
+
+        DateTime dt{};
+        dt.m_Year = tm.tm_year + 1900;
+        dt.m_Month = tm.tm_mon + 1;
+        dt.m_Day = tm.tm_mday;
+        dt.m_Hour = tm.tm_hour;
+        dt.m_Minute = tm.tm_min;
+        dt.m_Second = tm.tm_sec;
+        dt.m_Millisecond = milliseconds;
+        dt.m_UnixEpochMilliseconds = millisecondsSinceEpoch;
+        dt.m_Kind = DateTimeKind::Local;
 
         return dt;
     }
@@ -64,5 +91,10 @@ namespace Borg
     int32 DateTime::Millisecond() const
     {
         return m_Millisecond;
+    }
+
+    DateTimeKind DateTime::Kind() const
+    {
+        return m_Kind;
     }
 }
