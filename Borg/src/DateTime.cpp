@@ -13,24 +13,8 @@ namespace Borg
         using namespace std::chrono;
         auto now = system_clock::now().time_since_epoch();
         auto millisecondsSinceEpoch = duration_cast<milliseconds>(now).count();
-        auto milliseconds = millisecondsSinceEpoch % 1000;
-        auto secondsSinceEpoch = millisecondsSinceEpoch / 1000;
 
-        std::tm tm = {};
-        gmtime_s(&tm, &secondsSinceEpoch);
-
-        DateTime dt{};
-        dt.m_Year = tm.tm_year + 1900;
-        dt.m_Month = tm.tm_mon + 1;
-        dt.m_Day = tm.tm_mday;
-        dt.m_Hour = tm.tm_hour;
-        dt.m_Minute = tm.tm_min;
-        dt.m_Second = tm.tm_sec;
-        dt.m_Millisecond = milliseconds;
-        dt.m_UnixEpochMilliseconds = millisecondsSinceEpoch;
-        dt.m_Kind = DateTimeKind::Utc;
-
-        return dt;
+        return FromUnixEpochMilliseconds(millisecondsSinceEpoch, DateTimeKind::Utc);
     }
 
     DateTime DateTime::Now()
@@ -38,11 +22,20 @@ namespace Borg
         using namespace std::chrono;
         auto now = system_clock::now().time_since_epoch();
         auto millisecondsSinceEpoch = duration_cast<milliseconds>(now).count();
-        auto milliseconds = millisecondsSinceEpoch % 1000;
-        auto secondsSinceEpoch = millisecondsSinceEpoch / 1000;
+
+        return FromUnixEpochMilliseconds(millisecondsSinceEpoch, DateTimeKind::Local);
+    }
+
+    DateTime DateTime::FromUnixEpochMilliseconds(uint64 millisecondsSinceEpoch, DateTimeKind kind)
+    {
+        uint32 milliseconds = millisecondsSinceEpoch % 1000;
+        int64 secondsSinceEpoch = millisecondsSinceEpoch / 1000;
 
         std::tm tm = {};
-        localtime_s(&tm, &secondsSinceEpoch);
+        if (kind == DateTimeKind::Local)
+            localtime_s(&tm, &secondsSinceEpoch);
+        else
+            gmtime_s(&tm, &secondsSinceEpoch);
 
         DateTime dt{};
         dt.m_Year = tm.tm_year + 1900;
@@ -53,7 +46,7 @@ namespace Borg
         dt.m_Second = tm.tm_sec;
         dt.m_Millisecond = milliseconds;
         dt.m_UnixEpochMilliseconds = millisecondsSinceEpoch;
-        dt.m_Kind = DateTimeKind::Local;
+        dt.m_Kind = kind;
 
         return dt;
     }

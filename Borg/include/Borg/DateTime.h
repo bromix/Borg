@@ -39,6 +39,8 @@ namespace Borg
          */
         static DateTime Now();
 
+        static DateTime FromUnixEpochMilliseconds(uint64 millisecondsSinceEpoch, DateTimeKind kind = DateTimeKind::Utc);
+
         /**
          * @brief Gets the year component of the date represented by this instance.
          * 
