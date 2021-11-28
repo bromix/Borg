@@ -6,4 +6,5 @@ using namespace Borg;
 TEST(String, passTest)
 {
     String text;
+    ASSERT_TRUE(false);
 }
