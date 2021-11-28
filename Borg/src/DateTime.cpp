@@ -51,6 +51,22 @@ namespace Borg
         return dt;
     }
 
+    DateTime DateTime::ToLocalTime() const
+    {
+        if (m_Kind == DateTimeKind::Local)
+            return *this;
+
+        return FromUnixEpochMilliseconds(m_UnixEpochMilliseconds, DateTimeKind::Local);
+    }
+
+    DateTime DateTime::ToUniversalTime() const
+    {
+        if (m_Kind == DateTimeKind::Utc)
+            return *this;
+
+        return FromUnixEpochMilliseconds(m_UnixEpochMilliseconds, DateTimeKind::Utc);
+    }
+
     int32 DateTime::Year() const
     {
         return m_Year;

@@ -42,6 +42,20 @@ namespace Borg
         static DateTime FromUnixEpochMilliseconds(uint64 millisecondsSinceEpoch, DateTimeKind kind = DateTimeKind::Utc);
 
         /**
+         * @brief Converts the value of the current DateTime object to local time.
+         * 
+         * @return DateTime 
+         */
+        DateTime ToLocalTime() const;
+
+        /**
+         * @brief Converts the value of the current DateTime object to Coordinated Universal Time (UTC).
+         * 
+         * @return DateTime 
+         */
+        DateTime ToUniversalTime() const;
+
+        /**
          * @brief Gets the year component of the date represented by this instance.
          * 
          * @return int32 
