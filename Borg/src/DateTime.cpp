@@ -47,6 +47,7 @@ namespace Borg
         dt.m_Second = tm.tm_sec;
         dt.m_Millisecond = milliseconds;
         dt.m_DayOfYear = tm.tm_yday;
+        dt.m_DayOfWeek = static_cast<DayOfWeekType>(tm.tm_wday);
         dt.m_UnixEpochMilliseconds = millisecondsSinceEpoch;
         dt.m_Kind = kind;
 
@@ -116,6 +117,11 @@ namespace Borg
     int32 DateTime::DayOfYear() const
     {
         return m_DayOfYear;
+    }
+
+    DayOfWeekType DateTime::DayOfWeek() const
+    {
+        return m_DayOfWeek;
     }
 
     DateTimeKind DateTime::Kind() const

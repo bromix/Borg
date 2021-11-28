@@ -20,6 +20,20 @@ namespace Borg
     };
 
     /**
+     * @brief Specifies the day of the week.
+     */
+    enum class DayOfWeekType
+    {
+        Sunday = 0,
+        Monday = 1,
+        Tuesday = 2,
+        Wednesday = 3,
+        Thursday = 4,
+        Friday = 5,
+        Saturday = 6
+    };
+
+    /**
      * @brief Represents an instant in time, typically expressed as a date and time of day.
      */
     class DateTime
@@ -119,6 +133,13 @@ namespace Borg
          */
         int32 DayOfYear() const;
 
+        /**
+         * @brief Gets the day of the week represented by this instance.
+         * 
+         * @return DayOfWeekType 
+         */
+        DayOfWeekType DayOfWeek() const;
+
         DateTimeKind Kind() const;
 
     private:
@@ -131,6 +152,7 @@ namespace Borg
         uint32 m_Second = 0;
         uint32 m_Millisecond;
         uint32 m_DayOfYear = 0;
+        DayOfWeekType m_DayOfWeek = DayOfWeekType::Sunday;
         uint64 m_UnixEpochMilliseconds = 0;
         DateTimeKind m_Kind = DateTimeKind::Utc;
     };
