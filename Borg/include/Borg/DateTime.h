@@ -32,6 +32,11 @@ namespace Borg
          */
         static DateTime UtcNow();
 
+        /**
+         * @brief Gets a DateTime object that is set to the current date and time on this computer, expressed as the local time.
+         * 
+         * @return DateTime 
+         */
         static DateTime Now();
 
         /**
