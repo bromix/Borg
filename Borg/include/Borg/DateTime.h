@@ -71,6 +71,10 @@ namespace Borg
          */
         static DateTime FromUnixEpochMilliseconds(uint64 millisecondsSinceEpoch, DateTimeKind kind = DateTimeKind::Utc);
 
+        // TODO: static int DaysInMonth(int year, int month)
+
+        static bool IsLeapYear(uint32 year);
+
         /**
          * @brief Initializes a new instance of the DateTime structure to the specified year, month, day and Coordinated Universal Time (UTC) or local time.
          * 
@@ -107,9 +111,6 @@ namespace Borg
          * @param kind 
          */
         DateTime(uint32 year, uint32 month, uint32 day, uint32 hour, uint32 minute, uint32 second, uint32 millisecond, DateTimeKind kind = DateTimeKind::Local);
-
-        // TODO: static int DaysInMonth(int year, int month)
-        // TODO: static bool IsLeapYear (int year);
 
         /**
          * @brief Converts the value of the current DateTime object to local time.

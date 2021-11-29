@@ -58,6 +58,11 @@ namespace Borg
         return dt;
     }
 
+    bool DateTime::IsLeapYear(uint32 year)
+    {
+        return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
+    }
+
     DateTime::DateTime(uint32 year, uint32 month, uint32 day, DateTimeKind kind)
         : DateTime(year, month, day, 0, 0, 0, 0, kind)
     {

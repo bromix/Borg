@@ -57,3 +57,9 @@ TEST(DateTime, Constructor_1982_03_09_)
     ASSERT_EQ(DayOfWeekType::Tuesday, localDate.DayOfWeek());
     ASSERT_EQ(67, localDate.DayOfYear());
 }
+
+TEST(DateTime, IsLeapYear)
+{
+    ASSERT_TRUE(DateTime::IsLeapYear(1996));
+    ASSERT_FALSE(DateTime::IsLeapYear(2021));
+}
