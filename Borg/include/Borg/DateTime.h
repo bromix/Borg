@@ -189,56 +189,56 @@ namespace Borg
          * 
          * @return int32 
          */
-        int32 Year() const;
+        uint32 Year() const;
 
         /**
          * @brief Gets the month component of the date represented by this instance.
          * 
          * @return int32 
          */
-        int32 Month() const;
+        uint32 Month() const;
 
         /**
          * @brief Gets the day of the month represented by this instance.
          * 
          * @return int32 
          */
-        int32 Day() const;
+        uint32 Day() const;
 
         /**
          * @brief Gets the hour component of the date represented by this instance.
          * 
          * @return int32 
          */
-        int32 Hour() const;
+        uint32 Hour() const;
 
         /**
          * @brief Gets the minute component of the date represented by this instance.
          * 
          * @return int32 
          */
-        int32 Minute() const;
+        uint32 Minute() const;
 
         /**
          * @brief Gets the seconds component of the date represented by this instance.
          * 
          * @return int32 
          */
-        int32 Second() const;
+        uint32 Second() const;
 
         /**
          * @brief Gets the milliseconds component of the date represented by this instance.
          * 
          * @return int32 
          */
-        int32 Millisecond() const;
+        uint32 Millisecond() const;
 
         /**
          * @brief Gets the day of the year represented by this instance.
          * 
          * @return int32 
          */
-        int32 DayOfYear() const;
+        uint32 DayOfYear() const;
 
         /**
          * @brief Gets the day of the week represented by this instance.

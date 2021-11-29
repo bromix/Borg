@@ -162,42 +162,42 @@ namespace Borg
         return FromUnixEpochMilliseconds(m_UnixEpochMilliseconds + std::llround(milliseconds), m_Kind);
     }
 
-    int32 DateTime::Year() const
+    uint32 DateTime::Year() const
     {
         return m_Year;
     }
 
-    int32 DateTime::Month() const
+    uint32 DateTime::Month() const
     {
         return m_Month;
     }
 
-    int32 DateTime::Day() const
+    uint32 DateTime::Day() const
     {
         return m_Day;
     }
 
-    int32 DateTime::Hour() const
+    uint32 DateTime::Hour() const
     {
         return m_Hour;
     }
 
-    int32 DateTime::Minute() const
+    uint32 DateTime::Minute() const
     {
         return m_Minute;
     }
 
-    int32 DateTime::Second() const
+    uint32 DateTime::Second() const
     {
         return m_Second;
     }
 
-    int32 DateTime::Millisecond() const
+    uint32 DateTime::Millisecond() const
     {
         return m_Millisecond;
     }
 
-    int32 DateTime::DayOfYear() const
+    uint32 DateTime::DayOfYear() const
     {
         return m_DayOfYear;
     }
