@@ -63,3 +63,32 @@ TEST(DateTime, IsLeapYear)
     ASSERT_TRUE(DateTime::IsLeapYear(1996));
     ASSERT_FALSE(DateTime::IsLeapYear(2021));
 }
+
+TEST(DateTime, DaysInMonth)
+{
+    ASSERT_EQ(31, DateTime::DaysInMonth(2012, 1));
+    ASSERT_EQ(29, DateTime::DaysInMonth(2012, 2));
+    ASSERT_EQ(31, DateTime::DaysInMonth(2012, 3));
+    ASSERT_EQ(30, DateTime::DaysInMonth(2012, 4));
+    ASSERT_EQ(31, DateTime::DaysInMonth(2012, 5));
+    ASSERT_EQ(30, DateTime::DaysInMonth(2012, 6));
+    ASSERT_EQ(31, DateTime::DaysInMonth(2012, 7));
+    ASSERT_EQ(31, DateTime::DaysInMonth(2012, 8));
+    ASSERT_EQ(30, DateTime::DaysInMonth(2012, 9));
+    ASSERT_EQ(31, DateTime::DaysInMonth(2012, 10));
+    ASSERT_EQ(30, DateTime::DaysInMonth(2012, 11));
+    ASSERT_EQ(31, DateTime::DaysInMonth(2012, 12));
+
+    ASSERT_EQ(31, DateTime::DaysInMonth(2014, 1));
+    ASSERT_EQ(28, DateTime::DaysInMonth(2014, 2));
+    ASSERT_EQ(31, DateTime::DaysInMonth(2014, 3));
+    ASSERT_EQ(30, DateTime::DaysInMonth(2014, 4));
+    ASSERT_EQ(31, DateTime::DaysInMonth(2014, 5));
+    ASSERT_EQ(30, DateTime::DaysInMonth(2014, 6));
+    ASSERT_EQ(31, DateTime::DaysInMonth(2014, 7));
+    ASSERT_EQ(31, DateTime::DaysInMonth(2014, 8));
+    ASSERT_EQ(30, DateTime::DaysInMonth(2014, 9));
+    ASSERT_EQ(31, DateTime::DaysInMonth(2014, 10));
+    ASSERT_EQ(30, DateTime::DaysInMonth(2014, 11));
+    ASSERT_EQ(31, DateTime::DaysInMonth(2014, 12));
+}

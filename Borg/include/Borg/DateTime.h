@@ -71,7 +71,14 @@ namespace Borg
          */
         static DateTime FromUnixEpochMilliseconds(uint64 millisecondsSinceEpoch, DateTimeKind kind = DateTimeKind::Utc);
 
-        // TODO: static int DaysInMonth(int year, int month)
+        /**
+         * @brief Returns the number of days in the specified month and year.
+         * 
+         * @param year 
+         * @param month 
+         * @return uint32 
+         */
+        static uint32 DaysInMonth(int year, int month);
 
         /**
          * @brief Returns an indication whether the specified year is a leap year.
