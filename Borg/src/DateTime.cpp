@@ -55,11 +55,12 @@ namespace Borg
         dt.m_DayOfWeek = static_cast<DayOfWeekType>(tm.tm_wday);
         dt.m_UnixEpochMilliseconds = millisecondsSinceEpoch;
         dt.m_Kind = kind;
+        dt.m_IsDaylightSavingTime = kind == DateTimeKind::Local && tm.tm_isdst != 0;
 
         return dt;
     }
 
-    uint32 DateTime::DaysInMonth(int year, int month)
+    uint32 DateTime::DaysInMonth(uint32 year, uint32 month)
     {
         switch (month)
         {
@@ -209,5 +210,10 @@ namespace Borg
     DateTimeKind DateTime::Kind() const
     {
         return m_Kind;
+    }
+
+    bool DateTime::IsDaylightSavingTime() const
+    {
+        return m_IsDaylightSavingTime;
     }
 }

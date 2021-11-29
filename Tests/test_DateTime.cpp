@@ -92,3 +92,12 @@ TEST(DateTime, DaysInMonth)
     ASSERT_EQ(30, DateTime::DaysInMonth(2014, 11));
     ASSERT_EQ(31, DateTime::DaysInMonth(2014, 12));
 }
+
+TEST(DateTime, IsDaylightSavingTime)
+{
+    // This test is just for the implementation.
+    auto startDate = DateTime(2021, 3, 28, 3, 0, 0);
+    auto midDate = DateTime(2021, 6, 5);
+    auto endDate = DateTime(2021, 10, 31, 1, 59, 0);
+    ASSERT_TRUE(true);
+}

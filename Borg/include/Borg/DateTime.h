@@ -254,6 +254,14 @@ namespace Borg
          */
         DateTimeKind Kind() const;
 
+        /**
+         * @brief Indicates whether this instance of DateTime is within the daylight saving time range for the current time zone.
+         * 
+         * @return true 
+         * @return false 
+         */
+        bool IsDaylightSavingTime() const;
+
     private:
         DateTime();
         uint32 m_Year = 0;
@@ -267,5 +275,6 @@ namespace Borg
         DayOfWeekType m_DayOfWeek = DayOfWeekType::Sunday;
         uint64 m_UnixEpochMilliseconds = 0;
         DateTimeKind m_Kind = DateTimeKind::Utc;
+        bool m_IsDaylightSavingTime = false;
     };
 }
