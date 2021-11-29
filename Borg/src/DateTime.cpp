@@ -4,7 +4,6 @@
 
 namespace Borg
 {
-
     DateTime::DateTime()
     {
     }
@@ -57,6 +56,34 @@ namespace Borg
         dt.m_Kind = kind;
 
         return dt;
+    }
+
+    DateTime::DateTime(uint32 year, uint32 month, uint32 day, DateTimeKind kind)
+        : DateTime(year, month, day, 0, 0, 0, 0, kind)
+    {
+    }
+
+    DateTime::DateTime(uint32 year, uint32 month, uint32 day, uint32 hour, uint32 minute, uint32 second, DateTimeKind kind)
+        : DateTime(year, month, day, hour, minute, second, 0, kind)
+    {
+    }
+
+    DateTime::DateTime(uint32 year, uint32 month, uint32 day, uint32 hour, uint32 minute, uint32 second, uint32 millisecond, DateTimeKind kind)
+    {
+        std::tm tm = {0};
+        tm.tm_year = year - 1900;
+        tm.tm_mon = month - 1;
+        tm.tm_mday = day;
+        tm.tm_hour = hour;
+        tm.tm_min = minute;
+        tm.tm_sec = second;
+        tm.tm_isdst = -1;
+
+        auto tt = std::mktime(&tm);
+        auto tp = std::chrono::system_clock::from_time_t(tt).time_since_epoch();
+        auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(tp).count();
+        auto newDate = FromUnixEpochMilliseconds(milliseconds, kind);
+        *this = std::move(newDate);
     }
 
     DateTime DateTime::ToLocalTime() const

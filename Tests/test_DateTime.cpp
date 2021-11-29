@@ -42,3 +42,18 @@ TEST(DateTime, AddDays)
     auto days3 = now.AddDays(3);
     auto negativeDays1 = now.AddDays(-1);
 }
+
+TEST(DateTime, Constructor_1982_03_09_)
+{
+    auto localDate = DateTime(1982, 3, 9);
+    ASSERT_EQ(DateTimeKind::Local, localDate.Kind());
+    ASSERT_EQ(1982, localDate.Year());
+    ASSERT_EQ(3, localDate.Month());
+    ASSERT_EQ(9, localDate.Day());
+    ASSERT_EQ(0, localDate.Hour());
+    ASSERT_EQ(0, localDate.Minute());
+    ASSERT_EQ(0, localDate.Second());
+    ASSERT_EQ(0, localDate.Millisecond());
+    ASSERT_EQ(DayOfWeekType::Tuesday, localDate.DayOfWeek());
+    ASSERT_EQ(67, localDate.DayOfYear());
+}
