@@ -7,31 +7,31 @@ using namespace Borg;
 TEST(DateTime, UtcNow)
 {
     auto now = DateTime::UtcNow();
-    ASSERT_EQ(now.Kind(), DateTimeKind::Utc);
+    ASSERT_EQ(now.Kind(), DateTimeKindEnum::Utc);
 }
 
 TEST(DateTime, Now)
 {
     auto now = DateTime::Now();
-    ASSERT_EQ(now.Kind(), DateTimeKind::Local);
+    ASSERT_EQ(now.Kind(), DateTimeKindEnum::Local);
 }
 
 TEST(DateTime, ToLocalTime)
 {
     auto utcNow = DateTime::UtcNow();
-    ASSERT_EQ(utcNow.Kind(), DateTimeKind::Utc);
+    ASSERT_EQ(utcNow.Kind(), DateTimeKindEnum::Utc);
 
     auto localNow = utcNow.ToLocalTime();
-    ASSERT_EQ(localNow.Kind(), DateTimeKind::Local);
+    ASSERT_EQ(localNow.Kind(), DateTimeKindEnum::Local);
 }
 
 TEST(DateTime, ToUniversalTime)
 {
     auto now = DateTime::Now();
-    ASSERT_EQ(now.Kind(), DateTimeKind::Local);
+    ASSERT_EQ(now.Kind(), DateTimeKindEnum::Local);
 
     auto utcNow = now.ToUniversalTime();
-    ASSERT_EQ(utcNow.Kind(), DateTimeKind::Utc);
+    ASSERT_EQ(utcNow.Kind(), DateTimeKindEnum::Utc);
 }
 
 TEST(DateTime, AddDays)
@@ -46,7 +46,7 @@ TEST(DateTime, AddDays)
 TEST(DateTime, Constructor_1982_03_09_)
 {
     auto localDate = DateTime(1982, 3, 9);
-    ASSERT_EQ(DateTimeKind::Local, localDate.Kind());
+    ASSERT_EQ(DateTimeKindEnum::Local, localDate.Kind());
     ASSERT_EQ(1982, localDate.Year());
     ASSERT_EQ(3, localDate.Month());
     ASSERT_EQ(9, localDate.Day());
@@ -54,14 +54,14 @@ TEST(DateTime, Constructor_1982_03_09_)
     ASSERT_EQ(0, localDate.Minute());
     ASSERT_EQ(0, localDate.Second());
     ASSERT_EQ(0, localDate.Millisecond());
-    ASSERT_EQ(DayOfWeekType::Tuesday, localDate.DayOfWeek());
+    ASSERT_EQ(DayOfWeekEnum::Tuesday, localDate.DayOfWeek());
     ASSERT_EQ(67, localDate.DayOfYear());
 }
 
 TEST(DateTime, Constructor_1982_03_09_20_15_35)
 {
     auto localDate = DateTime(1982, 3, 9, 20, 15, 35);
-    ASSERT_EQ(DateTimeKind::Local, localDate.Kind());
+    ASSERT_EQ(DateTimeKindEnum::Local, localDate.Kind());
     ASSERT_EQ(1982, localDate.Year());
     ASSERT_EQ(3, localDate.Month());
     ASSERT_EQ(9, localDate.Day());
@@ -69,14 +69,14 @@ TEST(DateTime, Constructor_1982_03_09_20_15_35)
     ASSERT_EQ(15, localDate.Minute());
     ASSERT_EQ(35, localDate.Second());
     ASSERT_EQ(0, localDate.Millisecond());
-    ASSERT_EQ(DayOfWeekType::Tuesday, localDate.DayOfWeek());
+    ASSERT_EQ(DayOfWeekEnum::Tuesday, localDate.DayOfWeek());
     ASSERT_EQ(67, localDate.DayOfYear());
 }
 
 TEST(DateTime, Constructor_1982_03_09_20_15_35_500)
 {
     auto localDate = DateTime(1982, 3, 9, 20, 15, 35, 500);
-    ASSERT_EQ(DateTimeKind::Local, localDate.Kind());
+    ASSERT_EQ(DateTimeKindEnum::Local, localDate.Kind());
     ASSERT_EQ(1982, localDate.Year());
     ASSERT_EQ(3, localDate.Month());
     ASSERT_EQ(9, localDate.Day());
@@ -84,7 +84,7 @@ TEST(DateTime, Constructor_1982_03_09_20_15_35_500)
     ASSERT_EQ(15, localDate.Minute());
     ASSERT_EQ(35, localDate.Second());
     ASSERT_EQ(500, localDate.Millisecond());
-    ASSERT_EQ(DayOfWeekType::Tuesday, localDate.DayOfWeek());
+    ASSERT_EQ(DayOfWeekEnum::Tuesday, localDate.DayOfWeek());
     ASSERT_EQ(67, localDate.DayOfYear());
 }
 

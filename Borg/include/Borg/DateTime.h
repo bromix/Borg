@@ -6,7 +6,7 @@ namespace Borg
     /**
      * @brief Specifies whether a DateTime object represents a local time or a Coordinated Universal Time (UTC).
      */
-    enum class DateTimeKind
+    enum class DateTimeKindEnum
     {
         /**
          * @brief The time represented is local time.
@@ -22,7 +22,7 @@ namespace Borg
     /**
      * @brief Specifies the day of the week.
      */
-    enum class DayOfWeekType
+    enum class DayOfWeekEnum
     {
         Sunday = 0,
         Monday = 1,
@@ -60,7 +60,7 @@ namespace Borg
          * @param kind 
          * @return DateTime 
          */
-        static DateTime FromUnixEpochSeconds(uint64 secondsSinceEpoch, DateTimeKind kind = DateTimeKind::Utc);
+        static DateTime FromUnixEpochSeconds(uint64 secondsSinceEpoch, DateTimeKindEnum kind = DateTimeKindEnum::Utc);
 
         /**
          * @brief Converts the specified Unix Epoch time to an equivalent local or Coordinated Universal Time (UTC) time.
@@ -69,7 +69,7 @@ namespace Borg
          * @param kind 
          * @return DateTime 
          */
-        static DateTime FromUnixEpochMilliseconds(uint64 millisecondsSinceEpoch, DateTimeKind kind = DateTimeKind::Utc);
+        static DateTime FromUnixEpochMilliseconds(uint64 millisecondsSinceEpoch, DateTimeKindEnum kind = DateTimeKindEnum::Utc);
 
         /**
          * @brief Returns the number of days in the specified month and year.
@@ -97,7 +97,7 @@ namespace Borg
          * @param day 
          * @param kind 
          */
-        DateTime(uint32 year, uint32 month, uint32 day, DateTimeKind kind = DateTimeKind::Local);
+        DateTime(uint32 year, uint32 month, uint32 day, DateTimeKindEnum kind = DateTimeKindEnum::Local);
 
         /**
          * @brief Initializes a new instance of the DateTime structure to the specified year, month, day, hour, minute, second and Coordinated Universal Time (UTC) or local time.
@@ -110,7 +110,7 @@ namespace Borg
          * @param second 
          * @param kind 
          */
-        DateTime(uint32 year, uint32 month, uint32 day, uint32 hour, uint32 minute, uint32 second, DateTimeKind kind = DateTimeKind::Local);
+        DateTime(uint32 year, uint32 month, uint32 day, uint32 hour, uint32 minute, uint32 second, DateTimeKindEnum kind = DateTimeKindEnum::Local);
 
         /**
          * @brief Initializes a new instance of the DateTime structure to the specified year, month, day, hour, minute, second, millisecond, and Coordinated Universal Time (UTC) or local time.
@@ -124,7 +124,7 @@ namespace Borg
          * @param millisecond 
          * @param kind 
          */
-        DateTime(uint32 year, uint32 month, uint32 day, uint32 hour, uint32 minute, uint32 second, uint32 millisecond, DateTimeKind kind = DateTimeKind::Local);
+        DateTime(uint32 year, uint32 month, uint32 day, uint32 hour, uint32 minute, uint32 second, uint32 millisecond, DateTimeKindEnum kind = DateTimeKindEnum::Local);
 
         /**
          * @brief Converts the value of the current DateTime object to local time.
@@ -245,14 +245,14 @@ namespace Borg
          * 
          * @return DayOfWeekType 
          */
-        DayOfWeekType DayOfWeek() const;
+        DayOfWeekEnum DayOfWeek() const;
 
         /**
          * @brief Gets a value that indicates whether the time represented by this instance is based on local time or Coordinated Universal Time (UTC).
          * 
-         * @return DateTimeKind 
+         * @return DateTimeKindEnum 
          */
-        DateTimeKind Kind() const;
+        DateTimeKindEnum Kind() const;
 
         /**
          * @brief Indicates whether this instance of DateTime is within the daylight saving time range for the current time zone.
@@ -272,9 +272,9 @@ namespace Borg
         uint32 m_Second = 0;
         uint32 m_Millisecond;
         uint32 m_DayOfYear = 0;
-        DayOfWeekType m_DayOfWeek = DayOfWeekType::Sunday;
+        DayOfWeekEnum m_DayOfWeek = DayOfWeekEnum::Sunday;
         uint64 m_UnixEpochMilliseconds = 0;
-        DateTimeKind m_Kind = DateTimeKind::Utc;
+        DateTimeKindEnum m_Kind = DateTimeKindEnum::Utc;
         bool m_IsDaylightSavingTime = false;
     };
 }
