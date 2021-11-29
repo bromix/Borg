@@ -78,7 +78,7 @@ namespace Borg
          * @param month 
          * @return uint32 
          */
-        static uint32 DaysInMonth(int year, int month);
+        static uint32 DaysInMonth(uint32 year, uint32 month);
 
         /**
          * @brief Returns an indication whether the specified year is a leap year.
