@@ -4,4 +4,7 @@
         "CMAKE_TOOLCHAIN_FILE": "C:/development/vcpkg/scripts/buildsystems/vcpkg.cmake",
         "CMAKE_INSTALL_PREFIX": "../.out"
     },
+    "files.associations": {
+        "cmath": "cpp"
+    },
 }

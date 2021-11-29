@@ -72,11 +72,30 @@ namespace Borg
 
     DateTime DateTime::AddDays(double days) const
     {
-        if (m_Kind != DateTimeKind::Utc)
-            return ToUniversalTime().AddDays(days).ToLocalTime();
+        return AddHours(days * 24.0);
+    }
 
-        uint64 daysInMilliseconds = std::llround(days * 24.0) * 60 * 60 * 1000;
-        return FromUnixEpochMilliseconds(m_UnixEpochMilliseconds + daysInMilliseconds, m_Kind);
+    DateTime DateTime::AddHours(double hours) const
+    {
+        return AddMinutes(hours * 60.0);
+    }
+
+    DateTime DateTime::AddMinutes(double minutes) const
+    {
+        return AddSeconds(minutes * 60.0);
+    }
+
+    DateTime DateTime::AddSeconds(double seconds) const
+    {
+        return AddMilliseconds(seconds * 1000.0);
+    }
+
+    DateTime DateTime::AddMilliseconds(double milliseconds) const
+    {
+        if (m_Kind != DateTimeKind::Utc)
+            return ToUniversalTime().AddMilliseconds(milliseconds).ToLocalTime();
+
+        return FromUnixEpochMilliseconds(m_UnixEpochMilliseconds + std::llround(milliseconds), m_Kind);
     }
 
     int32 DateTime::Year() const

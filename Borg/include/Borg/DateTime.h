@@ -55,6 +55,9 @@ namespace Borg
 
         static DateTime FromUnixEpochMilliseconds(uint64 millisecondsSinceEpoch, DateTimeKind kind = DateTimeKind::Utc);
 
+        // TODO: static int DaysInMonth(int year, int month)
+        // TODO: static bool IsLeapYear (int year);
+
         /**
          * @brief Converts the value of the current DateTime object to local time.
          * 
@@ -69,6 +72,10 @@ namespace Borg
          */
         DateTime ToUniversalTime() const;
 
+        // TODO: DateTime Add(TimeSpan timspan)
+        // TODO: DateTime AddYears(double years)
+        // TODO: DateTime AddMonth(double month)
+
         /**
          * @brief Returns a new DateTime that adds the specified number of days to the value of this instance.
          * 
@@ -76,6 +83,38 @@ namespace Borg
          * @return DateTime 
          */
         DateTime AddDays(double days) const;
+
+        /**
+         * @brief Returns a new DateTime that adds the specified number of hours to the value of this instance.
+         * 
+         * @param hours 
+         * @return DateTime 
+         */
+        DateTime AddHours(double hours) const;
+
+        /**
+         * @brief Returns a new DateTime that adds the specified number of minutes to the value of this instance.
+         * 
+         * @param minutes 
+         * @return DateTime 
+         */
+        DateTime AddMinutes(double minutes) const;
+
+        /**
+         * @brief Returns a new DateTime that adds the specified number of seconds to the value of this instance.
+         * 
+         * @param seconds 
+         * @return DateTime 
+         */
+        DateTime AddSeconds(double seconds) const;
+
+        /**
+         * @brief Returns a new DateTime that adds the specified number of milliseconds to the value of this instance.
+         * 
+         * @param milliseconds 
+         * @return DateTime 
+         */
+        DateTime AddMilliseconds(double milliseconds) const;
 
         /**
          * @brief Gets the year component of the date represented by this instance.
