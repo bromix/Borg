@@ -73,6 +73,13 @@ namespace Borg
 
         // TODO: static int DaysInMonth(int year, int month)
 
+        /**
+         * @brief Returns an indication whether the specified year is a leap year.
+         * 
+         * @param year 
+         * @return true 
+         * @return false 
+         */
         static bool IsLeapYear(uint32 year);
 
         /**
