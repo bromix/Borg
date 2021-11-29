@@ -27,6 +27,11 @@ namespace Borg
         return FromUnixEpochMilliseconds(millisecondsSinceEpoch, DateTimeKind::Local);
     }
 
+    DateTime DateTime::FromUnixEpochSeconds(uint64 secondsSinceEpoch, DateTimeKind kind)
+    {
+        return FromUnixEpochMilliseconds(secondsSinceEpoch * 1000, kind);
+    }
+
     DateTime DateTime::FromUnixEpochMilliseconds(uint64 millisecondsSinceEpoch, DateTimeKind kind)
     {
         uint32 milliseconds = millisecondsSinceEpoch % 1000;

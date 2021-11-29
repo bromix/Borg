@@ -53,6 +53,22 @@ namespace Borg
          */
         static DateTime Now();
 
+        /**
+         * @brief Converts the specified Unix Epoch time to an equivalent local or Coordinated Universal Time (UTC) time.
+         * 
+         * @param secondsSinceEpoch 
+         * @param kind 
+         * @return DateTime 
+         */
+        static DateTime FromUnixEpochSeconds(uint64 secondsSinceEpoch, DateTimeKind kind = DateTimeKind::Utc);
+
+        /**
+         * @brief Converts the specified Unix Epoch time to an equivalent local or Coordinated Universal Time (UTC) time.
+         * 
+         * @param millisecondsSinceEpoch 
+         * @param kind 
+         * @return DateTime 
+         */
         static DateTime FromUnixEpochMilliseconds(uint64 millisecondsSinceEpoch, DateTimeKind kind = DateTimeKind::Utc);
 
         // TODO: static int DaysInMonth(int year, int month)
@@ -179,6 +195,11 @@ namespace Borg
          */
         DayOfWeekType DayOfWeek() const;
 
+        /**
+         * @brief Gets a value that indicates whether the time represented by this instance is based on local time or Coordinated Universal Time (UTC).
+         * 
+         * @return DateTimeKind 
+         */
         DateTimeKind Kind() const;
 
     private:
