@@ -111,11 +111,15 @@ namespace Borg
         tm.tm_sec = second;
         tm.tm_isdst = -1;
 
-        auto tt = std::mktime(&tm);
-        auto tp = std::chrono::system_clock::from_time_t(tt).time_since_epoch();
-        auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(tp).count();
-        auto newDate = FromUnixEpochMilliseconds(milliseconds, kind);
-        *this = std::move(newDate);
+        auto time = std::mktime(&tm);
+        auto timePoint = std::chrono::system_clock::from_time_t(time).time_since_epoch();
+        auto chronoMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(timePoint).count();
+
+        // Because std::tm only support seconds we must add the given milliseconds.
+        auto newDate = FromUnixEpochMilliseconds(chronoMilliseconds + millisecond, kind);
+
+        // Assign members from newDate to this and we're done.
+        *this = newDate;
     }
 
     DateTime DateTime::ToLocalTime() const
