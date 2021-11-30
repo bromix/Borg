@@ -284,26 +284,144 @@ namespace Borg
     class TimeSpan
     {
     public:
-        static TimeSpan FromSeconds(uint64 seconds);
-        static TimeSpan FromMilliseconds(uint64 milliseconds);
+        /**
+         * @brief Returns a TimeSpan that represents a specified number of days.
+         * 
+         * @param days 
+         * @return TimeSpan 
+         */
+        static TimeSpan FromDays(double days);
 
+        /**
+         * @brief Returns a TimeSpan that represents a specified number of hours.
+         *
+         * @param hours
+         * @return TimeSpan
+         */
+        static TimeSpan FromHours(double hours);
+
+        /**
+         * @brief Returns a TimeSpan that represents a specified number of minutes.
+         *
+         * @param minutes
+         * @return TimeSpan
+         */
+        static TimeSpan FromMinutes(double minutes);
+
+        /**
+         * @brief Returns a TimeSpan that represents a specified number of seconds.
+         *
+         * @param seconds
+         * @return TimeSpan
+         */
+        static TimeSpan FromSeconds(double seconds);
+
+        /**
+         * @brief Returns a TimeSpan that represents a specified number of milliseconds.
+         *
+         * @param milliseconds
+         * @return TimeSpan
+         */
+        static TimeSpan FromMilliseconds(double milliseconds);
+
+        /**
+         * @brief Initializes a new instance of the TimeSpan structure to a specified number of hours, minutes, and seconds.
+         *
+         * @param hours
+         * @param minutes
+         * @param seconds
+         */
         TimeSpan(int32 hours, int32 minutes, int32 seconds);
+
+        /**
+         * @brief Initializes a new instance of the TimeSpan structure to a specified number of days, hours, minutes, and seconds.
+         *
+         * @param days
+         * @param hours
+         * @param minutes
+         * @param seconds
+         */
         TimeSpan(int32 days, int32 hours, int32 minutes, int32 seconds);
+
+        /**
+         * @brief Initializes a new instance of the TimeSpan structure to a specified number of days, hours, minutes, seconds, and milliseconds.
+         *
+         * @param days
+         * @param hours
+         * @param minutes
+         * @param seconds
+         * @param milliseconds
+         */
         TimeSpan(int32 days, int32 hours, int32 minutes, int32 seconds, int32 milliseconds);
 
+        /**
+         * @brief Gets the days component of the time interval represented by the current TimeSpan structure.
+         *
+         * @return int32
+         */
         int32 Days() const;
+
+        /**
+         * @brief Gets the value of the current TimeSpan structure expressed in whole and fractional days.
+         *
+         * @return double
+         */
         double TotalDays() const;
 
+        /**
+         * @brief Gets the hours component of the time interval represented by the current TimeSpan structure.
+         *
+         * @return int32
+         */
         int32 Hours() const;
+
+        /**
+         * @brief Gets the value of the current TimeSpan structure expressed in whole and fractional hours.
+         *
+         * @return double
+         */
         double TotalHours() const;
 
+        /**
+         * @brief Gets the minutes component of the time interval represented by the current TimeSpan structure.
+         *
+         * @return int32
+         */
         int32 Minutes() const;
+
+        /**
+         * @brief Gets the value of the current TimeSpan structure expressed in whole and fractional minutes.
+         *
+         * @return double
+         */
         double TotalMinutes() const;
 
+        /**
+         * @brief Gets the seconds component of the time interval represented by the current TimeSpan structure.
+         *
+         * @return int32
+         */
         int32 Seconds() const;
+
+        /**
+         * @brief Gets the value of the current TimeSpan structure expressed in whole and fractional seconds.
+         *
+         * @return double
+         */
         double TotalSeconds() const;
 
+        /**
+         * @brief Gets the milliseconds component of the time interval represented by the current TimeSpan structure.
+         *
+         * @return int32
+         */
         int32 Milliseconds() const;
+
+        /**
+         * @brief Gets the value of the current TimeSpan structure expressed in whole and fractional milliseconds.
+         *
+         * @return double
+         */
         double TotalMilliseconds() const;
 
     private:

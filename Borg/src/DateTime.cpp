@@ -241,26 +241,41 @@ namespace Borg
     // === TimeSpan ===
     // ================
 
-    TimeSpan TimeSpan::FromSeconds(uint64 seconds)
+    TimeSpan TimeSpan::FromDays(double days)
     {
-        return FromMilliseconds(seconds * 1000);
+        return FromHours(days * 24.0);
     }
 
-    TimeSpan TimeSpan::FromMilliseconds(uint64 milliseconds)
+    TimeSpan TimeSpan::FromHours(double hours)
     {
-        auto total_milliseconds = (double)milliseconds;
-        auto total_seconds = total_milliseconds / 1000.0;
-        auto total_minutes = total_milliseconds / 60.0 / 1000.0;
-        auto total_hours = total_milliseconds / 60.0 / 60.0 / 1000.0;
-        auto total_days = total_milliseconds / 24.0 / 60.0 / 60.0 / 1000.0;
+        return FromMinutes(hours * 60.0);
+    }
 
-        // extract milliseconds.
-        auto milliseconds_ = milliseconds % 1000;
-        auto seconds = (int)(total_milliseconds / 1000) % 60;
-        auto minutes = (int)(total_milliseconds / 1000 / 60) % 60;
-        auto hours = (int)(total_milliseconds / 1000 / 60 / 60) % 24;
-        auto days = (int)(total_days) % 24;
-        return TimeSpan(days, hours, minutes, seconds, milliseconds_);
+    TimeSpan TimeSpan::FromMinutes(double minutes)
+    {
+        return FromSeconds(minutes * 60.0);
+    }
+
+    TimeSpan TimeSpan::FromSeconds(double seconds)
+    {
+        return FromMilliseconds(seconds * 1000.0);
+    }
+
+    TimeSpan TimeSpan::FromMilliseconds(double milliseconds)
+    {
+        auto totalMilliseconds = milliseconds;
+        auto totalSeconds = totalMilliseconds / 1000.0;
+        auto totalMinutes = totalSeconds / 60.0;
+        auto totalHours = totalMinutes / 60.0;
+        auto totalDays = totalHours / 24.0;
+
+        auto ms = (int)totalMilliseconds % 1000;
+        auto seconds = (int)totalSeconds % 60;
+        auto minutes = (int)totalMinutes % 60;
+        auto hours = (int)totalHours % 24;
+        auto days = (int)totalDays % 24;
+
+        return TimeSpan(days, hours, minutes, seconds, ms);
     }
 
     TimeSpan::TimeSpan(int32 hours, int32 minutes, int32 seconds)
@@ -274,8 +289,20 @@ namespace Borg
     }
 
     TimeSpan::TimeSpan(int32 days, int32 hours, int32 minutes, int32 seconds, int32 milliseconds)
+        : m_Days(days), m_Hours(hours), m_Minutes(minutes), m_Seconds(seconds), m_Milliseconds(milliseconds)
     {
-        // TODO: calculate the the totals here.
+        auto ms =
+            m_Milliseconds +
+            m_Seconds * 1000 +
+            m_Minutes * 1000 * 60 +
+            m_Hours * 1000 * 60 * 60 +
+            m_Days * 1000 * 60 * 60 * 24;
+
+        m_TotalMilliseconds = (double)ms;
+        m_TotalSeconds = m_TotalMilliseconds / 1000.0;
+        m_TotalMinutes = m_TotalSeconds / 60.0;
+        m_TotalHours = m_TotalMinutes / 60.0;
+        m_TotalDays = m_TotalHours / 24.0;
     }
 
     int32 TimeSpan::Days() const

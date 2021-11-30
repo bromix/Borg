@@ -135,6 +135,6 @@ TEST(DateTime, IsDaylightSavingTime)
 TEST(DateTime, Subtract)
 {
     auto firstDate = DateTime(2021, 11, 30);
-    auto secondDate = firstDate.AddDays(1.0);
+    auto secondDate = firstDate.AddDays(1.2);
     auto diff = secondDate - firstDate;
 }
