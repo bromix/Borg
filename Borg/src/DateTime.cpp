@@ -147,6 +147,23 @@ namespace Borg
         return AddMilliseconds(timespan.TotalMilliseconds());
     }
 
+    TimeSpan DateTime::Subtract(const DateTime &datetime) const
+    {
+        if (m_Kind == DateTimeKindEnum::Utc)
+        {
+            auto utcDiff = m_UnixEpochMilliseconds - datetime.ToUniversalTime().m_UnixEpochMilliseconds;
+            return TimeSpan::FromMilliseconds(utcDiff);
+        }
+
+        auto localDiff = m_UnixEpochMilliseconds - datetime.ToLocalTime().m_UnixEpochMilliseconds;
+        return TimeSpan::FromMilliseconds(localDiff);
+    }
+
+    DateTime DateTime::Subtract(const TimeSpan &timespan) const
+    {
+        return FromUnixEpochMilliseconds(m_UnixEpochMilliseconds - timespan.TotalMilliseconds(), m_Kind);
+    }
+
     DateTime DateTime::AddDays(double days) const
     {
         return AddHours(days * 24.0);
@@ -237,14 +254,12 @@ namespace Borg
 
     TimeSpan DateTime::operator-(const DateTime &rhs)
     {
-        if (m_Kind == DateTimeKindEnum::Utc)
-        {
-            auto utcDiff = m_UnixEpochMilliseconds - rhs.ToUniversalTime().m_UnixEpochMilliseconds;
-            return TimeSpan::FromMilliseconds(utcDiff);
-        }
+        return Subtract(rhs);
+    }
 
-        auto localDiff = m_UnixEpochMilliseconds - rhs.ToLocalTime().m_UnixEpochMilliseconds;
-        return TimeSpan::FromMilliseconds(localDiff);
+    DateTime DateTime::operator-(const TimeSpan &timespan)
+    {
+        return Subtract(timespan);
     }
 
     // ================
@@ -315,6 +330,16 @@ namespace Borg
         m_TotalDays = m_TotalHours / 24.0;
     }
 
+    TimeSpan TimeSpan::Add(const TimeSpan &timespan) const
+    {
+        return FromMilliseconds(m_TotalMilliseconds + timespan.m_TotalMilliseconds);
+    }
+
+    TimeSpan TimeSpan::Subtract(const TimeSpan &timespan) const
+    {
+        return FromMilliseconds(m_TotalMilliseconds - timespan.m_TotalMilliseconds);
+    }
+
     int32 TimeSpan::Days() const
     {
         return m_Days;
@@ -363,5 +388,15 @@ namespace Borg
     double TimeSpan::TotalMilliseconds() const
     {
         return m_TotalMilliseconds;
+    }
+
+    TimeSpan TimeSpan::operator+(const TimeSpan &timespan)
+    {
+        return Add(timespan);
+    }
+
+    TimeSpan TimeSpan::operator-(const TimeSpan &timespan)
+    {
+        return Subtract(timespan);
     }
 }

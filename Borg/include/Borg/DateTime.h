@@ -149,6 +149,22 @@ namespace Borg
          */
         DateTime Add(const TimeSpan &timespan) const;
 
+        /**
+         * @brief Returns a new TimeSpan that subtracts the specified date and time from the value of this instance.
+         *
+         * @param datetime
+         * @return TimeSpan
+         */
+        TimeSpan Subtract(const DateTime &datetime) const;
+
+        /**
+         * @brief Returns a new DateTime that subtracts the specified duration from the value of this instance.
+         *
+         * @param timespan
+         * @return DateTime
+         */
+        DateTime Subtract(const TimeSpan &timespan) const;
+
         // TODO: DateTime Add(TimeSpan timspan)
         // TODO: DateTime AddYears(double years)
         // TODO: DateTime AddMonth(double month)
@@ -271,8 +287,29 @@ namespace Borg
          */
         bool IsDaylightSavingTime() const;
 
+        /**
+         * @brief Adds a specified time interval to a specified date and time, yielding a new date and time.
+         *
+         * @param timespan
+         * @return DateTime
+         */
         DateTime operator+(const TimeSpan &timespan);
+
+        /**
+         * @brief Subtracts a specified date and time from another specified date and time and returns a time interval.
+         *
+         * @param rhs
+         * @return TimeSpan
+         */
         TimeSpan operator-(const DateTime &rhs);
+
+        /**
+         * @brief Subtracts a specified time interval from a specified date and time and returns a new date and time.
+         *
+         * @param timespan
+         * @return DateTime
+         */
+        DateTime operator-(const TimeSpan &timespan);
 
     private:
         DateTime();
@@ -364,6 +401,22 @@ namespace Borg
         TimeSpan(int32 days, int32 hours, int32 minutes, int32 seconds, int32 milliseconds);
 
         /**
+         * @brief Returns a new TimeSpan object whose value is the sum of the specified TimeSpan object and this instance.
+         *
+         * @param timespan
+         * @return TimeSpan
+         */
+        TimeSpan Add(const TimeSpan &timespan) const;
+
+        /**
+         * @brief Returns a new TimeSpan object whose value is the difference between the specified TimeSpan object and this instance.
+         * 
+         * @param timespan 
+         * @return TimeSpan 
+         */
+        TimeSpan Subtract(const TimeSpan &timespan) const;
+
+        /**
          * @brief Gets the days component of the time interval represented by the current TimeSpan structure.
          *
          * @return int32
@@ -432,6 +485,22 @@ namespace Borg
          * @return double
          */
         double TotalMilliseconds() const;
+
+        /**
+         * @brief Adds two specified TimeSpan instances.
+         *
+         * @param timespan
+         * @return TimeSpan
+         */
+        TimeSpan operator+(const TimeSpan &timespan);
+
+        /**
+         * @brief Subtracts a specified TimeSpan from another specified TimeSpan.
+         * 
+         * @param timespan 
+         * @return TimeSpan 
+         */
+        TimeSpan operator-(const TimeSpan& timespan);
 
     private:
         int32 m_Days;
