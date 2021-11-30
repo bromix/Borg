@@ -142,6 +142,11 @@ namespace Borg
         return FromUnixEpochMilliseconds(m_UnixEpochMilliseconds, DateTimeKindEnum::Utc);
     }
 
+    DateTime DateTime::Add(const TimeSpan &timespan) const
+    {
+        return AddMilliseconds(timespan.TotalMilliseconds());
+    }
+
     DateTime DateTime::AddDays(double days) const
     {
         return AddHours(days * 24.0);
@@ -223,6 +228,11 @@ namespace Borg
     bool DateTime::IsDaylightSavingTime() const
     {
         return m_IsDaylightSavingTime;
+    }
+
+    DateTime DateTime::operator+(const TimeSpan &timespan)
+    {
+        return Add(timespan);
     }
 
     TimeSpan DateTime::operator-(const DateTime &rhs)

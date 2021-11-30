@@ -141,6 +141,14 @@ namespace Borg
          */
         DateTime ToUniversalTime() const;
 
+        /**
+         * @brief Returns a new DateTime that adds the value of the specified TimeSpan to the value of this instance.
+         *
+         * @param timespan
+         * @return DateTime
+         */
+        DateTime Add(const TimeSpan &timespan) const;
+
         // TODO: DateTime Add(TimeSpan timspan)
         // TODO: DateTime AddYears(double years)
         // TODO: DateTime AddMonth(double month)
@@ -263,6 +271,7 @@ namespace Borg
          */
         bool IsDaylightSavingTime() const;
 
+        DateTime operator+(const TimeSpan &timespan);
         TimeSpan operator-(const DateTime &rhs);
 
     private:
@@ -286,9 +295,9 @@ namespace Borg
     public:
         /**
          * @brief Returns a TimeSpan that represents a specified number of days.
-         * 
-         * @param days 
-         * @return TimeSpan 
+         *
+         * @param days
+         * @return TimeSpan
          */
         static TimeSpan FromDays(double days);
 

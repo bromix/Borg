@@ -135,6 +135,13 @@ TEST(DateTime, IsDaylightSavingTime)
 TEST(DateTime, Subtract)
 {
     auto firstDate = DateTime(2021, 11, 30);
-    auto secondDate = firstDate.AddDays(1.2);
+    auto secondDate = firstDate.AddDays(1);
     auto diff = secondDate - firstDate;
+    ASSERT_DOUBLE_EQ(1.0, diff.TotalDays());
+    ASSERT_DOUBLE_EQ(24.0, diff.TotalHours());
+
+    auto nextDate1 = firstDate.Add(diff);
+    auto nextDate2 = firstDate + diff;
+
+    // TODO: compare
 }
