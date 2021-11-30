@@ -131,3 +131,10 @@ TEST(DateTime, IsDaylightSavingTime)
     auto endDate = DateTime(2021, 10, 31, 1, 59, 0);
     ASSERT_TRUE(true);
 }
+
+TEST(DateTime, Subtract)
+{
+    auto firstDate = DateTime(2021, 11, 30);
+    auto secondDate = firstDate.AddDays(1.0);
+    auto diff = secondDate - firstDate;
+}

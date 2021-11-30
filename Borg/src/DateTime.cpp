@@ -5,6 +5,10 @@
 
 namespace Borg
 {
+    // ================
+    // === DateTime ===
+    // ================
+
     DateTime::DateTime()
     {
     }
@@ -219,5 +223,108 @@ namespace Borg
     bool DateTime::IsDaylightSavingTime() const
     {
         return m_IsDaylightSavingTime;
+    }
+
+    TimeSpan DateTime::operator-(const DateTime &rhs)
+    {
+        if (m_Kind == DateTimeKindEnum::Utc)
+        {
+            auto utcDiff = m_UnixEpochMilliseconds - rhs.ToUniversalTime().m_UnixEpochMilliseconds;
+            return TimeSpan::FromMilliseconds(utcDiff);
+        }
+
+        auto localDiff = m_UnixEpochMilliseconds - rhs.ToLocalTime().m_UnixEpochMilliseconds;
+        return TimeSpan::FromMilliseconds(localDiff);
+    }
+
+    // ================
+    // === TimeSpan ===
+    // ================
+
+    TimeSpan TimeSpan::FromSeconds(uint64 seconds)
+    {
+        return FromMilliseconds(seconds * 1000);
+    }
+
+    TimeSpan TimeSpan::FromMilliseconds(uint64 milliseconds)
+    {
+        auto total_milliseconds = (double)milliseconds;
+        auto total_seconds = total_milliseconds / 1000.0;
+        auto total_minutes = total_milliseconds / 60.0 / 1000.0;
+        auto total_hours = total_milliseconds / 60.0 / 60.0 / 1000.0;
+        auto total_days = total_milliseconds / 24.0 / 60.0 / 60.0 / 1000.0;
+
+        // extract milliseconds.
+        auto milliseconds_ = milliseconds % 1000;
+        auto seconds = (int)(total_milliseconds / 1000) % 60;
+        auto minutes = (int)(total_milliseconds / 1000 / 60) % 60;
+        auto hours = (int)(total_milliseconds / 1000 / 60 / 60) % 24;
+        auto days = (int)(total_days) % 24;
+        return TimeSpan(days, hours, minutes, seconds, milliseconds_);
+    }
+
+    TimeSpan::TimeSpan(int32 hours, int32 minutes, int32 seconds)
+        : TimeSpan(0, hours, minutes, seconds, 0)
+    {
+    }
+
+    TimeSpan::TimeSpan(int32 days, int32 hours, int32 minutes, int32 seconds)
+        : TimeSpan(days, hours, minutes, seconds, 0)
+    {
+    }
+
+    TimeSpan::TimeSpan(int32 days, int32 hours, int32 minutes, int32 seconds, int32 milliseconds)
+    {
+        // TODO: calculate the the totals here.
+    }
+
+    int32 TimeSpan::Days() const
+    {
+        return m_Days;
+    }
+
+    double TimeSpan::TotalDays() const
+    {
+        return m_TotalDays;
+    }
+
+    int32 TimeSpan::Hours() const
+    {
+        return m_Hours;
+    }
+
+    double TimeSpan::TotalHours() const
+    {
+        return m_TotalHours;
+    }
+
+    int32 TimeSpan::Minutes() const
+    {
+        return m_Minutes;
+    }
+
+    double TimeSpan::TotalMinutes() const
+    {
+        return m_TotalMinutes;
+    }
+
+    int32 TimeSpan::Seconds() const
+    {
+        return m_Seconds;
+    }
+
+    double TimeSpan::TotalSeconds() const
+    {
+        return m_TotalSeconds;
+    }
+
+    int32 TimeSpan::Milliseconds() const
+    {
+        return m_Milliseconds;
+    }
+
+    double TimeSpan::TotalMilliseconds() const
+    {
+        return m_TotalMilliseconds;
     }
 }
