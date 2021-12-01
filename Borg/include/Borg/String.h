@@ -4,5 +4,7 @@ namespace Borg
 {
     class String
     {
+    public:
+        String();
     };
 }
