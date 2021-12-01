@@ -10,6 +10,6 @@ namespace Borg
 
         virtual bool IsEmpty() const = 0;
 
-        static std::shared_ptr<String::Impl> Create(std::string_view input);
+        static Ref<String::Impl> Create(std::string_view input);
     };
 }

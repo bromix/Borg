@@ -2,9 +2,9 @@
 
 namespace Borg
 {
-    std::shared_ptr<String::Impl> String::Impl::Create(std::string_view input)
+    Ref<String::Impl> String::Impl::Create(std::string_view input)
     {
-        return std::make_shared<Utf16String>(input);
+        return CreateRef<Utf16String>(input);
     }
 
     Utf16String::Utf16String(std::string_view input)

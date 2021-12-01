@@ -1,5 +1,5 @@
 #pragma once
-#include <memory>
+#include <Borg/Types.h>
 #include <string_view>
 
 namespace Borg
@@ -26,6 +26,6 @@ namespace Borg
         class Impl;
 
     private:
-        std::shared_ptr<Impl> m_Impl;
+        Ref<Impl> m_Impl;
     };
 }
