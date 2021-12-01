@@ -3,8 +3,18 @@
 
 using namespace Borg;
 
-TEST(String, passTest)
+TEST(String, DefaultConstructor)
 {
     String text;
-    ASSERT_TRUE(false);
+    // ASSERT_TRUE(text.IsNull());
+    // ASSERT_TRUE(text.IsEmpty());
+    // ASSERT_TRUE(text.IsNullOrEmpty());
+}
+
+TEST(String, NullConstructor)
+{
+    String text = nullptr;
+    // ASSERT_TRUE(text.IsNull());
+    // ASSERT_TRUE(text.IsEmpty());
+    // ASSERT_TRUE(text.IsNullOrEmpty());
 }

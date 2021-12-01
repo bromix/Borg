@@ -6,5 +6,6 @@ namespace Borg
     {
     public:
         String();
+        String(std::nullptr_t);
     };
 }
