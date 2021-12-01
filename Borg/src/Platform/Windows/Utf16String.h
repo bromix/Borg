@@ -7,6 +7,7 @@ namespace Borg
     {
     public:
         Utf16String(std::string_view input);
+        virtual bool IsEmpty() const override;
     private:
         std::string m_Data;
     };

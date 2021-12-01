@@ -22,4 +22,5 @@ TEST(String, NullConstructor)
 TEST(String, UTF8Text)
 {
     String text = "Hello";
+    text.IsEmpty();
 }

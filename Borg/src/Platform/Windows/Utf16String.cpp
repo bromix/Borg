@@ -11,4 +11,9 @@ namespace Borg
         : m_Data(input)
     {
     }
+
+    bool Utf16String::IsEmpty() const
+    {
+        return m_Data.empty();
+    }
 }

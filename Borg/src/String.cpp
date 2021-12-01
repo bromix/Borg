@@ -35,8 +35,15 @@ namespace Borg
         throw std::exception("Not implemented");
     }
 
-    bool String::IsNull() const
+    bool String::IsNull() const noexcept
     {
         return m_Impl == nullptr;
+    }
+
+    bool String::IsEmpty() const noexcept
+    {
+        if (m_Impl)
+            return m_Impl->IsEmpty();
+        return true;
     }
 }
