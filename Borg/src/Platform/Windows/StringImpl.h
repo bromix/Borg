@@ -1,12 +1,12 @@
 #pragma once
-#include "../../StringImpl.h"
+#include "../../IString.h"
 
 namespace Borg
 {
-    class Utf16String : public String::Impl
+    class StringImpl : public String::IString
     {
     public:
-        Utf16String(std::string_view input);
+        StringImpl(std::string_view input);
         virtual bool IsEmpty() const override;
     private:
         std::string m_Data;

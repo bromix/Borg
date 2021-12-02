@@ -1,6 +1,6 @@
 target_sources(${PROJECT_NAME}
     PRIVATE
-        "Utf16String.h"
-        "Utf16String.cpp"
+        "StringImpl.h"
+        "StringImpl.cpp"
         "Windows.h"
 )

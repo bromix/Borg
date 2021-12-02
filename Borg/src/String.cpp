@@ -1,5 +1,5 @@
 #include "Borg/String.h"
-#include "StringImpl.h"
+#include "IString.h"
 #include <stdexcept>
 
 namespace Borg
@@ -10,7 +10,7 @@ namespace Borg
 
     String::String(std::string_view input)
     {
-        m_Impl = String::Impl::Create(input);
+        m_Impl = String::IString::Create(input);
     }
 
     // Copy constructor and assignment operator.

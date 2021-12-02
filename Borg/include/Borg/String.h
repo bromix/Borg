@@ -22,10 +22,9 @@ namespace Borg
         bool IsNull() const noexcept;
         bool IsEmpty() const noexcept;
 
-        // Public Impl, so we can define and use an interface internally.
-        class Impl;
-
     private:
-        Ref<Impl> m_Impl;
+        friend class StringImpl;
+        class IString;
+        Ref<IString> m_Impl;
     };
 }
