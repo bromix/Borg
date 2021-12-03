@@ -14,8 +14,13 @@ public:
 class PersonImpl : public IPerson
 {
 public:
-    std::string Name() const { return "Hans"; };
+    PersonImpl() : PersonImpl("Hans") {}
+    PersonImpl(const std::string &name) : m_Name(name) {}
+    std::string Name() const { return m_Name; };
     virtual int Age() const { return 34; };
+
+private:
+    std::string m_Name;
 };
 
 class IAnimal
@@ -28,7 +33,7 @@ public:
 TEST(Area51, ServiceCollection)
 {
     ServiceCollection sc{};
-    sc.AddSingleton<IPerson, PersonImpl>();
+    sc.AddSingleton<IPerson, PersonImpl>("Peter");
 
     auto p = sc.GetService<IPerson>();
     auto name = p->Name();

@@ -29,6 +29,9 @@ namespace Borg
         template <typename ServiceType, typename ImplementationType>
         void AddSingleton();
 
+        template <typename ServiceType, typename ImplementationType, typename... Args>
+        void AddSingleton(Args &&...args);
+
         template <typename ServiceType>
         Ref<ServiceType> GetService();
 
@@ -48,6 +51,23 @@ namespace Borg
         auto createBla = [=]() -> Ref<ServiceType>
         {
             return CreateRef<ImplementationType>();
+        };
+
+        m_Services[tyin1] = CreateRef<TService<ServiceType>>(createBla);
+    }
+
+    template <typename ServiceType, typename ImplementationType, typename... Args>
+    void ServiceCollection::AddSingleton(Args &&...args)
+    {
+        auto tyin1 = std::type_index(typeid(ServiceType));
+        auto tyin2 = std::type_index(typeid(ImplementationType));
+
+        auto tyhash1 = tyin1.hash_code();
+        auto tyhash2 = tyin2.hash_code();
+
+        auto createBla = [=]() -> Ref<ServiceType>
+        {
+            return CreateRef<ImplementationType>(std::forward<Args>(args)...);
         };
 
         m_Services[tyin1] = CreateRef<TService<ServiceType>>(createBla);
