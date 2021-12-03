@@ -30,14 +30,21 @@ public:
     virtual std::string Name() const = 0;
 };
 
+class Shark : public IAnimal
+{
+public:
+    std::string Name() const { return "Shark"; }
+};
+
 TEST(Area51, ServiceCollection)
 {
     ServiceCollection sc{};
     sc.AddSingleton<IPerson, PersonImpl>("Peter");
+    sc.AddSingleton<IAnimal, Shark>();
 
     auto p = sc.GetService<IPerson>();
     auto name = p->Name();
 
-    auto p2 = sc.GetService<IPerson>();
+    auto p2 = sc.GetService<IAnimal>();
     auto name2 = p2->Name();
 }

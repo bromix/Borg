@@ -14,7 +14,7 @@ namespace Borg
     class TService : public IService
     {
     public:
-        TService(std::function<Ref<T>()> ctr): m_Ctr(ctr){}
+        TService(std::function<Ref<T>()> ctr) : m_Ctr(ctr) {}
 
         Ref<T> Create();
 
@@ -42,6 +42,10 @@ namespace Borg
     template <typename ServiceType, typename ImplementationType>
     void ServiceCollection::AddSingleton()
     {
+        static_assert(std::is_abstract<ServiceType>(), "First type must be an interface or abstract class.");
+        static_assert(std::is_base_of<ServiceType, ImplementationType>(), "Second type must implement first type.");
+        static_assert(std::is_class<ImplementationType>(), "Second type must be a class");
+
         auto tyin1 = std::type_index(typeid(ServiceType));
         auto tyin2 = std::type_index(typeid(ImplementationType));
 
@@ -59,6 +63,10 @@ namespace Borg
     template <typename ServiceType, typename ImplementationType, typename... Args>
     void ServiceCollection::AddSingleton(Args &&...args)
     {
+        static_assert(std::is_abstract<ServiceType>(), "First type must be an interface or abstract class.");
+        static_assert(std::is_base_of<ServiceType, ImplementationType>(), "Second type must implement first type.");
+        static_assert(std::is_class<ImplementationType>(), "Second type must be a class");
+
         auto tyin1 = std::type_index(typeid(ServiceType));
         auto tyin2 = std::type_index(typeid(ImplementationType));
 
@@ -88,7 +96,7 @@ namespace Borg
     template <typename T>
     Ref<T> TService<T>::Create()
     {
-        if(!m_Service)
+        if (!m_Service)
         {
             m_Service = m_Ctr();
         }
