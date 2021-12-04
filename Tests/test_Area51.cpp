@@ -60,6 +60,12 @@ public:
     }
 };
 
+struct Product
+{
+    std::string Name = "";
+    std::string Language = "en-US";
+};
+
 TEST(Area51, ServiceCollection)
 {
     ServiceCollection sc{};
@@ -84,7 +90,14 @@ TEST(ServiceCollection, AddSingleton_Class)
 {
     ServiceCollection sc{};
     sc.AddSingleton<Timer>();
+    sc.AddSingleton<Product>();
+
+    sc.GetService<Product>()->Name = "Burning Studio";
 
     auto timer = sc.GetService<Timer>();
     auto now = timer->now();
+
+    sc.GetService<Product>()->Language = "de-DE";
+
+    auto product = sc.GetService<Product>();
 }
