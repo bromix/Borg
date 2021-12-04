@@ -1,3 +1,4 @@
+#pragma once
 #include "Borg/Types.h"
 #include <typeindex>
 #include <map>
@@ -7,6 +8,16 @@ namespace Borg::DependencyInjection
     class ServiceCollection
     {
     public:
+        /**
+         * @brief Adds a singleton service of the type specified in serviceType
+         *
+         * @tparam ServiceType
+         * @tparam Args
+         * @param args
+         */
+        template <typename ServiceType, typename... Args>
+        void AddSingleton(Args &&...args);
+
         /**
          * @brief Adds a singleton service of the type specified in ServiceType with an implementation of the type specified in ImplementationType.
          *
@@ -68,14 +79,30 @@ namespace Borg::DependencyInjection
         static_assert(std::is_class<ImplementationType>(), "Second type must be a class");
 
         auto tyin1 = std::type_index(typeid(ServiceType));
-        auto tyin2 = std::type_index(typeid(ImplementationType));
 
         auto tyhash1 = tyin1.hash_code();
-        auto tyhash2 = tyin2.hash_code();
 
         ServiceGetterFunc<ServiceType> serviceGetter = [args...]() -> Ref<ServiceType>
         {
             static Ref<ServiceType> _service = CreateRef<ImplementationType>(std::forward<Args>(args)...);
+            return _service;
+        };
+
+        m_Services[tyin1] = CreateRef<TService<ServiceType>>(serviceGetter);
+    }
+
+    template <typename ServiceType, typename... Args>
+    void ServiceCollection::AddSingleton(Args &&...args)
+    {
+        static_assert(std::is_class<ServiceType>(), "Second type must be a class");
+
+        auto tyin1 = std::type_index(typeid(ServiceType));
+
+        auto tyhash1 = tyin1.hash_code();
+
+        ServiceGetterFunc<ServiceType> serviceGetter = [args...]() -> Ref<ServiceType>
+        {
+            static Ref<ServiceType> _service = CreateRef<ServiceType>(std::forward<Args>(args)...);
             return _service;
         };
 

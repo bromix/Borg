@@ -9,7 +9,7 @@ public:
     virtual ~IPerson() = default;
     virtual std::string Name() const = 0;
     virtual int Age() const = 0;
-    virtual void SetName(const std::string&) = 0;
+    virtual void SetName(const std::string &) = 0;
 };
 
 class PersonImpl : public IPerson
@@ -51,6 +51,15 @@ private:
     int m_Counter = 0;
 };
 
+class Timer
+{
+public:
+    int now() const
+    {
+        return 10;
+    }
+};
+
 TEST(Area51, ServiceCollection)
 {
     ServiceCollection sc{};
@@ -69,4 +78,13 @@ TEST(Area51, ServiceCollection)
 
     auto p3 = sc.GetService<ICounter>();
     auto c3 = p3->count();
+}
+
+TEST(ServiceCollection, AddSingleton_Class)
+{
+    ServiceCollection sc{};
+    sc.AddSingleton<Timer>();
+
+    auto timer = sc.GetService<Timer>();
+    auto now = timer->now();
 }
