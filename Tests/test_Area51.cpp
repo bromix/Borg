@@ -55,7 +55,7 @@ TEST(Area51, ServiceCollection)
 {
     ServiceCollection sc{};
     sc.AddSingleton<IPerson, PersonImpl>("Peter");
-    sc.AddScoped<ICounter, CounterImpl>();
+    sc.AddTransient<ICounter, CounterImpl>();
 
     auto p = sc.GetService<IPerson>();
     auto name = p->Name();
