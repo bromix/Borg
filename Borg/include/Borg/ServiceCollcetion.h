@@ -14,7 +14,7 @@ namespace Borg
     class TService : public IService
     {
     public:
-        TService(std::function<Ref<T>()> ctr) : m_Ctr(ctr) {}
+        TService(std::function<Ref<T>()> ctr) : m_Ctr(std::move(ctr)) {}
 
         Ref<T> Create();
 
@@ -25,39 +25,24 @@ namespace Borg
     class ServiceCollection
     {
     public:
-        template <typename ServiceType, typename ImplementationType>
-        void AddSingleton();
-
+        /**
+         * @brief Adds a singleton service of the type specified in ServiceType with an implementation of the type specified in ImplementationType.
+         *
+         * @tparam ServiceType
+         * @tparam ImplementationType
+         * @tparam Args
+         * @param args
+         */
         template <typename ServiceType, typename ImplementationType, typename... Args>
         void AddSingleton(Args &&...args);
 
+        // FIXME: move to ServiceProvider
         template <typename ServiceType>
         Ref<ServiceType> GetService();
 
     private:
         std::map<std::type_index, Ref<IService>> m_Services;
     };
-
-    template <typename ServiceType, typename ImplementationType>
-    void ServiceCollection::AddSingleton()
-    {
-        static_assert(std::is_abstract<ServiceType>(), "First type must be an interface or abstract class.");
-        static_assert(std::is_base_of<ServiceType, ImplementationType>(), "Second type must implement first type.");
-        static_assert(std::is_class<ImplementationType>(), "Second type must be a class");
-
-        auto tyin1 = std::type_index(typeid(ServiceType));
-        auto tyin2 = std::type_index(typeid(ImplementationType));
-
-        auto tyhash1 = tyin1.hash_code();
-        auto tyhash2 = tyin2.hash_code();
-
-        auto createBla = [=]() -> Ref<ServiceType>
-        {
-            return CreateRef<ImplementationType>();
-        };
-
-        m_Services[tyin1] = CreateRef<TService<ServiceType>>(createBla);
-    }
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
     void ServiceCollection::AddSingleton(Args &&...args)
