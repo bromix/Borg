@@ -1,13 +1,23 @@
 #pragma once
 #include "Borg/Types.h"
+#include "ServiceProvider.h"
 #include <typeindex>
 #include <map>
+
+// https://github.dev/aspnet/DependencyInjection/blob/master/src/DI/ServiceCollection.cs
 
 namespace Borg::DependencyInjection
 {
     class ServiceCollection
     {
     public:
+        /**
+         * @brief Creates a ServiceProvider containing services from the provided ServiceCollection.
+         *
+         * @return Ref<ServiceProvider>
+         */
+        Ref<ServiceProvider> BuildServiceProvider();
+
         /**
          * @brief Adds a singleton service of the type specified in ServiceType
          *
@@ -87,6 +97,11 @@ namespace Borg::DependencyInjection
         ServiceGetterFunc<ServiceType> createServiceGetterForTransient(Args &&...args);
     };
 
+    Ref<ServiceProvider> ServiceCollection::BuildServiceProvider()
+    {
+        return CreateRef<ServiceProvider>();
+    }
+
     template <typename ServiceType, typename ImplementationType, typename... Args>
     ServiceCollection::ServiceGetterFunc<ServiceType> ServiceCollection::createServiceGetterForSingleton(Args &&...args)
     {
@@ -148,7 +163,6 @@ namespace Borg::DependencyInjection
 
         m_Services[tyin1] = CreateRef<TService<ServiceType>>(serviceGetter);
     }
-
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
     void ServiceCollection::AddTransient(Args &&...args)

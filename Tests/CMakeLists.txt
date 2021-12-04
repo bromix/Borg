@@ -2,7 +2,7 @@ project(Tests VERSION 0.0.1)
 
 add_executable(${PROJECT_NAME} "")
 
-file(GLOB BORG_TEST_FILES "test_*.cpp")
+file(GLOB_RECURSE BORG_TEST_FILES "test_*.cpp")
 
 target_sources(${PROJECT_NAME}
     PRIVATE
