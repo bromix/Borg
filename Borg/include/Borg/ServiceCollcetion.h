@@ -19,7 +19,6 @@ namespace Borg
         Ref<T> Create();
 
     private:
-        Ref<T> m_Service = nullptr;
         std::function<Ref<T>()> m_Ctr;
     };
 
@@ -96,10 +95,7 @@ namespace Borg
     template <typename T>
     Ref<T> TService<T>::Create()
     {
-        if (!m_Service)
-        {
-            m_Service = m_Ctr();
-        }
-        return m_Service;
+        static Ref<T> _service = m_Ctr();
+        return _service;
     }
 }

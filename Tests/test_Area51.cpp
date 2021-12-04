@@ -47,4 +47,7 @@ TEST(Area51, ServiceCollection)
 
     auto p2 = sc.GetService<IAnimal>();
     auto name2 = p2->Name();
+
+    auto p3 = sc.GetService<IPerson>();
+    auto name3 = p3->Name();
 }
