@@ -9,7 +9,7 @@ namespace Borg::DependencyInjection
     {
     public:
         /**
-         * @brief Adds a singleton service of the type specified in serviceType
+         * @brief Adds a singleton service of the type specified in ServiceType
          *
          * @tparam ServiceType
          * @tparam Args
@@ -28,6 +28,16 @@ namespace Borg::DependencyInjection
          */
         template <typename ServiceType, typename ImplementationType, typename... Args>
         void AddSingleton(Args &&...args);
+
+        /**
+         * @brief Adds a transient service of the type specified in ServiceType.
+         *
+         * @tparam ServiceType
+         * @tparam Args
+         * @param args
+         */
+        template <typename ServiceType, typename... Args>
+        void AddTransient(Args &&...args);
 
         /**
          * @brief Adds a transient service of the type specified in ServiceType with an implementation of the type specified in ImplementationType.
@@ -72,6 +82,9 @@ namespace Borg::DependencyInjection
 
         template <typename ServiceType, typename ImplementationType, typename... Args>
         ServiceGetterFunc<ServiceType> createServiceGetterForSingleton(Args &&...args);
+
+        template <typename ServiceType, typename ImplementationType, typename... Args>
+        ServiceGetterFunc<ServiceType> createServiceGetterForTransient(Args &&...args);
     };
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
@@ -82,6 +95,20 @@ namespace Borg::DependencyInjection
             static Ref<ServiceType> service = CreateRef<ImplementationType>(std::forward<Args>(args)...);
             return service;
         };
+    }
+
+    template <typename ServiceType, typename... Args>
+    void ServiceCollection::AddSingleton(Args &&...args)
+    {
+        static_assert(std::is_class<ServiceType>(), "Second type must be a class");
+
+        auto tyin1 = std::type_index(typeid(ServiceType));
+
+        auto tyhash1 = tyin1.hash_code();
+
+        auto serviceGetter = createServiceGetterForSingleton<ServiceType, ServiceType, Args...>(std::forward<Args>(args)...);
+
+        m_Services[tyin1] = CreateRef<TService<ServiceType>>(serviceGetter);
     }
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
@@ -100,19 +127,28 @@ namespace Borg::DependencyInjection
         m_Services[tyin1] = CreateRef<TService<ServiceType>>(serviceGetter);
     }
 
+    template <typename ServiceType, typename ImplementationType, typename... Args>
+    ServiceCollection::ServiceGetterFunc<ServiceType> ServiceCollection::createServiceGetterForTransient(Args &&...args)
+    {
+        return [args...]() -> Ref<ServiceType>
+        {
+            return CreateRef<ImplementationType>(std::forward<Args>(args)...);
+        };
+    }
+
     template <typename ServiceType, typename... Args>
-    void ServiceCollection::AddSingleton(Args &&...args)
+    void ServiceCollection::AddTransient(Args &&...args)
     {
         static_assert(std::is_class<ServiceType>(), "Second type must be a class");
 
         auto tyin1 = std::type_index(typeid(ServiceType));
-
         auto tyhash1 = tyin1.hash_code();
 
-        auto serviceGetter = createServiceGetterForSingleton<ServiceType, ServiceType, Args...>(std::forward<Args>(args)...);
+        auto serviceGetter = createServiceGetterForTransient<ServiceType, ServiceType, Args...>(std::forward<Args>(args)...);
 
         m_Services[tyin1] = CreateRef<TService<ServiceType>>(serviceGetter);
     }
+
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
     void ServiceCollection::AddTransient(Args &&...args)
@@ -122,15 +158,9 @@ namespace Borg::DependencyInjection
         static_assert(std::is_class<ImplementationType>(), "Second type must be a class");
 
         auto tyin1 = std::type_index(typeid(ServiceType));
-        auto tyin2 = std::type_index(typeid(ImplementationType));
-
         auto tyhash1 = tyin1.hash_code();
-        auto tyhash2 = tyin2.hash_code();
 
-        ServiceGetterFunc<ServiceType> serviceGetter = [args...]() -> Ref<ServiceType>
-        {
-            return CreateRef<ImplementationType>(std::forward<Args>(args)...);
-        };
+        auto serviceGetter = createServiceGetterForTransient<ServiceType, ImplementationType, Args...>(std::forward<Args>(args)...);
 
         m_Services[tyin1] = CreateRef<TService<ServiceType>>(serviceGetter);
     }
