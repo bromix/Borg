@@ -91,6 +91,27 @@ namespace Borg
         m_Services[tyin1] = CreateRef<SingletonService<ServiceType>>(createBla);
     }
 
+    template <typename ServiceType, typename ImplementationType, typename... Args>
+    void ServiceCollection::AddScoped(Args &&...args)
+    {
+        static_assert(std::is_abstract<ServiceType>(), "First type must be an interface or abstract class.");
+        static_assert(std::is_base_of<ServiceType, ImplementationType>(), "Second type must implement first type.");
+        static_assert(std::is_class<ImplementationType>(), "Second type must be a class");
+
+        auto tyin1 = std::type_index(typeid(ServiceType));
+        auto tyin2 = std::type_index(typeid(ImplementationType));
+
+        auto tyhash1 = tyin1.hash_code();
+        auto tyhash2 = tyin2.hash_code();
+
+        auto createBla = [=]() -> Ref<ServiceType>
+        {
+            return CreateRef<ImplementationType>(std::forward<Args>(args)...);
+        };
+
+        m_Services[tyin1] = CreateRef<ScopedService<ServiceType>>(createBla);
+    }
+
     template <typename ServiceType>
     Ref<ServiceType> ServiceCollection::GetService()
     {

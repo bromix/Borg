@@ -30,24 +30,37 @@ public:
     virtual std::string Name() const = 0;
 };
 
-class Shark : public IAnimal
+class ICounter
 {
 public:
-    std::string Name() const { return "Shark"; }
+    virtual ~ICounter() = default;
+    virtual int count() = 0;
+};
+
+class CounterImpl : public ICounter
+{
+public:
+    int count() override
+    {
+        return ++m_Counter;
+    }
+
+private:
+    int m_Counter = 0;
 };
 
 TEST(Area51, ServiceCollection)
 {
     ServiceCollection sc{};
     sc.AddSingleton<IPerson, PersonImpl>("Peter");
-    sc.AddSingleton<IAnimal, Shark>();
+    sc.AddScoped<ICounter, CounterImpl>();
 
     auto p = sc.GetService<IPerson>();
     auto name = p->Name();
 
-    auto p2 = sc.GetService<IAnimal>();
-    auto name2 = p2->Name();
+    auto p2 = sc.GetService<ICounter>();
+    auto c2 = p2->count();
 
-    auto p3 = sc.GetService<IPerson>();
-    auto name3 = p3->Name();
+    auto p3 = sc.GetService<ICounter>();
+    auto c3 = p3->count();
 }
