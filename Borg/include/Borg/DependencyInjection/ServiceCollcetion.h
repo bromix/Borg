@@ -69,7 +69,20 @@ namespace Borg::DependencyInjection
 
         // FIXME: use hashcode.
         std::map<std::type_index, Ref<IService>> m_Services;
+
+        template <typename ServiceType, typename ImplementationType, typename... Args>
+        ServiceGetterFunc<ServiceType> createServiceGetterForSingleton(Args &&...args);
     };
+
+    template <typename ServiceType, typename ImplementationType, typename... Args>
+    ServiceCollection::ServiceGetterFunc<ServiceType> ServiceCollection::createServiceGetterForSingleton(Args &&...args)
+    {
+        return [args...]() -> Ref<ServiceType>
+        {
+            static Ref<ServiceType> service = CreateRef<ImplementationType>(std::forward<Args>(args)...);
+            return service;
+        };
+    }
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
     void ServiceCollection::AddSingleton(Args &&...args)
@@ -82,11 +95,7 @@ namespace Borg::DependencyInjection
 
         auto tyhash1 = tyin1.hash_code();
 
-        ServiceGetterFunc<ServiceType> serviceGetter = [args...]() -> Ref<ServiceType>
-        {
-            static Ref<ServiceType> _service = CreateRef<ImplementationType>(std::forward<Args>(args)...);
-            return _service;
-        };
+        auto serviceGetter = createServiceGetterForSingleton<ServiceType, ImplementationType, Args...>(std::forward<Args>(args)...);
 
         m_Services[tyin1] = CreateRef<TService<ServiceType>>(serviceGetter);
     }
@@ -100,11 +109,7 @@ namespace Borg::DependencyInjection
 
         auto tyhash1 = tyin1.hash_code();
 
-        ServiceGetterFunc<ServiceType> serviceGetter = [args...]() -> Ref<ServiceType>
-        {
-            static Ref<ServiceType> _service = CreateRef<ServiceType>(std::forward<Args>(args)...);
-            return _service;
-        };
+        auto serviceGetter = createServiceGetterForSingleton<ServiceType, ServiceType, Args...>(std::forward<Args>(args)...);
 
         m_Services[tyin1] = CreateRef<TService<ServiceType>>(serviceGetter);
     }
