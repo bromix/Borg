@@ -5,16 +5,30 @@
 
 namespace Borg
 {
+    /**
+     * @brief Base interface to derive each generic service type from.
+     */
     class IService
     {
-    public:
     };
 
     template <typename T>
-    class TService : public IService
+    class SingletonService : public IService
     {
     public:
-        TService(std::function<Ref<T>()> ctr) : m_Ctr(std::move(ctr)) {}
+        SingletonService(std::function<Ref<T>()> ctr) : m_Ctr(std::move(ctr)) {}
+
+        Ref<T> Create();
+
+    private:
+        std::function<Ref<T>()> m_Ctr;
+    };
+
+    template <typename T>
+    class ScopedService : public IService
+    {
+    public:
+        ScopedService(std::function<Ref<T>()> ctr) : m_Ctr(std::move(ctr)) {}
 
         Ref<T> Create();
 
@@ -36,11 +50,23 @@ namespace Borg
         template <typename ServiceType, typename ImplementationType, typename... Args>
         void AddSingleton(Args &&...args);
 
+        /**
+         * @brief Adds a scoped service of the type specified in ServiceType with an implementation of the type specified in ImplementationType.
+         *
+         * @tparam ServiceType
+         * @tparam ImplementationType
+         * @tparam Args
+         * @param args
+         */
+        template <typename ServiceType, typename ImplementationType, typename... Args>
+        void AddScoped(Args &&...args);
+
         // FIXME: move to ServiceProvider
         template <typename ServiceType>
         Ref<ServiceType> GetService();
 
     private:
+        // FIXME: use hashcode.
         std::map<std::type_index, Ref<IService>> m_Services;
     };
 
@@ -62,7 +88,7 @@ namespace Borg
             return CreateRef<ImplementationType>(std::forward<Args>(args)...);
         };
 
-        m_Services[tyin1] = CreateRef<TService<ServiceType>>(createBla);
+        m_Services[tyin1] = CreateRef<SingletonService<ServiceType>>(createBla);
     }
 
     template <typename ServiceType>
@@ -73,14 +99,20 @@ namespace Borg
         if (found == m_Services.end())
             return nullptr;
 
-        auto tService = std::static_pointer_cast<typename TService<ServiceType>>(found->second);
+        auto tService = std::static_pointer_cast<typename SingletonService<ServiceType>>(found->second);
         return tService->Create();
     }
 
     template <typename T>
-    Ref<T> TService<T>::Create()
+    Ref<T> SingletonService<T>::Create()
     {
         static Ref<T> _service = m_Ctr();
         return _service;
+    }
+
+    template <typename T>
+    Ref<T> ScopedService<T>::Create()
+    {
+        return m_Ctr();
     }
 }
