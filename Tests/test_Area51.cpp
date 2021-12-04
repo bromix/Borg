@@ -1,7 +1,7 @@
-#include "Borg/ServiceCollcetion.h"
+#include "Borg/DependencyInjection/ServiceCollcetion.h"
 #include <gtest/gtest.h>
 
-using namespace Borg;
+using namespace Borg::DependencyInjection;
 
 class IPerson
 {

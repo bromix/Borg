@@ -7,7 +7,7 @@ target_compile_features(${PROJECT_NAME}
         cxx_std_17
 )
 
-file(GLOB BORG_HEADER_FILES "include/Borg/*.h")
+file(GLOB_RECURSE BORG_HEADER_FILES "include/Borg/*.h")
 file(GLOB BORG_SOURCE_FILES "src/*.cpp" "src/*.h")
 target_sources(${PROJECT_NAME}
     PRIVATE
