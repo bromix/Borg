@@ -5,6 +5,9 @@
 
 namespace Borg
 {
+    template <typename ServiceType>
+    using ServiceContructorFunc = std::function<Ref<ServiceType>()>;
+
     /**
      * @brief Base interface to derive each generic service type from.
      */
@@ -16,24 +19,24 @@ namespace Borg
     class SingletonService : public IService
     {
     public:
-        SingletonService(std::function<Ref<T>()> ctr) : m_Ctr(std::move(ctr)) {}
+        SingletonService(ServiceContructorFunc<T> ctr) : m_Ctr(std::move(ctr)) {}
 
         Ref<T> Create();
 
     private:
-        std::function<Ref<T>()> m_Ctr;
+        ServiceContructorFunc<T> m_Ctr;
     };
 
     template <typename T>
     class ScopedService : public IService
     {
     public:
-        ScopedService(std::function<Ref<T>()> ctr) : m_Ctr(std::move(ctr)) {}
+        ScopedService(ServiceContructorFunc<T> ctr) : m_Ctr(std::move(ctr)) {}
 
         Ref<T> Create();
 
     private:
-        std::function<Ref<T>()> m_Ctr;
+        ServiceContructorFunc<T> m_Ctr;
     };
 
     class ServiceCollection
@@ -83,12 +86,12 @@ namespace Borg
         auto tyhash1 = tyin1.hash_code();
         auto tyhash2 = tyin2.hash_code();
 
-        auto createBla = [=]() -> Ref<ServiceType>
+        ServiceContructorFunc<ServiceType> serviceContructorFunc = [=]() -> Ref<ServiceType>
         {
             return CreateRef<ImplementationType>(std::forward<Args>(args)...);
         };
 
-        m_Services[tyin1] = CreateRef<SingletonService<ServiceType>>(createBla);
+        m_Services[tyin1] = CreateRef<SingletonService<ServiceType>>(serviceContructorFunc);
     }
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
@@ -104,12 +107,12 @@ namespace Borg
         auto tyhash1 = tyin1.hash_code();
         auto tyhash2 = tyin2.hash_code();
 
-        auto createBla = [=]() -> Ref<ServiceType>
+        ServiceContructorFunc<ServiceType> serviceContructorFunc = [=]() -> Ref<ServiceType>
         {
             return CreateRef<ImplementationType>(std::forward<Args>(args)...);
         };
 
-        m_Services[tyin1] = CreateRef<ScopedService<ServiceType>>(createBla);
+        m_Services[tyin1] = CreateRef<ScopedService<ServiceType>>(serviceContructorFunc);
     }
 
     template <typename ServiceType>
