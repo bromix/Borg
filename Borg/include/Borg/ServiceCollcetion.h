@@ -1,30 +1,25 @@
 #include <typeindex>
 #include <map>
-#include <functional>
 #include "Types.h"
 
 namespace Borg
 {
     template <typename ServiceType>
-    using ServiceContructorFunc = std::function<Ref<ServiceType>()>;
+    using ServiceGetterFunc = Func<Ref<ServiceType>>;
 
     /**
      * @brief Base interface to derive each generic service type from.
      */
-    class IService
+    class IServiceProvider
     {
     };
 
     template <typename T>
-    class TService : public IService
+    struct TServiceProvider : public IServiceProvider
     {
     public:
-        TService(ServiceContructorFunc<T> ctr) : m_Ctr(std::move(ctr)) {}
-
-        Ref<T> Get();
-
-    private:
-        ServiceContructorFunc<T> m_Ctr;
+        TServiceProvider(ServiceGetterFunc<T> serviceGetter) : Get(std::move(serviceGetter)) {}
+        const ServiceGetterFunc<T> Get;
     };
 
     class ServiceCollection
@@ -58,7 +53,7 @@ namespace Borg
 
     private:
         // FIXME: use hashcode.
-        std::map<std::type_index, Ref<IService>> m_Services;
+        std::map<std::type_index, Ref<IServiceProvider>> m_ServiceProvider;
     };
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
@@ -74,13 +69,13 @@ namespace Borg
         auto tyhash1 = tyin1.hash_code();
         auto tyhash2 = tyin2.hash_code();
 
-        ServiceContructorFunc<ServiceType> singletonGetter = [=]() -> Ref<ServiceType>
+        ServiceGetterFunc<ServiceType> singletonGetter = [=]() -> Ref<ServiceType>
         {
             static Ref<ServiceType> _service = CreateRef<ImplementationType>(std::forward<Args>(args)...);
             return _service;
         };
 
-        m_Services[tyin1] = CreateRef<TService<ServiceType>>(singletonGetter);
+        m_ServiceProvider[tyin1] = CreateRef<TServiceProvider<ServiceType>>(singletonGetter);
     }
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
@@ -96,29 +91,23 @@ namespace Borg
         auto tyhash1 = tyin1.hash_code();
         auto tyhash2 = tyin2.hash_code();
 
-        ServiceContructorFunc<ServiceType> scopedGetter = [=]() -> Ref<ServiceType>
+        ServiceGetterFunc<ServiceType> scopedGetter = [=]() -> Ref<ServiceType>
         {
             return CreateRef<ImplementationType>(std::forward<Args>(args)...);
         };
 
-        m_Services[tyin1] = CreateRef<TService<ServiceType>>(scopedGetter);
+        m_ServiceProvider[tyin1] = CreateRef<TServiceProvider<ServiceType>>(scopedGetter);
     }
 
     template <typename ServiceType>
     Ref<ServiceType> ServiceCollection::GetService()
     {
         auto tyin1 = std::type_index(typeid(ServiceType));
-        auto found = m_Services.find(tyin1);
-        if (found == m_Services.end())
+        auto found = m_ServiceProvider.find(tyin1);
+        if (found == m_ServiceProvider.end())
             return nullptr;
 
-        auto tService = std::static_pointer_cast<typename TService<ServiceType>>(found->second);
+        Ref<TServiceProvider<ServiceType>> tService = std::static_pointer_cast<typename TServiceProvider<ServiceType>>(found->second);
         return tService->Get();
-    }
-
-    template <typename T>
-    Ref<T> TService<T>::Get()
-    {
-        return m_Ctr();
     }
 }

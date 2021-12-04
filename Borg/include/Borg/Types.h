@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include <functional>
 #include <memory>
 
 namespace Borg
@@ -12,6 +13,12 @@ namespace Borg
     {
         return std::make_shared<T>(std::forward<Args>(args)...);
     }
+
+    template<typename Result, typename... Args>
+    using Func = std::function<Result(Args &&...args)>;
+    
+    template<typename... Args>
+    using Action = std::function<void(Args &&...args)>;
 
     using uint8 = uint8_t;
     using uint16 = uint16_t;
