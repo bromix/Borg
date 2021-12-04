@@ -16,24 +16,12 @@ namespace Borg
     };
 
     template <typename T>
-    class SingletonService : public IService
+    class TService : public IService
     {
     public:
-        SingletonService(ServiceContructorFunc<T> ctr) : m_Ctr(std::move(ctr)) {}
+        TService(ServiceContructorFunc<T> ctr) : m_Ctr(std::move(ctr)) {}
 
-        Ref<T> Create();
-
-    private:
-        ServiceContructorFunc<T> m_Ctr;
-    };
-
-    template <typename T>
-    class ScopedService : public IService
-    {
-    public:
-        ScopedService(ServiceContructorFunc<T> ctr) : m_Ctr(std::move(ctr)) {}
-
-        Ref<T> Create();
+        Ref<T> Get();
 
     private:
         ServiceContructorFunc<T> m_Ctr;
@@ -86,12 +74,13 @@ namespace Borg
         auto tyhash1 = tyin1.hash_code();
         auto tyhash2 = tyin2.hash_code();
 
-        ServiceContructorFunc<ServiceType> serviceContructorFunc = [=]() -> Ref<ServiceType>
+        ServiceContructorFunc<ServiceType> singletonGetter = [=]() -> Ref<ServiceType>
         {
-            return CreateRef<ImplementationType>(std::forward<Args>(args)...);
+            static Ref<ServiceType> _service = CreateRef<ImplementationType>(std::forward<Args>(args)...);
+            return _service;
         };
 
-        m_Services[tyin1] = CreateRef<SingletonService<ServiceType>>(serviceContructorFunc);
+        m_Services[tyin1] = CreateRef<TService<ServiceType>>(singletonGetter);
     }
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
@@ -107,12 +96,12 @@ namespace Borg
         auto tyhash1 = tyin1.hash_code();
         auto tyhash2 = tyin2.hash_code();
 
-        ServiceContructorFunc<ServiceType> serviceContructorFunc = [=]() -> Ref<ServiceType>
+        ServiceContructorFunc<ServiceType> scopedGetter = [=]() -> Ref<ServiceType>
         {
             return CreateRef<ImplementationType>(std::forward<Args>(args)...);
         };
 
-        m_Services[tyin1] = CreateRef<ScopedService<ServiceType>>(serviceContructorFunc);
+        m_Services[tyin1] = CreateRef<TService<ServiceType>>(scopedGetter);
     }
 
     template <typename ServiceType>
@@ -123,19 +112,12 @@ namespace Borg
         if (found == m_Services.end())
             return nullptr;
 
-        auto tService = std::static_pointer_cast<typename SingletonService<ServiceType>>(found->second);
-        return tService->Create();
+        auto tService = std::static_pointer_cast<typename TService<ServiceType>>(found->second);
+        return tService->Get();
     }
 
     template <typename T>
-    Ref<T> SingletonService<T>::Create()
-    {
-        static Ref<T> _service = m_Ctr();
-        return _service;
-    }
-
-    template <typename T>
-    Ref<T> ScopedService<T>::Create()
+    Ref<T> TService<T>::Get()
     {
         return m_Ctr();
     }
