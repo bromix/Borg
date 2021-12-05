@@ -65,10 +65,7 @@ namespace Borg::DependencyInjection
         ServiceMap m_Services;
 
         template <typename ServiceType, typename ImplementationType, typename... Args>
-        IService::GetterFunc<ServiceType> createServiceGetterForSingleton(Args &&...args);
-
-        template <typename ServiceType, typename ImplementationType, typename... Args>
-        IService::GetterFunc<ServiceType> createServiceGetterForTransient(Args &&...args);
+        ServiceFactory<ServiceType> createServiceFactory(Args &&...args) const;
     };
 
     Ref<ServiceProvider> ServiceCollection::BuildServiceProvider()
@@ -77,39 +74,7 @@ namespace Borg::DependencyInjection
     }
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
-    IService::GetterFunc<ServiceType> ServiceCollection::createServiceGetterForSingleton(Args &&...args)
-    {
-        return [args...]() -> Ref<ServiceType>
-        {
-            static Ref<ServiceType> service = CreateRef<ImplementationType>(std::forward<Args>(args)...);
-            return service;
-        };
-    }
-
-    template <typename ImplementationType, typename... Args>
-    void ServiceCollection::AddSingleton(Args &&...args)
-    {
-        IsClass<ImplementationType>();
-
-        auto serviceGetter = createServiceGetterForSingleton<ImplementationType, ImplementationType, Args...>(std::forward<Args>(args)...);
-        auto hashCode = typeid(ImplementationType).hash_code();
-        m_Services[hashCode] = CreateRef<TService<ImplementationType>>(serviceGetter, ServiceLifetime::Singleton);
-    }
-
-    template <typename ServiceType, typename ImplementationType, typename... Args>
-    void ServiceCollection::AddSingleton(Args &&...args)
-    {
-        IsInterface<ServiceType>();
-        Implements<ServiceType, ImplementationType>();
-        IsClass<ImplementationType>();
-
-        auto serviceGetter = createServiceGetterForSingleton<ServiceType, ImplementationType, Args...>(std::forward<Args>(args)...);
-        auto hashCode = typeid(ServiceType).hash_code();
-        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceGetter, ServiceLifetime::Singleton);
-    }
-
-    template <typename ServiceType, typename ImplementationType, typename... Args>
-    IService::GetterFunc<ServiceType> ServiceCollection::createServiceGetterForTransient(Args &&...args)
+    ServiceFactory<ServiceType> ServiceCollection::createServiceFactory(Args &&...args) const
     {
         return [args...]() -> Ref<ServiceType>
         {
@@ -118,13 +83,35 @@ namespace Borg::DependencyInjection
     }
 
     template <typename ImplementationType, typename... Args>
+    void ServiceCollection::AddSingleton(Args &&...args)
+    {
+        IsClass<ImplementationType>();
+
+        auto serviceFactory = createServiceFactory<ImplementationType, ImplementationType, Args...>(std::forward<Args>(args)...);
+        auto hashCode = typeid(ImplementationType).hash_code();
+        m_Services[hashCode] = CreateRef<TService<ImplementationType>>(serviceFactory, ServiceLifetime::Singleton);
+    }
+
+    template <typename ServiceType, typename ImplementationType, typename... Args>
+    void ServiceCollection::AddSingleton(Args &&...args)
+    {
+        IsInterface<ServiceType>();
+        Implements<ServiceType, ImplementationType>();
+        IsClass<ImplementationType>();
+
+        auto serviceFactory = createServiceFactory<ServiceType, ImplementationType, Args...>(std::forward<Args>(args)...);
+        auto hashCode = typeid(ServiceType).hash_code();
+        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceFactory, ServiceLifetime::Singleton);
+    }
+
+    template <typename ImplementationType, typename... Args>
     void ServiceCollection::AddTransient(Args &&...args)
     {
         IsClass<ImplementationType>();
 
-        auto serviceGetter = createServiceGetterForTransient<ImplementationType, ImplementationType, Args...>(std::forward<Args>(args)...);
+        auto serviceFactory = createServiceFactory<ImplementationType, ImplementationType, Args...>(std::forward<Args>(args)...);
         auto hashCode = typeid(ImplementationType).hash_code();
-        m_Services[hashCode] = CreateRef<TService<ImplementationType>>(serviceGetter, ServiceLifetime::Transient);
+        m_Services[hashCode] = CreateRef<TService<ImplementationType>>(serviceFactory, ServiceLifetime::Transient);
     }
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
@@ -134,8 +121,8 @@ namespace Borg::DependencyInjection
         Implements<ServiceType, ImplementationType>();
         IsClass<ImplementationType>();
 
-        auto serviceGetter = createServiceGetterForTransient<ServiceType, ImplementationType, Args...>(std::forward<Args>(args)...);
+        auto serviceFactory = createServiceFactory<ServiceType, ImplementationType, Args...>(std::forward<Args>(args)...);
         auto hashCode = typeid(ServiceType).hash_code();
-        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceGetter, ServiceLifetime::Transient);
+        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceFactory, ServiceLifetime::Transient);
     }
 }

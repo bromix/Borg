@@ -25,11 +25,6 @@ namespace Borg::DependencyInjection
         if (found == m_Services.end())
             return nullptr;
 
-        auto serviceDescriptor = found->second;
-        auto lifetime = serviceDescriptor->Lifetime();
-        auto test = serviceDescriptor->Get<ServiceType>();
-
-        Ref<TService<ServiceType>> service = std::static_pointer_cast<typename TService<ServiceType>>(found->second);
-        return service->Get();
+        return found->second->Get<ServiceType>();
     }
 }

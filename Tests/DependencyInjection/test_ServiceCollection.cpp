@@ -49,4 +49,6 @@ TEST(ServiceCollection, AddSingletonByClass)
     auto product = serviceProvider->GetService<Product>();
     ASSERT_EQ("File Explorer", product->Name());
     ASSERT_EQ("1.0.0", product->Version());
+    auto product2 = serviceProvider->GetService<Product>();
+    auto x = 0;
 }
