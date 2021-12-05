@@ -64,6 +64,9 @@ namespace Borg::DependencyInjection
         IService(ServiceLifetime lifetime);
         ServiceLifetime Lifetime() const;
 
+        template <typename ServiceType>
+        Ref<ServiceType> Get() const noexcept;
+
     private:
         ServiceLifetime m_Lifetime = ServiceLifetime::Singleton;
     };
@@ -102,5 +105,12 @@ namespace Borg::DependencyInjection
     ServiceLifetime IService::Lifetime() const
     {
         return m_Lifetime;
+    }
+
+    template <typename ServiceType>
+    Ref<ServiceType> IService::Get() const noexcept
+    {
+        if(m_Lifetime == ServiceLifetime::Singleton)
+        return nullptr;
     }
 }
