@@ -1,6 +1,6 @@
 #pragma once
 #include "Borg/Types.h"
-#include "TService.h"
+#include "Service.h"
 #include "ServiceProvider.h"
 #include <typeindex>
 #include <map>
@@ -93,7 +93,7 @@ namespace Borg::DependencyInjection
 
         auto serviceGetter = createServiceGetterForSingleton<ServiceType, ServiceType, Args...>(std::forward<Args>(args)...);
         auto hashCode = typeid(ServiceType).hash_code();
-        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceGetter);
+        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceGetter, ServiceLifetime::Singleton);
     }
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
@@ -105,7 +105,7 @@ namespace Borg::DependencyInjection
 
         auto serviceGetter = createServiceGetterForSingleton<ServiceType, ImplementationType, Args...>(std::forward<Args>(args)...);
         auto hashCode = typeid(ServiceType).hash_code();
-        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceGetter);
+        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceGetter, ServiceLifetime::Singleton);
     }
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
@@ -124,7 +124,7 @@ namespace Borg::DependencyInjection
 
         auto serviceGetter = createServiceGetterForTransient<ServiceType, ServiceType, Args...>(std::forward<Args>(args)...);
         auto hashCode = typeid(ServiceType).hash_code();
-        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceGetter);
+        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceGetter, ServiceLifetime::Transient);
     }
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
@@ -136,6 +136,6 @@ namespace Borg::DependencyInjection
 
         auto serviceGetter = createServiceGetterForTransient<ServiceType, ImplementationType, Args...>(std::forward<Args>(args)...);
         auto hashCode = typeid(ServiceType).hash_code();
-        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceGetter);
+        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceGetter, ServiceLifetime::Transient);
     }
 }
