@@ -114,9 +114,7 @@ namespace Borg::DependencyInjection
     template <typename ServiceType>
     Ref<ServiceType> IService::callServiceFactory()
     {
-        Ref<void> unknown = m_ServiceFactory();
-        Ref<ServiceType> service = std::static_pointer_cast<typename ServiceType>(unknown);
-        return service;
+        return std::static_pointer_cast<typename ServiceType>(m_ServiceFactory());
     }
 
     template <typename ServiceType>
