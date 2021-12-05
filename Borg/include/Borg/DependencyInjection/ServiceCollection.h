@@ -86,22 +86,22 @@ namespace Borg::DependencyInjection
         };
     }
 
-    template <typename ServiceType, typename... Args>
+    template <typename ImplementationType, typename... Args>
     void ServiceCollection::AddSingleton(Args &&...args)
     {
-        static_assert(std::is_class<ServiceType>(), "Second type must be a class");
+        IsClass<ImplementationType>();
 
-        auto serviceGetter = createServiceGetterForSingleton<ServiceType, ServiceType, Args...>(std::forward<Args>(args)...);
-        auto hashCode = typeid(ServiceType).hash_code();
-        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceGetter, ServiceLifetime::Singleton);
+        auto serviceGetter = createServiceGetterForSingleton<ImplementationType, ImplementationType, Args...>(std::forward<Args>(args)...);
+        auto hashCode = typeid(ImplementationType).hash_code();
+        m_Services[hashCode] = CreateRef<TService<ImplementationType>>(serviceGetter, ServiceLifetime::Singleton);
     }
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
     void ServiceCollection::AddSingleton(Args &&...args)
     {
-        static_assert(std::is_abstract<ServiceType>(), "First type must be an interface or abstract class.");
-        static_assert(std::is_base_of<ServiceType, ImplementationType>(), "Second type must implement first type.");
-        static_assert(std::is_class<ImplementationType>(), "Second type must be a class");
+        IsInterface<ServiceType>();
+        Implements<ServiceType, ImplementationType>();
+        IsClass<ImplementationType>();
 
         auto serviceGetter = createServiceGetterForSingleton<ServiceType, ImplementationType, Args...>(std::forward<Args>(args)...);
         auto hashCode = typeid(ServiceType).hash_code();
@@ -117,22 +117,22 @@ namespace Borg::DependencyInjection
         };
     }
 
-    template <typename ServiceType, typename... Args>
+    template <typename ImplementationType, typename... Args>
     void ServiceCollection::AddTransient(Args &&...args)
     {
-        static_assert(std::is_class<ServiceType>(), "Second type must be a class");
+        IsClass<ImplementationType>();
 
-        auto serviceGetter = createServiceGetterForTransient<ServiceType, ServiceType, Args...>(std::forward<Args>(args)...);
-        auto hashCode = typeid(ServiceType).hash_code();
-        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceGetter, ServiceLifetime::Transient);
+        auto serviceGetter = createServiceGetterForTransient<ImplementationType, ImplementationType, Args...>(std::forward<Args>(args)...);
+        auto hashCode = typeid(ImplementationType).hash_code();
+        m_Services[hashCode] = CreateRef<TService<ImplementationType>>(serviceGetter, ServiceLifetime::Transient);
     }
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
     void ServiceCollection::AddTransient(Args &&...args)
     {
-        static_assert(std::is_abstract<ServiceType>(), "First type must be an interface or abstract class.");
-        static_assert(std::is_base_of<ServiceType, ImplementationType>(), "Second type must implement first type.");
-        static_assert(std::is_class<ImplementationType>(), "Second type must be a class");
+        IsInterface<ServiceType>();
+        Implements<ServiceType, ImplementationType>();
+        IsClass<ImplementationType>();
 
         auto serviceGetter = createServiceGetterForTransient<ServiceType, ImplementationType, Args...>(std::forward<Args>(args)...);
         auto hashCode = typeid(ServiceType).hash_code();

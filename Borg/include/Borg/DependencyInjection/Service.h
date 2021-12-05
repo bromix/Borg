@@ -4,6 +4,36 @@
 
 namespace Borg::DependencyInjection
 {
+    // Inspired by https://github.dev/william-taylor-projects/dil
+
+    template <typename ServiceType>
+    struct IsInterface
+    {
+        constexpr IsInterface()
+        {
+            static_assert(std::is_abstract<ServiceType>(), "ServiceType must be an interface/abstract class!");
+        }
+    };
+
+    template <typename ServiceType, typename ImplementationType>
+    struct Implements
+    {
+        constexpr Implements()
+        {
+            IsInterface<ServiceType>();
+            static_assert(std::is_base_of<ServiceType, ImplementationType>(), "ServiceType doesnt implement ImplementationType");
+        }
+    };
+
+    template <typename ImplementationType>
+    struct IsClass
+    {
+        constexpr IsClass()
+        {
+            static_assert(std::is_class<ImplementationType>(), "ImplementationType must be a class");
+        }
+    };
+
     enum class ServiceLifetime
     {
         /**
