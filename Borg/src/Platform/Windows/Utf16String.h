@@ -13,10 +13,9 @@ namespace Borg
 
     private:
         void cleanup();
-        void init(std::size_t length);
+        void prepare(std::size_t length);
 
         wchar_t *m_Data = nullptr;
         std::size_t m_Length = 0;
-        std::size_t m_SizeInBytes = 0;
     };
 }

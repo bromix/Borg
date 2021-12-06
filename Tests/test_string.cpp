@@ -19,8 +19,21 @@ TEST(String, NullConstructor)
     ASSERT_TRUE(text.IsNullOrEmpty());
 }
 
-TEST(String, UTF8Text)
+TEST(String, EmptyString)
+{
+    String text = "";
+    ASSERT_FALSE(text.IsNull());
+    ASSERT_TRUE(text.IsEmpty());
+}
+
+TEST(String, Utf8String)
+{
+    String text = "Hello";
+    ASSERT_FALSE(text.IsNullOrEmpty());
+}
+
+TEST(String, UnicodeString)
 {
     String text = L"Hello";
-    ASSERT_FALSE(text.IsEmpty());
+    ASSERT_FALSE(text.IsNullOrEmpty());
 }
