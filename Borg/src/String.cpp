@@ -69,4 +69,14 @@ namespace Borg
     {
         return IsNull() || IsEmpty();
     }
+
+    bool operator==(const std::string_view &lhs, const String &rhs)
+    {
+        return String(lhs) == rhs;
+    }
+
+    bool operator==(const std::wstring_view &lhs, const String &rhs)
+    {
+        return String(lhs) == rhs;
+    }
 }

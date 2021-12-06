@@ -51,4 +51,7 @@ namespace Borg
     private:
         Ref<IString> m_Impl;
     };
+
+    bool operator==(const std::string_view &lhs, const String &rhs);
+    bool operator==(const std::wstring_view &lhs, const String &rhs);
 }
