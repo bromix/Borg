@@ -25,6 +25,20 @@ namespace Borg
         bool operator==(std::wstring_view rhs) const noexcept;
 
         /**
+         * @brief Returns a copy of this string converted to lowercase.
+         * 
+         * @return String 
+         */
+        String ToLower() const noexcept;
+
+        /**
+         * @brief Returns a copy of this string converted to uppercase.
+         * 
+         * @return String 
+         */
+        String ToUpper() const noexcept;
+
+        /**
          * @brief Indicates if the specified string is null.
          *
          * @return true is null, false otherwise.
@@ -49,6 +63,11 @@ namespace Borg
         class IString;
 
     private:
+        String(const Ref<IString> &input) = delete;
+        String operator=(const Ref<IString> &input) = delete;
+        String(Ref<IString> &&input);
+        String operator=(Ref<IString> &&input) = delete;
+
         Ref<IString> m_Impl;
     };
 

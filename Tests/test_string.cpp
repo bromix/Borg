@@ -48,3 +48,15 @@ TEST(String, Equals)
     ASSERT_TRUE("Peter" == name);
     ASSERT_TRUE(name == "Peter");
 }
+
+TEST(String, ToLower)
+{
+    String name = "PEtEr";
+    ASSERT_EQ(name.ToLower(), "peter");
+}
+
+TEST(String, ToUpper)
+{
+    String name = "PEtEr";
+    ASSERT_EQ(name.ToUpper(), "PETER");
+}

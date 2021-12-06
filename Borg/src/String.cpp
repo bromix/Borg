@@ -22,6 +22,9 @@ namespace Borg
         throw std::exception("Not implemented");
     }
 
+    String::String(Ref<IString> &&input): m_Impl(input)
+    {}
+
     String String::operator=(const String &input)
     {
         throw std::exception("Not implemented");
@@ -51,6 +54,16 @@ namespace Borg
     bool String::operator==(std::wstring_view rhs) const noexcept
     {
         return *this == String(rhs);
+    }
+
+    String String::ToLower() const noexcept
+    {
+        return m_Impl->ToLower();
+    }
+
+    String String::ToUpper() const noexcept
+    {
+        return m_Impl->ToUpper();
     }
 
     bool String::IsNull() const noexcept
