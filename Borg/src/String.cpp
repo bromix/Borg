@@ -8,11 +8,11 @@ namespace Borg
 
     String::String(std::nullptr_t) {}
 
-    String::String(std::string_view input) : m_Impl(IString::Create(input))
+    String::String(const char *input) : m_Impl(IString::Create(input))
     {
     }
 
-    String::String(std::wstring_view input) : m_Impl(IString::Create(input))
+    String::String(const wchar_t *input) : m_Impl(IString::Create(input))
     {
     }
 
@@ -22,8 +22,9 @@ namespace Borg
         throw std::exception("Not implemented");
     }
 
-    String::String(Ref<IString> &&input): m_Impl(input)
-    {}
+    String::String(Ref<IString> &&input) : m_Impl(input)
+    {
+    }
 
     String String::operator=(const String &input)
     {
@@ -41,19 +42,19 @@ namespace Borg
         throw std::exception("Not implemented");
     }
 
+    bool String::operator==(const char* rhs) const noexcept
+    {
+        return *this == String(rhs);
+    }
+    
+    bool String::operator==(const wchar_t* rhs) const noexcept
+    {
+        return *this == String(rhs);
+    }
+
     bool String::operator==(const String &rhs) const noexcept
     {
         return m_Impl->CompareTo(rhs.m_Impl) == 0;
-    }
-
-    bool String::operator==(std::string_view rhs) const noexcept
-    {
-        return *this == String(rhs);
-    }
-
-    bool String::operator==(std::wstring_view rhs) const noexcept
-    {
-        return *this == String(rhs);
     }
 
     String String::ToLower() const noexcept
@@ -64,6 +65,11 @@ namespace Borg
     String String::ToUpper() const noexcept
     {
         return m_Impl->ToUpper();
+    }
+
+    bool String::StartsWith(const String &text) const noexcept
+    {
+        return m_Impl->StartsWith(text.m_Impl);
     }
 
     bool String::IsNull() const noexcept
@@ -83,12 +89,12 @@ namespace Borg
         return IsNull() || IsEmpty();
     }
 
-    bool operator==(const std::string_view &lhs, const String &rhs)
+    bool operator==(const char* lhs, const String &rhs)
     {
         return String(lhs) == rhs;
     }
 
-    bool operator==(const std::wstring_view &lhs, const String &rhs)
+    bool operator==(const wchar_t* lhs, const String &rhs)
     {
         return String(lhs) == rhs;
     }

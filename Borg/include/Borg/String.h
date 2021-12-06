@@ -9,8 +9,8 @@ namespace Borg
         String();
         ~String() = default;
         String(std::nullptr_t);
-        String(std::string_view input);
-        String(std::wstring_view input);
+        String(const char *input);
+        String(const wchar_t *input);
 
         // Copy constructor and assignment operator.
         String(const String &input);
@@ -20,23 +20,31 @@ namespace Borg
         String(String &&input);
         String operator=(String &&input);
 
-        bool operator==(const String& rhs) const noexcept;
-        bool operator==(std::string_view rhs) const noexcept;
-        bool operator==(std::wstring_view rhs) const noexcept;
+        bool operator==(const char* rhs) const noexcept;
+        bool operator==(const wchar_t* rhs) const noexcept;
+        bool operator==(const String &rhs) const noexcept;
 
         /**
          * @brief Returns a copy of this string converted to lowercase.
-         * 
-         * @return String 
+         *
+         * @return String
          */
         String ToLower() const noexcept;
 
         /**
          * @brief Returns a copy of this string converted to uppercase.
-         * 
-         * @return String 
+         *
+         * @return String
          */
         String ToUpper() const noexcept;
+
+        /**
+         * @brief Determines whether the beginning of this string instance matches the specified string.
+         *
+         * @param text
+         * @return true if value matches the beginning of this string; otherwise, false.
+         */
+        bool StartsWith(const String &text) const noexcept;
 
         /**
          * @brief Indicates if the specified string is null.
@@ -54,9 +62,9 @@ namespace Borg
 
         /**
          * @brief Indicates wether the specified string is null or empty string ("").
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool IsNullOrEmpty() const noexcept;
 
@@ -71,6 +79,6 @@ namespace Borg
         Ref<IString> m_Impl;
     };
 
-    bool operator==(const std::string_view &lhs, const String &rhs);
-    bool operator==(const std::wstring_view &lhs, const String &rhs);
+    bool operator==(const char* lhs, const String &rhs);
+    bool operator==(const wchar_t* lhs, const String &rhs);
 }

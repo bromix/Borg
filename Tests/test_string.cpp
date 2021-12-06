@@ -60,3 +60,10 @@ TEST(String, ToUpper)
     String name = "PEtEr";
     ASSERT_EQ(name.ToUpper(), "PETER");
 }
+
+TEST(String, StartsWith)
+{
+    String test = L"Hello World";
+    ASSERT_TRUE(test.StartsWith("Hello"));
+    ASSERT_FALSE(test.StartsWith("World"));
+}

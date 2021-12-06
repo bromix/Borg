@@ -13,6 +13,7 @@ namespace Borg
 
         virtual Ref<IString> ToLower() const = 0;
         virtual Ref<IString> ToUpper() const = 0;
+        virtual bool StartsWith(const Ref<IString> &text) const = 0;
 
         virtual bool IsEmpty() const = 0;
 
