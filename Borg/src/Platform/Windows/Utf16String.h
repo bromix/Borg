@@ -13,6 +13,7 @@ namespace Borg
         Ref<IString> ToLower() const override;
         Ref<IString> ToUpper() const override;
         bool StartsWith(const Ref<IString> &text) const override;
+        bool EndsWith(const Ref<IString> &text) const override;
         bool IsEmpty() const override;
         int CompareTo(const Ref<IString> &rhs) const override;
 

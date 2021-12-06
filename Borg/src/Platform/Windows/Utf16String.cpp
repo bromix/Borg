@@ -94,6 +94,16 @@ namespace Borg
         return result == 0;
     }
 
+    bool Utf16String::EndsWith(const Ref<IString> &text) const
+    {
+        Ref<Utf16String> other = std::dynamic_pointer_cast<Utf16String>(text);
+
+        // move the pointer relative to the end.
+        const wchar_t *ptr = m_Data + m_Length - other->m_Length;
+        auto result = wcsncmp(ptr, other->m_Data, other->m_Length);
+        return result == 0;
+    }
+
     bool Utf16String::IsEmpty() const
     {
         return m_Length == 0;

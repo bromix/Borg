@@ -72,6 +72,11 @@ namespace Borg
         return m_Impl->StartsWith(text.m_Impl);
     }
 
+    bool String::EndsWith(const String &text) const noexcept
+    {
+        return m_Impl->EndsWith(text.m_Impl);
+    }
+
     bool String::IsNull() const noexcept
     {
         return m_Impl == nullptr;

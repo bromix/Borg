@@ -47,6 +47,14 @@ namespace Borg
         bool StartsWith(const String &text) const noexcept;
 
         /**
+         * @brief Determines whether the end of this string instance matches the specified string.
+         * 
+         * @param text 
+         * @return true if value matches the end of this instance; otherwise, false.
+         */
+        bool EndsWith(const String &text) const noexcept;
+
+        /**
          * @brief Indicates if the specified string is null.
          *
          * @return true is null, false otherwise.

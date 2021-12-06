@@ -67,3 +67,10 @@ TEST(String, StartsWith)
     ASSERT_TRUE(test.StartsWith("Hello"));
     ASSERT_FALSE(test.StartsWith("World"));
 }
+
+TEST(String, EndsWith)
+{
+    String test = "Hello World";
+    ASSERT_TRUE(test.EndsWith("World"));
+    ASSERT_FALSE(test.EndsWith("Hello"));
+}
