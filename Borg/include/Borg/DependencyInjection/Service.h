@@ -53,7 +53,7 @@ namespace Borg::DependencyInjection
     };
 
     template <typename ServiceType>
-    using ServiceFactory = Func<Ref<ServiceType>>;
+    using ServiceConstructorFunc = Func<Ref<ServiceType>>;
 
     /**
      * @brief Base interface to be able to register the generic services based on their ServiceType.
@@ -61,9 +61,9 @@ namespace Borg::DependencyInjection
     class IService
     {
     public:
-        using ServiceFactory = Func<Ref<void>>;
+        using ServiceConstructorFunc = Func<Ref<void>>;
 
-        IService(IService::ServiceFactory serviceFac, ServiceLifetime lifetime);
+        IService(IService::ServiceConstructorFunc serviceConstructorFunc, ServiceLifetime lifetime);
         ServiceLifetime Lifetime() const;
 
         template <typename ServiceType>
@@ -73,7 +73,7 @@ namespace Borg::DependencyInjection
         template <typename ServiceType>
         Ref<ServiceType> callServiceFactory();
 
-        Func<Ref<void>> m_ServiceFactory;
+        IService::ServiceConstructorFunc m_ServiceFactory;
         ServiceLifetime m_Lifetime = ServiceLifetime::Singleton;
     };
 
@@ -85,8 +85,8 @@ namespace Borg::DependencyInjection
     struct TService : public IService
     {
     public:
-        TService(ServiceFactory serviceFactory, ServiceLifetime lifetime)
-            : IService(serviceFactory, lifetime)
+        TService(ServiceConstructorFunc serviceConstructorFunc, ServiceLifetime lifetime)
+            : IService(serviceConstructorFunc, lifetime)
         {
         }
     };
@@ -100,9 +100,9 @@ namespace Borg::DependencyInjection
     // ===== IService =====
     // ====================
 
-    IService::IService(IService::ServiceFactory serviceFactory, ServiceLifetime lifetime)
+    IService::IService(IService::ServiceConstructorFunc serviceConstructorFunc, ServiceLifetime lifetime)
         : m_Lifetime(lifetime),
-          m_ServiceFactory(serviceFactory)
+          m_ServiceFactory(serviceConstructorFunc)
     {
     }
 

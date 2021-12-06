@@ -65,7 +65,7 @@ namespace Borg::DependencyInjection
         ServiceMap m_Services;
 
         template <typename ServiceType, typename ImplementationType, typename... Args>
-        ServiceFactory<ServiceType> createServiceFactory(Args &&...args) const;
+        ServiceConstructorFunc<ServiceType> createServiceFactory(Args &&...args) const;
     };
 
     Ref<ServiceProvider> ServiceCollection::BuildServiceProvider()
@@ -74,7 +74,7 @@ namespace Borg::DependencyInjection
     }
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
-    ServiceFactory<ServiceType> ServiceCollection::createServiceFactory(Args &&...args) const
+    ServiceConstructorFunc<ServiceType> ServiceCollection::createServiceFactory(Args &&...args) const
     {
         return [args...]() -> Ref<ServiceType>
         {
