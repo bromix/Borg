@@ -8,9 +8,12 @@ namespace Borg
 
     String::String(std::nullptr_t) {}
 
-    String::String(std::string_view input)
+    String::String(std::string_view input) : m_Impl(IString::Create(input))
     {
-        m_Impl = String::IString::Create(input);
+    }
+
+    String::String(std::wstring_view input) : m_Impl(IString::Create(input))
+    {
     }
 
     // Copy constructor and assignment operator.
@@ -45,5 +48,10 @@ namespace Borg
         if (m_Impl)
             return m_Impl->IsEmpty();
         return true;
+    }
+
+    bool String::IsNullOrEmpty() const noexcept
+    {
+        return IsNull() || IsEmpty();
     }
 }

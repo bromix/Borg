@@ -6,10 +6,11 @@ namespace Borg
     class String::IString
     {
     public:
+        static Ref<IString> Create(std::string_view input);
+        static Ref<IString> Create(std::wstring_view input);
+
         virtual ~IString() = default;
 
         virtual bool IsEmpty() const = 0;
-
-        static Ref<String::IString> Create(std::string_view input);
     };
 }
