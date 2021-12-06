@@ -63,7 +63,7 @@ namespace Borg::DependencyInjection
     public:
         using ServiceConstructorFunc = Func<Ref<void>>;
 
-        IService(IService::ServiceConstructorFunc serviceConstructorFunc, ServiceLifetime lifetime);
+        IService(IService::ServiceConstructorFunc&& serviceConstructorFunc, ServiceLifetime lifetime);
         ServiceLifetime Lifetime() const;
 
         template <typename ServiceType>
@@ -85,8 +85,8 @@ namespace Borg::DependencyInjection
     struct TService : public IService
     {
     public:
-        TService(ServiceConstructorFunc serviceConstructorFunc, ServiceLifetime lifetime)
-            : IService(serviceConstructorFunc, lifetime)
+        TService(ServiceConstructorFunc&& serviceConstructorFunc, ServiceLifetime lifetime)
+            : IService(std::move(serviceConstructorFunc), lifetime)
         {
         }
     };
@@ -100,7 +100,7 @@ namespace Borg::DependencyInjection
     // ===== IService =====
     // ====================
 
-    IService::IService(IService::ServiceConstructorFunc serviceConstructorFunc, ServiceLifetime lifetime)
+    IService::IService(IService::ServiceConstructorFunc&& serviceConstructorFunc, ServiceLifetime lifetime)
         : m_Lifetime(lifetime),
           m_ServiceFactory(serviceConstructorFunc)
     {
