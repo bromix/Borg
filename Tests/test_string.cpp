@@ -37,3 +37,13 @@ TEST(String, UnicodeString)
     String text = L"Hello";
     ASSERT_FALSE(text.IsNullOrEmpty());
 }
+
+TEST(String, Equals)
+{
+    String name = "Peter";
+    ASSERT_EQ(name, "Peter");
+    ASSERT_EQ(name, L"Peter");
+    // ASSERT_EQ("Peter", name);
+    // ASSERT_TRUE("Peter" == name);
+    // ASSERT_TRUE(name == "Peter");
+}

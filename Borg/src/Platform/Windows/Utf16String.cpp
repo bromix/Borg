@@ -78,6 +78,12 @@ namespace Borg
         return m_Length == 0;
     }
 
+    int Utf16String::CompareTo(const Ref<IString> &rhs) const
+    {
+        Ref<Utf16String> other = std::dynamic_pointer_cast<Utf16String>(rhs);
+        return std::wcscmp(m_Data, other->m_Data);
+    }
+
     void Utf16String::cleanup()
     {
         if (m_Data == nullptr)

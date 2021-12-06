@@ -38,6 +38,21 @@ namespace Borg
         throw std::exception("Not implemented");
     }
 
+    bool String::operator==(const String &rhs) const noexcept
+    {
+        return m_Impl->CompareTo(rhs.m_Impl) == 0;
+    }
+
+    bool String::operator==(std::string_view rhs) const noexcept
+    {
+        return *this == String(rhs);
+    }
+
+    bool String::operator==(std::wstring_view rhs) const noexcept
+    {
+        return *this == String(rhs);
+    }
+
     bool String::IsNull() const noexcept
     {
         return m_Impl == nullptr;

@@ -20,6 +20,10 @@ namespace Borg
         String(String &&input);
         String operator=(String &&input);
 
+        bool operator==(const String& rhs) const noexcept;
+        bool operator==(std::string_view rhs) const noexcept;
+        bool operator==(std::wstring_view rhs) const noexcept;
+
         /**
          * @brief Indicates if the specified string is null.
          *

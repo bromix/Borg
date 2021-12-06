@@ -41,3 +41,5 @@ namespace Borg
     using int32 = int32_t;
     using int64 = int64_t;
 }
+
+#include "String.h"

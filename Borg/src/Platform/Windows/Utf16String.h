@@ -9,8 +9,8 @@ namespace Borg
         Utf16String(std::string_view input);
         Utf16String(std::wstring_view input);
         ~Utf16String();
-        virtual bool IsEmpty() const override;
-
+        bool IsEmpty() const override;
+        int CompareTo(const Ref<IString> &rhs) const override;
     private:
         void cleanup();
         void prepare(std::size_t length);

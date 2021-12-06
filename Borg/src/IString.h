@@ -1,5 +1,5 @@
 #pragma once
-#include "Borg/String.h"
+#include "Borg/Types.h"
 
 namespace Borg
 {
@@ -12,5 +12,7 @@ namespace Borg
         virtual ~IString() = default;
 
         virtual bool IsEmpty() const = 0;
+
+        virtual int CompareTo(const Ref<IString> &rhs) const = 0;
     };
 }
