@@ -87,9 +87,9 @@ namespace Borg::DependencyInjection
     {
         IsClass<ImplementationType>();
 
-        auto serviceFactory = createServiceFactory<ImplementationType, ImplementationType, Args...>(std::forward<Args>(args)...);
+        auto serviceConstructorFunc = createServiceFactory<ImplementationType, ImplementationType, Args...>(std::forward<Args>(args)...);
         auto hashCode = typeid(ImplementationType).hash_code();
-        m_Services[hashCode] = CreateRef<TService<ImplementationType>>(serviceFactory, ServiceLifetime::Singleton);
+        m_Services[hashCode] = CreateRef<TService<ImplementationType>>(serviceConstructorFunc, ServiceLifetime::Singleton);
     }
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
@@ -99,9 +99,9 @@ namespace Borg::DependencyInjection
         Implements<ServiceType, ImplementationType>();
         IsClass<ImplementationType>();
 
-        auto serviceFactory = createServiceFactory<ServiceType, ImplementationType, Args...>(std::forward<Args>(args)...);
+        auto serviceConstructorFunc = createServiceFactory<ServiceType, ImplementationType, Args...>(std::forward<Args>(args)...);
         auto hashCode = typeid(ServiceType).hash_code();
-        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceFactory, ServiceLifetime::Singleton);
+        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceConstructorFunc, ServiceLifetime::Singleton);
     }
 
     template <typename ImplementationType, typename... Args>
@@ -109,9 +109,9 @@ namespace Borg::DependencyInjection
     {
         IsClass<ImplementationType>();
 
-        auto serviceFactory = createServiceFactory<ImplementationType, ImplementationType, Args...>(std::forward<Args>(args)...);
+        auto serviceConstructorFunc = createServiceFactory<ImplementationType, ImplementationType, Args...>(std::forward<Args>(args)...);
         auto hashCode = typeid(ImplementationType).hash_code();
-        m_Services[hashCode] = CreateRef<TService<ImplementationType>>(serviceFactory, ServiceLifetime::Transient);
+        m_Services[hashCode] = CreateRef<TService<ImplementationType>>(serviceConstructorFunc, ServiceLifetime::Transient);
     }
 
     template <typename ServiceType, typename ImplementationType, typename... Args>
@@ -121,8 +121,8 @@ namespace Borg::DependencyInjection
         Implements<ServiceType, ImplementationType>();
         IsClass<ImplementationType>();
 
-        auto serviceFactory = createServiceFactory<ServiceType, ImplementationType, Args...>(std::forward<Args>(args)...);
+        auto serviceConstructorFunc = createServiceFactory<ServiceType, ImplementationType, Args...>(std::forward<Args>(args)...);
         auto hashCode = typeid(ServiceType).hash_code();
-        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceFactory, ServiceLifetime::Transient);
+        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceConstructorFunc, ServiceLifetime::Transient);
     }
 }

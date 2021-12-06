@@ -15,6 +15,9 @@ class Product : public IProduct
 {
 public:
     Product(const std::string &name) : m_Name(name) {}
+    ~Product()
+    {
+    }
     std::string Name() const override
     {
         return m_Name;
