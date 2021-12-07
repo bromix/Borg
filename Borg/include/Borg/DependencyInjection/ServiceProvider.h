@@ -25,6 +25,6 @@ namespace Borg::DependencyInjection
         if (found == m_Services.end())
             return nullptr;
 
-        return found->second->Get<ServiceType>();
+        return found->second->Get<ServiceType>(*this);
     }
 }

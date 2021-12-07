@@ -4,6 +4,8 @@
 
 namespace Borg::DependencyInjection
 {
+    class ServiceProvider;
+
     // Inspired by https://github.dev/william-taylor-projects/dil
 
     template <typename ServiceType>
@@ -53,7 +55,7 @@ namespace Borg::DependencyInjection
     };
 
     template <typename ServiceType>
-    using ServiceConstructorFunc = Func<Ref<ServiceType>>;
+    using ServiceConstructorFunc = Func<Ref<ServiceType>, const ServiceProvider&>;
 
     /**
      * @brief Base interface to be able to register the generic services based on their ServiceType.
@@ -61,17 +63,17 @@ namespace Borg::DependencyInjection
     class IService
     {
     public:
-        using ServiceConstructorFunc = Func<Ref<void>>;
+        using ServiceConstructorFunc = Func<Ref<void>, const ServiceProvider&>;
 
         IService(IService::ServiceConstructorFunc&& serviceConstructorFunc, ServiceLifetime lifetime);
         ServiceLifetime Lifetime() const;
 
         template <typename ServiceType>
-        Ref<ServiceType> Get();
+        Ref<ServiceType> Get(const ServiceProvider& serviceProvider);
 
     private:
         template <typename ServiceType>
-        Ref<ServiceType> callServiceFactory();
+        Ref<ServiceType> callServiceFactory(const ServiceProvider& serviceProvider);
 
         IService::ServiceConstructorFunc m_ServiceFactory;
         ServiceLifetime m_Lifetime = ServiceLifetime::Singleton;
@@ -112,26 +114,26 @@ namespace Borg::DependencyInjection
     }
 
     template <typename ServiceType>
-    Ref<ServiceType> IService::callServiceFactory()
+    Ref<ServiceType> IService::callServiceFactory(const ServiceProvider& serviceProvider)
     {
-        return std::static_pointer_cast<ServiceType>(m_ServiceFactory());
+        return std::static_pointer_cast<ServiceType>(m_ServiceFactory(serviceProvider));
     }
 
     template <typename ServiceType>
-    Ref<ServiceType> IService::Get()
+    Ref<ServiceType> IService::Get(const ServiceProvider& serviceProvider)
     {
         if(m_Lifetime == ServiceLifetime::Singleton)
         {
-            static Ref<ServiceType> instance = callServiceFactory<ServiceType>();
+            static Ref<ServiceType> instance = callServiceFactory<ServiceType>(serviceProvider);
             return instance;
         }
 
         if(m_Lifetime == ServiceLifetime::Transient)
-            return callServiceFactory<ServiceType>();
+            return callServiceFactory<ServiceType>(serviceProvider);
 
         // TODO: needs some kind of scope factory
         if(m_Lifetime == ServiceLifetime::Scoped)
-            return callServiceFactory<ServiceType>();
+            return callServiceFactory<ServiceType>(serviceProvider);
 
         // FIXME: throw?
         return nullptr;
