@@ -26,7 +26,16 @@ namespace Borg::DependencyInjection
          * @param callback 
          */
         template <typename ServiceType>
-        void AddSingleton(GetServiceCallback<ServiceType> &&callback);
+        void AddSingleton(GetServiceWithProvider<ServiceType> &&callback);
+
+        /**
+         * @brief Adds a singleton service of the type specified in ServiceType with a callback to get an instance of the service.
+         * 
+         * @tparam ServiceType 
+         * @param callback 
+         */
+        template <typename ServiceType>
+        void AddSingleton(GetService<ServiceType> &&callback);
 
         /**
          * @brief Adds a singleton service of the type specified in ServiceType
@@ -49,6 +58,7 @@ namespace Borg::DependencyInjection
         template <typename ServiceType, typename ImplementationType>
         void AddSingleton();
 
+
         /**
          * @brief Adds a transient service of the type specified in ServiceType with a callback to get an instance of the service.
          * 
@@ -56,7 +66,16 @@ namespace Borg::DependencyInjection
          * @param callback 
          */
         template <typename ServiceType>
-        void AddTransient(GetServiceCallback<ServiceType> &&callback);
+        void AddTransient(GetServiceWithProvider<ServiceType> &&callback);
+
+        /**
+         * @brief Adds a transient service of the type specified in ServiceType with a callback to get an instance of the service.
+         * 
+         * @tparam ServiceType 
+         * @param callback 
+         */
+        template <typename ServiceType>
+        void AddTransient(GetService<ServiceType> &&callback);
 
         /**
          * @brief Adds a transient service of the type specified in ServiceType.
@@ -86,7 +105,16 @@ namespace Borg::DependencyInjection
          * @param callback 
          */
         template <typename ServiceType>
-        void AddScoped(GetServiceCallback<ServiceType> &&callback);
+        void AddScoped(GetServiceWithProvider<ServiceType> &&callback);
+
+        /**
+         * @brief Adds a scoped service of the type specified in ServiceType with a callback to get an instance of the service.
+         * 
+         * @tparam ServiceType 
+         * @param callback 
+         */
+        template <typename ServiceType>
+        void AddScoped(GetService<ServiceType> &&callback);
 
         /**
          * @brief Adds a scoped service of the type specified in ServiceType.
@@ -111,7 +139,10 @@ namespace Borg::DependencyInjection
 
     private:
         template <typename ServiceType>
-        void AddByCallback(GetServiceCallback<ServiceType> &&callback, ServiceLifetime lifetime);
+        void AddByCallback(GetServiceWithProvider<ServiceType> &&callback, ServiceLifetime lifetime);
+
+        template <typename ServiceType>
+        void AddByCallback(GetService<ServiceType> &&callback, ServiceLifetime lifetime);
 
         template <typename ImplementationType>
         void AddByImplementationType(ServiceLifetime lifetime);
@@ -128,7 +159,14 @@ namespace Borg::DependencyInjection
     }
 
     template <typename ServiceType>
-    void ServiceCollection::AddByCallback(GetServiceCallback<ServiceType> &&callback, ServiceLifetime lifetime)
+    void ServiceCollection::AddByCallback(GetServiceWithProvider<ServiceType> &&callback, ServiceLifetime lifetime)
+    {
+        auto hashCode = typeid(ServiceType).hash_code();
+        m_Services[hashCode] = TService<ServiceType>::CreateService<ServiceType>(std::move(callback), lifetime);
+    }
+
+    template <typename ServiceType>
+    void ServiceCollection::AddByCallback(GetService<ServiceType> &&callback, ServiceLifetime lifetime)
     {
         auto hashCode = typeid(ServiceType).hash_code();
         m_Services[hashCode] = TService<ServiceType>::CreateService<ServiceType>(std::move(callback), lifetime);
@@ -149,7 +187,13 @@ namespace Borg::DependencyInjection
     }
 
     template <typename ServiceType>
-    void ServiceCollection::AddSingleton(GetServiceCallback<ServiceType> &&callback)
+    void ServiceCollection::AddSingleton(GetServiceWithProvider<ServiceType> &&callback)
+    {
+        AddByCallback<ServiceType>(std::move(callback), ServiceLifetime::Singleton);
+    }
+
+    template <typename ServiceType>
+    void ServiceCollection::AddSingleton(GetService<ServiceType> &&callback)
     {
         AddByCallback<ServiceType>(std::move(callback), ServiceLifetime::Singleton);
     }
@@ -167,7 +211,13 @@ namespace Borg::DependencyInjection
     }
 
     template <typename ServiceType>
-    void ServiceCollection::AddTransient(GetServiceCallback<ServiceType> &&callback)
+    void ServiceCollection::AddTransient(GetServiceWithProvider<ServiceType> &&callback)
+    {
+        AddByCallback<ServiceType>(std::move(callback), ServiceLifetime::Transient);
+    }
+
+    template <typename ServiceType>
+    void ServiceCollection::AddTransient(GetService<ServiceType> &&callback)
     {
         AddByCallback<ServiceType>(std::move(callback), ServiceLifetime::Transient);
     }
@@ -185,7 +235,13 @@ namespace Borg::DependencyInjection
     }
 
     template <typename ServiceType>
-    void ServiceCollection::AddScoped(GetServiceCallback<ServiceType> &&callback)
+    void ServiceCollection::AddScoped(GetServiceWithProvider<ServiceType> &&callback)
+    {
+        AddByCallback<ServiceType>(std::move(callback), ServiceLifetime::Scoped);
+    }
+
+    template <typename ServiceType>
+    void ServiceCollection::AddScoped(GetService<ServiceType> &&callback)
     {
         AddByCallback<ServiceType>(std::move(callback), ServiceLifetime::Scoped);
     }

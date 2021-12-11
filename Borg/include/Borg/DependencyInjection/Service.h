@@ -8,7 +8,10 @@ namespace Borg::DependencyInjection
     class ServiceProvider;
 
     template <typename ServiceType>
-    using GetServiceCallback = Func<Ref<ServiceType>, const ServiceProvider &>;
+    using GetServiceWithProvider = Func<Ref<ServiceType>, const ServiceProvider &>;
+
+    template <typename ServiceType>
+    using GetService = Func<Ref<ServiceType>>;
 
     // Inspired by https://github.dev/william-taylor-projects/dil
 
@@ -67,7 +70,7 @@ namespace Borg::DependencyInjection
         friend ServiceProvider;
 
         template <typename ServiceType>
-        IService(GetServiceCallback<ServiceType> &&getServiceCallback, ServiceLifetime lifetime)
+        IService(GetServiceWithProvider<ServiceType> &&getServiceCallback, ServiceLifetime lifetime)
             : m_GetServiceCallback(getServiceCallback),
               m_Lifetime(lifetime)
         {
@@ -128,7 +131,7 @@ namespace Borg::DependencyInjection
     class TService : public IService
     {
     public:
-        TService(GetServiceCallback<ServiceType> &&getServiceCallback, ServiceLifetime lifetime)
+        TService(GetServiceWithProvider<ServiceType> &&getServiceCallback, ServiceLifetime lifetime)
             : IService(std::move(getServiceCallback), lifetime)
         {
         }
@@ -170,7 +173,7 @@ namespace Borg::DependencyInjection
         }
 
         template <typename ServiceType>
-        static Ref<IService> CreateService(GetServiceCallback<ServiceType> &&callback, ServiceLifetime lifetime)
+        static Ref<IService> CreateService(GetServiceWithProvider<ServiceType> &&callback, ServiceLifetime lifetime)
         {
             /**
              * @brief Lambda to get a new instance of the service implemenation with the usage of the service provider.
@@ -178,6 +181,19 @@ namespace Borg::DependencyInjection
             auto callServiceCallback = [callback](const ServiceProvider &serviceProvider) -> Ref<ServiceType>
             {
                 return callback(serviceProvider);
+            };
+            return CreateRef<TService<ServiceType>>(std::move(callServiceCallback), lifetime);
+        }
+
+        template <typename ServiceType>
+        static Ref<IService> CreateService(GetService<ServiceType> &&callback, ServiceLifetime lifetime)
+        {
+            /**
+             * @brief Lambda to get a new instance of the service implemenation.
+             */
+            auto callServiceCallback = [callback](const ServiceProvider &serviceProvider) -> Ref<ServiceType>
+            {
+                return callback();
             };
             return CreateRef<TService<ServiceType>>(std::move(callServiceCallback), lifetime);
         }

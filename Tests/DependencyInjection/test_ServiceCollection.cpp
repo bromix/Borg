@@ -66,10 +66,26 @@ TEST(ServiceCollection, AddSingletonByInterface)
     ASSERT_EQ("2.0.0", product->Version());
 }
 
-TEST(ServiceCollection, AddSingletonInterfaceByCallback)
+TEST(ServiceCollection, AddSingletonInterfaceByCallbackWithServiceProvider)
 {
     ServiceCollection sc{};
     sc.AddSingleton<IProduct>([](const ServiceProvider &sp) -> Borg::Ref<IProduct>
+                              { return Borg::CreateRef<Product>("File Explorer", "1.0.0"); });
+    auto serviceProvider = sc.BuildServiceProvider();
+    auto product = serviceProvider->GetService<IProduct>();
+    ASSERT_EQ("File Explorer", product->Name());
+    ASSERT_EQ("1.0.0", product->Version());
+
+    product->SetVersion("2.0.0");
+    product = serviceProvider->GetService<IProduct>();
+    ASSERT_EQ("File Explorer", product->Name());
+    ASSERT_EQ("2.0.0", product->Version());
+}
+
+TEST(ServiceCollection, AddSingletonInterfaceByCallback)
+{
+    ServiceCollection sc{};
+    sc.AddSingleton<IProduct>([]() -> Borg::Ref<IProduct>
                               { return Borg::CreateRef<Product>("File Explorer", "1.0.0"); });
     auto serviceProvider = sc.BuildServiceProvider();
     auto product = serviceProvider->GetService<IProduct>();
