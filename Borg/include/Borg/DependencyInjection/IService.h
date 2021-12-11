@@ -14,11 +14,12 @@ namespace Borg::DependencyInjection
         friend ServiceProvider;
 
         template <typename ServiceType>
-        IService(GetServiceWithProvider<ServiceType> &&getServiceCallback, ServiceLifetime lifetime)
-            : m_GetServiceCallback(getServiceCallback),
+        IService(GetServiceWithProvider<ServiceType> &&getServiceImplemenationFunc, ServiceLifetime lifetime)
+            : m_GetServiceImplemenationFunc(getServiceImplemenationFunc),
               m_Lifetime(lifetime)
         {
         }
+
         ~IService()
         {
         }
@@ -54,7 +55,7 @@ namespace Borg::DependencyInjection
         /**
          * @brief Specialized function/callback to get the service.
          */
-        IService::IGetServiceCallback m_GetServiceCallback;
+        IService::IGetServiceCallback m_GetServiceImplemenationFunc;
 
         /**
          * @brief The lifetime of this service.
@@ -77,7 +78,7 @@ namespace Borg::DependencyInjection
     template <typename ServiceType>
     Ref<ServiceType> IService::getServiceImplementation(const ServiceProvider &serviceProvider)
     {
-        return std::static_pointer_cast<ServiceType>(m_GetServiceCallback(serviceProvider));
+        return std::static_pointer_cast<ServiceType>(m_GetServiceImplemenationFunc(serviceProvider));
     }
 
     template <typename ServiceType>
