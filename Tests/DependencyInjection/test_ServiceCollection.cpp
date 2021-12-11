@@ -66,7 +66,7 @@ TEST(ServiceCollection, AddSingletonByClass)
 {
     ServiceCollection sc{};
     sc.AddSingleton<Product>([](const ServiceProvider &sp) -> Borg::Ref<Product> {
-        return Borg::CreateRef<Product>("Apple");
+        return Borg::CreateRef<Product>("File Explorer");
     });
 
     auto serviceProvider = sc.BuildServiceProvider();

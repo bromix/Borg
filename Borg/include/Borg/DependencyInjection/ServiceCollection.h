@@ -9,9 +9,6 @@
 
 namespace Borg::DependencyInjection
 {
-    template <typename ServiceType>
-    using GetServiceCallback = Func<Ref<ServiceType>, const ServiceProvider&>;
-
     class ServiceCollection
     {
     public:
@@ -23,7 +20,7 @@ namespace Borg::DependencyInjection
         Ref<ServiceProvider> BuildServiceProvider();
 
         template <typename ServiceType>
-        void AddSingleton(GetServiceCallback<ServiceType>&& callback);
+        void AddSingleton(GetServiceCallback<ServiceType> &&callback);
 
         /**
          * @brief Adds a singleton service of the type specified in ServiceType
@@ -69,9 +66,6 @@ namespace Borg::DependencyInjection
 
     private:
         ServiceMap m_Services;
-
-        template <typename ServiceType, typename ImplementationType>
-        ServiceConstructorFunc<ServiceType> createServiceFactory() const;
     };
 
     Ref<ServiceProvider> ServiceCollection::BuildServiceProvider()
@@ -79,24 +73,11 @@ namespace Borg::DependencyInjection
         return CreateRef<ServiceProvider>(m_Services);
     }
 
-    template <typename ServiceType, typename ImplementationType>
-    ServiceConstructorFunc<ServiceType> ServiceCollection::createServiceFactory() const
-    {
-        return [](const ServiceProvider&) -> Ref<ServiceType>
-        {
-            return CreateRef<ImplementationType>();
-        };
-    }
-
     template <typename ServiceType>
-    void ServiceCollection::AddSingleton(GetServiceCallback<ServiceType>&& callback)
+    void ServiceCollection::AddSingleton(GetServiceCallback<ServiceType> &&callback)
     {
-        auto serviceConstructorFunc = [callback](const ServiceProvider& serviceProvider) -> Ref<ServiceType>
-        {
-            return callback(serviceProvider);
-        };
         auto hashCode = typeid(ServiceType).hash_code();
-        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceConstructorFunc, ServiceLifetime::Singleton);
+        m_Services[hashCode] = TService<ServiceType>::CreateService<ServiceType>(std::move(callback), ServiceLifetime::Singleton);
     }
 
     template <typename ImplementationType>
@@ -104,9 +85,8 @@ namespace Borg::DependencyInjection
     {
         IsClass<ImplementationType>();
 
-        auto serviceConstructorFunc = createServiceFactory<ImplementationType, ImplementationType>();
         auto hashCode = typeid(ImplementationType).hash_code();
-        m_Services[hashCode] = CreateRef<TService<ImplementationType>>(serviceConstructorFunc, ServiceLifetime::Singleton);
+        m_Services[hashCode] = TService<ImplementationType>::CreateService<ImplementationType, ImplementationType>(ServiceLifetime::Singleton);
     }
 
     template <typename ServiceType, typename ImplementationType>
@@ -116,9 +96,8 @@ namespace Borg::DependencyInjection
         Implements<ServiceType, ImplementationType>();
         IsClass<ImplementationType>();
 
-        auto serviceConstructorFunc = createServiceFactory<ServiceType, ImplementationType>();
         auto hashCode = typeid(ServiceType).hash_code();
-        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceConstructorFunc, ServiceLifetime::Singleton);
+        m_Services[hashCode] = TService<ServiceType>::CreateService<ServiceType, ImplementationType>(ServiceLifetime::Singleton);
     }
 
     template <typename ImplementationType>
