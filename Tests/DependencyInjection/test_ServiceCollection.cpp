@@ -86,14 +86,16 @@ TEST(ServiceCollection, AddSingletonByClass)
 {
     ServiceCollection sc{};
     sc.AddSingleton<Product>([](const ServiceProvider &sp) -> Borg::Ref<Product>
-                             { return Borg::CreateRef<Product>("File Explorer"); });
-
+                              { return Borg::CreateRef<Product>("File Explorer", "1.0.0"); });
     auto serviceProvider = sc.BuildServiceProvider();
     auto product = serviceProvider->GetService<Product>();
     ASSERT_EQ("File Explorer", product->Name());
     ASSERT_EQ("1.0.0", product->Version());
-    auto product2 = serviceProvider->GetService<Product>();
-    auto x = 0;
+
+    product->SetVersion("2.0.0");
+    product = serviceProvider->GetService<Product>();
+    ASSERT_EQ("File Explorer", product->Name());
+    ASSERT_EQ("2.0.0", product->Version());
 }
 
 TEST(ServiceCollection, AddTransientByInterface)
@@ -109,5 +111,85 @@ TEST(ServiceCollection, AddTransientByInterface)
     product->SetVersion("2.0.0");
 
     product = serviceProvider->GetService<IProduct>();
+    ASSERT_EQ("1.0.0", product->Version());
+}
+
+TEST(ServiceCollection, AddTransientInterfaceByCallback)
+{
+    ServiceCollection sc{};
+    sc.AddTransient<IProduct>([](const ServiceProvider &sp) -> Borg::Ref<IProduct>
+                              { return Borg::CreateRef<Product>("File Explorer", "1.0.0"); });
+    auto serviceProvider = sc.BuildServiceProvider();
+    auto product = serviceProvider->GetService<IProduct>();
+    ASSERT_EQ("File Explorer", product->Name());
+    ASSERT_EQ("1.0.0", product->Version());
+
+    product->SetVersion("2.0.0");
+    product = serviceProvider->GetService<IProduct>();
+    ASSERT_EQ("File Explorer", product->Name());
+    ASSERT_EQ("1.0.0", product->Version());
+}
+
+TEST(ServiceCollection, AddTransientByClass)
+{
+    ServiceCollection sc{};
+    sc.AddTransient<Product>([](const ServiceProvider &sp) -> Borg::Ref<Product>
+                              { return Borg::CreateRef<Product>("File Explorer", "1.0.0"); });
+    auto serviceProvider = sc.BuildServiceProvider();
+    auto product = serviceProvider->GetService<Product>();
+    ASSERT_EQ("File Explorer", product->Name());
+    ASSERT_EQ("1.0.0", product->Version());
+
+    product->SetVersion("2.0.0");
+    product = serviceProvider->GetService<Product>();
+    ASSERT_EQ("File Explorer", product->Name());
+    ASSERT_EQ("1.0.0", product->Version());
+}
+
+TEST(ServiceCollection, AddScopedByInterface)
+{
+    ServiceCollection sc{};
+    sc.AddScoped<IProduct, Product>();
+
+    auto serviceProvider = sc.BuildServiceProvider();
+    auto product = serviceProvider->GetService<IProduct>();
+    ASSERT_EQ("File Explorer", product->Name());
+    ASSERT_EQ("1.0.0", product->Version());
+
+    product->SetVersion("2.0.0");
+
+    product = serviceProvider->GetService<IProduct>();
+    ASSERT_EQ("1.0.0", product->Version());
+}
+
+TEST(ServiceCollection, AddScopedInterfaceByCallback)
+{
+    ServiceCollection sc{};
+    sc.AddScoped<IProduct>([](const ServiceProvider &sp) -> Borg::Ref<IProduct>
+                              { return Borg::CreateRef<Product>("File Explorer", "1.0.0"); });
+    auto serviceProvider = sc.BuildServiceProvider();
+    auto product = serviceProvider->GetService<IProduct>();
+    ASSERT_EQ("File Explorer", product->Name());
+    ASSERT_EQ("1.0.0", product->Version());
+
+    product->SetVersion("2.0.0");
+    product = serviceProvider->GetService<IProduct>();
+    ASSERT_EQ("File Explorer", product->Name());
+    ASSERT_EQ("1.0.0", product->Version());
+}
+
+TEST(ServiceCollection, AddScopedByClass)
+{
+    ServiceCollection sc{};
+    sc.AddScoped<Product>([](const ServiceProvider &sp) -> Borg::Ref<Product>
+                              { return Borg::CreateRef<Product>("File Explorer", "1.0.0"); });
+    auto serviceProvider = sc.BuildServiceProvider();
+    auto product = serviceProvider->GetService<Product>();
+    ASSERT_EQ("File Explorer", product->Name());
+    ASSERT_EQ("1.0.0", product->Version());
+
+    product->SetVersion("2.0.0");
+    product = serviceProvider->GetService<Product>();
+    ASSERT_EQ("File Explorer", product->Name());
     ASSERT_EQ("1.0.0", product->Version());
 }
