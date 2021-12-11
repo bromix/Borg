@@ -96,9 +96,25 @@ namespace Borg::DependencyInjection
         {
         }
 
+        template <typename ImplementationType>
+        static Ref<IService> CreateService(ServiceLifetime lifetime)
+        {
+            IsClass<ImplementationType>();
+
+            auto createService = [](const ServiceProvider &) -> Ref<ServiceType>
+            {
+                return CreateRef<ImplementationType>();
+            };
+            return CreateRef<TService<ImplementationType>>(createService, lifetime);
+        }
+
         template <typename ServiceType, typename ImplementationType>
         static Ref<IService> CreateService(ServiceLifetime lifetime)
         {
+            IsInterface<ServiceType>();
+            Implements<ServiceType, ImplementationType>();
+            IsClass<ImplementationType>();
+
             auto createService = [](const ServiceProvider &) -> Ref<ServiceType>
             {
                 return CreateRef<ImplementationType>();

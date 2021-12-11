@@ -76,3 +76,18 @@ TEST(ServiceCollection, AddSingletonByClass)
     auto product2 = serviceProvider->GetService<Product>();
     auto x = 0;
 }
+
+TEST(ServiceCollection, AddTransientByInterface)
+{
+    ServiceCollection sc{};
+    sc.AddTransient<IProduct, Product>();
+
+    auto serviceProvider = sc.BuildServiceProvider();
+    auto product1 = serviceProvider->GetService<IProduct>();
+    ASSERT_EQ("File Explorer", product1->Name());
+    ASSERT_EQ("1.0.0", product1->Version());
+
+    auto product2 = serviceProvider->GetService<IProduct>();
+    ASSERT_EQ("File Explorer", product2->Name());
+    ASSERT_EQ("1.0.0", product2->Version());
+}

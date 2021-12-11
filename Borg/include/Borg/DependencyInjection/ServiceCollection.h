@@ -43,6 +43,9 @@ namespace Borg::DependencyInjection
         template <typename ServiceType, typename ImplementationType>
         void AddSingleton();
 
+        template <typename ServiceType>
+        void AddTransient(GetServiceCallback<ServiceType> &&callback);
+
         /**
          * @brief Adds a transient service of the type specified in ServiceType.
          *
@@ -64,7 +67,40 @@ namespace Borg::DependencyInjection
         template <typename ServiceType, typename ImplementationType>
         void AddTransient();
 
+        template <typename ServiceType>
+        void AddScoped(GetServiceCallback<ServiceType> &&callback);
+
+        /**
+         * @brief Adds a scoped service of the type specified in ServiceType.
+         *
+         * @tparam ServiceType
+         * @tparam Args
+         * @param args
+         */
+        template <typename ServiceType>
+        void AddScoped();
+
+        /**
+         * @brief Adds a scoped service of the type specified in ServiceType with an implementation of the type specified in ImplementationType.
+         *
+         * @tparam ServiceType
+         * @tparam ImplementationType
+         * @tparam Args
+         * @param args
+         */
+        template <typename ServiceType, typename ImplementationType>
+        void AddScoped();
+
     private:
+        template <typename ServiceType>
+        void AddByCallback(GetServiceCallback<ServiceType> &&callback, ServiceLifetime lifetime);
+
+        template <typename ImplementationType>
+        void AddByImplementationType(ServiceLifetime lifetime);
+
+        template <typename ServiceType, typename ImplementationType>
+        void AddByServiceTypeAndImplementationType(ServiceLifetime lifetime);
+
         ServiceMap m_Services;
     };
 
@@ -74,51 +110,77 @@ namespace Borg::DependencyInjection
     }
 
     template <typename ServiceType>
+    void ServiceCollection::AddByCallback(GetServiceCallback<ServiceType> &&callback, ServiceLifetime lifetime)
+    {
+        auto hashCode = typeid(ServiceType).hash_code();
+        m_Services[hashCode] = TService<ServiceType>::CreateService<ServiceType>(std::move(callback), lifetime);
+    }
+
+    template <typename ImplementationType>
+    void ServiceCollection::AddByImplementationType(ServiceLifetime lifetime)
+    {
+        auto hashCode = typeid(ImplementationType).hash_code();
+        m_Services[hashCode] = TService<ImplementationType>::CreateService<ImplementationType>(lifetime);
+    }
+
+    template <typename ServiceType, typename ImplementationType>
+    void ServiceCollection::AddByServiceTypeAndImplementationType(ServiceLifetime lifetime)
+    {
+        auto hashCode = typeid(ServiceType).hash_code();
+        m_Services[hashCode] = TService<ServiceType>::CreateService<ServiceType, ImplementationType>(lifetime);
+    }
+
+    template <typename ServiceType>
     void ServiceCollection::AddSingleton(GetServiceCallback<ServiceType> &&callback)
     {
-        auto hashCode = typeid(ServiceType).hash_code();
-        m_Services[hashCode] = TService<ServiceType>::CreateService<ServiceType>(std::move(callback), ServiceLifetime::Singleton);
+        AddByCallback<ServiceType>(std::move(callback), ServiceLifetime::Singleton);
     }
 
     template <typename ImplementationType>
     void ServiceCollection::AddSingleton()
     {
-        IsClass<ImplementationType>();
-
-        auto hashCode = typeid(ImplementationType).hash_code();
-        m_Services[hashCode] = TService<ImplementationType>::CreateService<ImplementationType, ImplementationType>(ServiceLifetime::Singleton);
+        AddByImplementationType<ImplementationType>(ServiceLifetime::Singleton);
     }
 
     template <typename ServiceType, typename ImplementationType>
     void ServiceCollection::AddSingleton()
     {
-        IsInterface<ServiceType>();
-        Implements<ServiceType, ImplementationType>();
-        IsClass<ImplementationType>();
+        AddByServiceTypeAndImplementationType<ServiceType, ImplementationType>(ServiceLifetime::Singleton);
+    }
 
-        auto hashCode = typeid(ServiceType).hash_code();
-        m_Services[hashCode] = TService<ServiceType>::CreateService<ServiceType, ImplementationType>(ServiceLifetime::Singleton);
+    template <typename ServiceType>
+    void ServiceCollection::AddTransient(GetServiceCallback<ServiceType> &&callback)
+    {
+        AddByCallback<ServiceType>(std::move(callback), ServiceLifetime::Transient);
     }
 
     template <typename ImplementationType>
     void ServiceCollection::AddTransient()
     {
-        IsClass<ImplementationType>();
-
-        auto serviceConstructorFunc = createServiceFactory<ImplementationType, ImplementationType>();
-        auto hashCode = typeid(ImplementationType).hash_code();
-        m_Services[hashCode] = CreateRef<TService<ImplementationType>>(serviceConstructorFunc, ServiceLifetime::Transient);
+        AddByImplementationType<ImplementationType>(ServiceLifetime::Transient);
     }
 
     template <typename ServiceType, typename ImplementationType>
     void ServiceCollection::AddTransient()
     {
-        IsInterface<ServiceType>();
-        Implements<ServiceType, ImplementationType>();
-        IsClass<ImplementationType>();
+        AddByServiceTypeAndImplementationType<ServiceType, ImplementationType>(ServiceLifetime::Transient);
+    }
 
-        auto serviceConstructorFunc = createServiceFactory<ServiceType, ImplementationType>();
-        auto hashCode = typeid(ServiceType).hash_code();
-        m_Services[hashCode] = CreateRef<TService<ServiceType>>(serviceConstructorFunc, ServiceLifetime::Transient);
+    template <typename ServiceType>
+    void ServiceCollection::AddScoped(GetServiceCallback<ServiceType> &&callback)
+    {
+        AddByCallback<ServiceType>(std::move(callback), ServiceLifetime::Scoped);
+    }
+
+    template <typename ImplementationType>
+    void ServiceCollection::AddScoped()
+    {
+        AddByImplementationType<ImplementationType>(ServiceLifetime::Scoped);
+    }
+
+    template <typename ServiceType, typename ImplementationType>
+    void ServiceCollection::AddScoped()
+    {
+        AddByServiceTypeAndImplementationType<ServiceType, ImplementationType>(ServiceLifetime::Scoped);
     }
 }
