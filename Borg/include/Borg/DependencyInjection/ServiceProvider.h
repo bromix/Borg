@@ -7,6 +7,7 @@ namespace Borg::DependencyInjection
     {
     public:
         ServiceProvider(const ServiceMap &serviceMap);
+        ~ServiceProvider();
 
         template <typename ServiceType>
         Ref<ServiceType> GetService() const noexcept;
@@ -16,6 +17,16 @@ namespace Borg::DependencyInjection
     };
 
     ServiceProvider::ServiceProvider(const ServiceMap &serviceMap) : m_Services(serviceMap) {}
+
+    ServiceProvider::~ServiceProvider()
+    {
+        for (auto service : m_Services)
+        {
+            if (service.second->Lifetime() == ServiceLifetime::Singleton)
+            {
+            }
+        }
+    }
 
     template <typename ServiceType>
     Ref<ServiceType> ServiceProvider::GetService() const noexcept

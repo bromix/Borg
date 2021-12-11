@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include <mutex>
 #include "Borg/Types.h"
 
 namespace Borg::DependencyInjection
@@ -71,6 +72,13 @@ namespace Borg::DependencyInjection
               m_Lifetime(lifetime)
         {
         }
+        ~IService()
+        {
+            if (m_Lifetime == ServiceLifetime::Singleton)
+            {
+            }
+        }
+
         ServiceLifetime Lifetime() const;
 
     private:
@@ -108,6 +116,8 @@ namespace Borg::DependencyInjection
          * @brief The lifetime of this service.
          */
         ServiceLifetime m_Lifetime = ServiceLifetime::Singleton;
+
+        Ref<void> m_Service = nullptr;
     };
 
     /**
@@ -120,6 +130,10 @@ namespace Borg::DependencyInjection
     public:
         TService(GetServiceCallback<ServiceType> &&getServiceCallback, ServiceLifetime lifetime)
             : IService(std::move(getServiceCallback), lifetime)
+        {
+        }
+
+        ~TService()
         {
         }
 
@@ -194,8 +208,15 @@ namespace Borg::DependencyInjection
     {
         if (m_Lifetime == ServiceLifetime::Singleton)
         {
-            static Ref<ServiceType> instance = getService<ServiceType>(serviceProvider);
-            return instance;
+            // only lock the segment of the singleton.
+            static std::mutex singletonMutex;
+            {
+                std::lock_guard<std::mutex> lockSingleton(singletonMutex);
+                if (!m_Service)
+                    m_Service = getService<ServiceType>(serviceProvider);
+
+                return std::static_pointer_cast<ServiceType>(m_Service);
+            }
         }
 
         if (m_Lifetime == ServiceLifetime::Transient)
