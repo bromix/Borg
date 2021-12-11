@@ -63,23 +63,50 @@ namespace Borg::DependencyInjection
     class IService
     {
     public:
+        friend ServiceProvider;
+
         template <typename ServiceType>
-        IService(GetServiceCallback<ServiceType> &&serviceConstructorFunc, ServiceLifetime lifetime)
-            : m_GetServiceCallback(serviceConstructorFunc),
+        IService(GetServiceCallback<ServiceType> &&getServiceCallback, ServiceLifetime lifetime)
+            : m_GetServiceCallback(getServiceCallback),
               m_Lifetime(lifetime)
         {
         }
         ServiceLifetime Lifetime() const;
 
+    private:
+        /**
+         * @brief Used by the ServiceProvider to get the serivce.
+         *
+         * @tparam ServiceType
+         * @param serviceProvider
+         * @return Ref<ServiceType>
+         */
         template <typename ServiceType>
         Ref<ServiceType> Get(const ServiceProvider &serviceProvider);
 
-    private:
+        /**
+         * @brief Internal helper function to get the service.
+         *
+         * @tparam ServiceType
+         * @param serviceProvider
+         * @return Ref<ServiceType>
+         */
         template <typename ServiceType>
         Ref<ServiceType> getService(const ServiceProvider &serviceProvider);
 
+        /**
+         * @brief Internal callback to cast down to void*
+         */
         using IGetServiceCallback = Func<Ref<void>, const ServiceProvider &>;
+
+        /**
+         * @brief Specialized function/callback to get the service.
+         */
         IService::IGetServiceCallback m_GetServiceCallback;
+
+        /**
+         * @brief The lifetime of this service.
+         */
         ServiceLifetime m_Lifetime = ServiceLifetime::Singleton;
     };
 
