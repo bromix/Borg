@@ -1,14 +1,16 @@
 #pragma once
-#include "Borg/Types.h"
-#include "Service.h"
-#include "ServiceProvider.h"
 #include <typeindex>
 #include <map>
+#include "Service.h"
+#include "TService.h"
+#include "Borg/Types.h"
+
 
 // https://github.dev/aspnet/DependencyInjection/blob/master/src/DI/ServiceCollection.cs
 
 namespace Borg::DependencyInjection
 {
+    class ServiceProvider;
     class ServiceCollection
     {
     public:

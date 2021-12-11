@@ -1,5 +1,6 @@
 #pragma once
-#include "Borg/Types.h"
+#include "Service.h"
+#include "IService.h"
 
 namespace Borg::DependencyInjection
 {

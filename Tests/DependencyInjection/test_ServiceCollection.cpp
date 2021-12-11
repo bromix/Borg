@@ -1,3 +1,4 @@
+#include "Borg/DependencyInjection/ServiceProvider.h"
 #include "Borg/DependencyInjection/ServiceCollection.h"
 #include <gtest/gtest.h>
 
