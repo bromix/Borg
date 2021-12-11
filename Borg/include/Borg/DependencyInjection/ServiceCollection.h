@@ -19,6 +19,12 @@ namespace Borg::DependencyInjection
          */
         Ref<ServiceProvider> BuildServiceProvider();
 
+        /**
+         * @brief Adds a singleton service of the type specified in ServiceType with a callback to get an instance of the service.
+         * 
+         * @tparam ServiceType 
+         * @param callback 
+         */
         template <typename ServiceType>
         void AddSingleton(GetServiceCallback<ServiceType> &&callback);
 
@@ -43,6 +49,12 @@ namespace Borg::DependencyInjection
         template <typename ServiceType, typename ImplementationType>
         void AddSingleton();
 
+        /**
+         * @brief Adds a transient service of the type specified in ServiceType with a callback to get an instance of the service.
+         * 
+         * @tparam ServiceType 
+         * @param callback 
+         */
         template <typename ServiceType>
         void AddTransient(GetServiceCallback<ServiceType> &&callback);
 
@@ -67,6 +79,12 @@ namespace Borg::DependencyInjection
         template <typename ServiceType, typename ImplementationType>
         void AddTransient();
 
+        /**
+         * @brief Adds a scoped service of the type specified in ServiceType with a callback to get an instance of the service.
+         * 
+         * @tparam ServiceType 
+         * @param callback 
+         */
         template <typename ServiceType>
         void AddScoped(GetServiceCallback<ServiceType> &&callback);
 

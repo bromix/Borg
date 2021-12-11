@@ -128,11 +128,14 @@ namespace Borg::DependencyInjection
         {
             IsClass<ImplementationType>();
 
+            /**
+             * @brief Lambda to create a new instance of the service implemenation without the usage of the service provider.
+             */
             auto createService = [](const ServiceProvider &) -> Ref<ServiceType>
             {
                 return CreateRef<ImplementationType>();
             };
-            return CreateRef<TService<ImplementationType>>(createService, lifetime);
+            return CreateRef<TService<ImplementationType>>(std::move(createService), lifetime);
         }
 
         template <typename ServiceType, typename ImplementationType>
@@ -142,16 +145,22 @@ namespace Borg::DependencyInjection
             Implements<ServiceType, ImplementationType>();
             IsClass<ImplementationType>();
 
+            /**
+             * @brief Lambda to create a new instance of the service implemenation without the usage of the service provider.
+             */
             auto createService = [](const ServiceProvider &) -> Ref<ServiceType>
             {
                 return CreateRef<ImplementationType>();
             };
-            return CreateRef<TService<ServiceType>>(createService, lifetime);
+            return CreateRef<TService<ServiceType>>(std::move(createService), lifetime);
         }
 
         template <typename ServiceType>
         static Ref<IService> CreateService(GetServiceCallback<ServiceType> &&callback, ServiceLifetime lifetime)
         {
+            /**
+             * @brief Lambda to get a new instance of the service implemenation with the usage of the service provider.
+             */
             auto callServiceCallback = [callback](const ServiceProvider &serviceProvider) -> Ref<ServiceType>
             {
                 return callback(serviceProvider);
