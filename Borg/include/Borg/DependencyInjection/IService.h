@@ -21,9 +21,6 @@ namespace Borg::DependencyInjection
         }
         ~IService()
         {
-            if (m_Lifetime == ServiceLifetime::Singleton)
-            {
-            }
         }
 
         ServiceLifetime Lifetime() const;
