@@ -61,7 +61,7 @@ namespace Borg
          * @param kind
          * @return DateTime
          */
-        static DateTime FromUnixEpochSeconds(uint64 secondsSinceEpoch, DateTimeKindEnum kind = DateTimeKindEnum::Utc);
+        static DateTime FromUnixEpochSeconds(uint64_t secondsSinceEpoch, DateTimeKindEnum kind = DateTimeKindEnum::Utc);
 
         /**
          * @brief Converts the specified Unix Epoch time to an equivalent local or Coordinated Universal Time (UTC) time.
@@ -70,16 +70,16 @@ namespace Borg
          * @param kind
          * @return DateTime
          */
-        static DateTime FromUnixEpochMilliseconds(uint64 millisecondsSinceEpoch, DateTimeKindEnum kind = DateTimeKindEnum::Utc);
+        static DateTime FromUnixEpochMilliseconds(uint64_t millisecondsSinceEpoch, DateTimeKindEnum kind = DateTimeKindEnum::Utc);
 
         /**
          * @brief Returns the number of days in the specified month and year.
          *
          * @param year
          * @param month
-         * @return uint32
+         * @return uint32_t
          */
-        static uint32 DaysInMonth(uint32 year, uint32 month);
+        static uint32_t DaysInMonth(uint32_t year, uint32_t month);
 
         /**
          * @brief Returns an indication whether the specified year is a leap year.
@@ -88,7 +88,7 @@ namespace Borg
          * @return true
          * @return false
          */
-        static bool IsLeapYear(uint32 year);
+        static bool IsLeapYear(uint32_t year);
 
         /**
          * @brief Initializes a new instance of the DateTime structure to the specified year, month, day and Coordinated Universal Time (UTC) or local time.
@@ -98,7 +98,7 @@ namespace Borg
          * @param day
          * @param kind
          */
-        DateTime(uint32 year, uint32 month, uint32 day, DateTimeKindEnum kind = DateTimeKindEnum::Local);
+        DateTime(uint32_t year, uint32_t month, uint32_t day, DateTimeKindEnum kind = DateTimeKindEnum::Local);
 
         /**
          * @brief Initializes a new instance of the DateTime structure to the specified year, month, day, hour, minute, second and Coordinated Universal Time (UTC) or local time.
@@ -111,7 +111,7 @@ namespace Borg
          * @param second
          * @param kind
          */
-        DateTime(uint32 year, uint32 month, uint32 day, uint32 hour, uint32 minute, uint32 second, DateTimeKindEnum kind = DateTimeKindEnum::Local);
+        DateTime(uint32_t year, uint32_t month, uint32_t day, uint32_t hour, uint32_t minute, uint32_t second, DateTimeKindEnum kind = DateTimeKindEnum::Local);
 
         /**
          * @brief Initializes a new instance of the DateTime structure to the specified year, month, day, hour, minute, second, millisecond, and Coordinated Universal Time (UTC) or local time.
@@ -125,7 +125,7 @@ namespace Borg
          * @param millisecond
          * @param kind
          */
-        DateTime(uint32 year, uint32 month, uint32 day, uint32 hour, uint32 minute, uint32 second, uint32 millisecond, DateTimeKindEnum kind = DateTimeKindEnum::Local);
+        DateTime(uint32_t year, uint32_t month, uint32_t day, uint32_t hour, uint32_t minute, uint32_t second, uint32_t millisecond, DateTimeKindEnum kind = DateTimeKindEnum::Local);
 
         /**
          * @brief Converts the value of the current DateTime object to local time.
@@ -212,58 +212,58 @@ namespace Borg
         /**
          * @brief Gets the year component of the date represented by this instance.
          *
-         * @return int32
+         * @return int32_t
          */
-        uint32 Year() const;
+        uint32_t Year() const;
 
         /**
          * @brief Gets the month component of the date represented by this instance.
          *
-         * @return int32
+         * @return int32_t
          */
-        uint32 Month() const;
+        uint32_t Month() const;
 
         /**
          * @brief Gets the day of the month represented by this instance.
          *
-         * @return int32
+         * @return int32_t
          */
-        uint32 Day() const;
+        uint32_t Day() const;
 
         /**
          * @brief Gets the hour component of the date represented by this instance.
          *
-         * @return int32
+         * @return int32_t
          */
-        uint32 Hour() const;
+        uint32_t Hour() const;
 
         /**
          * @brief Gets the minute component of the date represented by this instance.
          *
-         * @return int32
+         * @return int32_t
          */
-        uint32 Minute() const;
+        uint32_t Minute() const;
 
         /**
          * @brief Gets the seconds component of the date represented by this instance.
          *
-         * @return int32
+         * @return int32_t
          */
-        uint32 Second() const;
+        uint32_t Second() const;
 
         /**
          * @brief Gets the milliseconds component of the date represented by this instance.
          *
-         * @return int32
+         * @return int32_t
          */
-        uint32 Millisecond() const;
+        uint32_t Millisecond() const;
 
         /**
          * @brief Gets the day of the year represented by this instance.
          *
-         * @return int32
+         * @return int32_t
          */
-        uint32 DayOfYear() const;
+        uint32_t DayOfYear() const;
 
         /**
          * @brief Gets the day of the week represented by this instance.
@@ -313,16 +313,16 @@ namespace Borg
 
     private:
         DateTime();
-        uint32 m_Year = 0;
-        uint32 m_Month = 0;
-        uint32 m_Day = 0;
-        uint32 m_Hour = 0;
-        uint32 m_Minute = 0;
-        uint32 m_Second = 0;
-        uint32 m_Millisecond;
-        uint32 m_DayOfYear = 0;
+        uint32_t m_Year = 0;
+        uint32_t m_Month = 0;
+        uint32_t m_Day = 0;
+        uint32_t m_Hour = 0;
+        uint32_t m_Minute = 0;
+        uint32_t m_Second = 0;
+        uint32_t m_Millisecond;
+        uint32_t m_DayOfYear = 0;
         DayOfWeekEnum m_DayOfWeek = DayOfWeekEnum::Sunday;
-        uint64 m_UnixEpochMilliseconds = 0;
+        uint64_t m_UnixEpochMilliseconds = 0;
         DateTimeKindEnum m_Kind = DateTimeKindEnum::Utc;
         bool m_IsDaylightSavingTime = false;
     };
@@ -377,7 +377,7 @@ namespace Borg
          * @param minutes
          * @param seconds
          */
-        TimeSpan(int32 hours, int32 minutes, int32 seconds);
+        TimeSpan(int32_t hours, int32_t minutes, int32_t seconds);
 
         /**
          * @brief Initializes a new instance of the TimeSpan structure to a specified number of days, hours, minutes, and seconds.
@@ -387,7 +387,7 @@ namespace Borg
          * @param minutes
          * @param seconds
          */
-        TimeSpan(int32 days, int32 hours, int32 minutes, int32 seconds);
+        TimeSpan(int32_t days, int32_t hours, int32_t minutes, int32_t seconds);
 
         /**
          * @brief Initializes a new instance of the TimeSpan structure to a specified number of days, hours, minutes, seconds, and milliseconds.
@@ -398,7 +398,7 @@ namespace Borg
          * @param seconds
          * @param milliseconds
          */
-        TimeSpan(int32 days, int32 hours, int32 minutes, int32 seconds, int32 milliseconds);
+        TimeSpan(int32_t days, int32_t hours, int32_t minutes, int32_t seconds, int32_t milliseconds);
 
         /**
          * @brief Returns a new TimeSpan object whose value is the sum of the specified TimeSpan object and this instance.
@@ -419,9 +419,9 @@ namespace Borg
         /**
          * @brief Gets the days component of the time interval represented by the current TimeSpan structure.
          *
-         * @return int32
+         * @return int32_t
          */
-        int32 Days() const;
+        int32_t Days() const;
 
         /**
          * @brief Gets the value of the current TimeSpan structure expressed in whole and fractional days.
@@ -433,9 +433,9 @@ namespace Borg
         /**
          * @brief Gets the hours component of the time interval represented by the current TimeSpan structure.
          *
-         * @return int32
+         * @return int32_t
          */
-        int32 Hours() const;
+        int32_t Hours() const;
 
         /**
          * @brief Gets the value of the current TimeSpan structure expressed in whole and fractional hours.
@@ -447,9 +447,9 @@ namespace Borg
         /**
          * @brief Gets the minutes component of the time interval represented by the current TimeSpan structure.
          *
-         * @return int32
+         * @return int32_t
          */
-        int32 Minutes() const;
+        int32_t Minutes() const;
 
         /**
          * @brief Gets the value of the current TimeSpan structure expressed in whole and fractional minutes.
@@ -461,9 +461,9 @@ namespace Borg
         /**
          * @brief Gets the seconds component of the time interval represented by the current TimeSpan structure.
          *
-         * @return int32
+         * @return int32_t
          */
-        int32 Seconds() const;
+        int32_t Seconds() const;
 
         /**
          * @brief Gets the value of the current TimeSpan structure expressed in whole and fractional seconds.
@@ -475,9 +475,9 @@ namespace Borg
         /**
          * @brief Gets the milliseconds component of the time interval represented by the current TimeSpan structure.
          *
-         * @return int32
+         * @return int32_t
          */
-        int32 Milliseconds() const;
+        int32_t Milliseconds() const;
 
         /**
          * @brief Gets the value of the current TimeSpan structure expressed in whole and fractional milliseconds.
@@ -503,19 +503,19 @@ namespace Borg
         TimeSpan operator-(const TimeSpan& timespan);
 
     private:
-        int32 m_Days;
+        int32_t m_Days;
         double m_TotalDays;
 
-        int32 m_Hours;
+        int32_t m_Hours;
         double m_TotalHours;
 
-        int32 m_Minutes;
+        int32_t m_Minutes;
         double m_TotalMinutes;
 
-        int32 m_Seconds;
+        int32_t m_Seconds;
         double m_TotalSeconds;
 
-        int32 m_Milliseconds;
+        int32_t m_Milliseconds;
         double m_TotalMilliseconds;
     };
 }

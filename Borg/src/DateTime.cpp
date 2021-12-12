@@ -31,15 +31,15 @@ namespace Borg
         return FromUnixEpochMilliseconds(millisecondsSinceEpoch, DateTimeKindEnum::Local);
     }
 
-    DateTime DateTime::FromUnixEpochSeconds(uint64 secondsSinceEpoch, DateTimeKindEnum kind)
+    DateTime DateTime::FromUnixEpochSeconds(uint64_t secondsSinceEpoch, DateTimeKindEnum kind)
     {
         return FromUnixEpochMilliseconds(secondsSinceEpoch * 1000, kind);
     }
 
-    DateTime DateTime::FromUnixEpochMilliseconds(uint64 millisecondsSinceEpoch, DateTimeKindEnum kind)
+    DateTime DateTime::FromUnixEpochMilliseconds(uint64_t millisecondsSinceEpoch, DateTimeKindEnum kind)
     {
-        uint32 milliseconds = millisecondsSinceEpoch % 1000;
-        int64 secondsSinceEpoch = millisecondsSinceEpoch / 1000;
+        uint32_t milliseconds = millisecondsSinceEpoch % 1000;
+        int64_t secondsSinceEpoch = millisecondsSinceEpoch / 1000;
 
         std::tm tm = {};
         if (kind == DateTimeKindEnum::Local)
@@ -64,7 +64,7 @@ namespace Borg
         return dt;
     }
 
-    uint32 DateTime::DaysInMonth(uint32 year, uint32 month)
+    uint32_t DateTime::DaysInMonth(uint32_t year, uint32_t month)
     {
         switch (month)
         {
@@ -89,22 +89,22 @@ namespace Borg
         throw std::exception("ArgumentOutOfRangeException");
     }
 
-    bool DateTime::IsLeapYear(uint32 year)
+    bool DateTime::IsLeapYear(uint32_t year)
     {
         return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
     }
 
-    DateTime::DateTime(uint32 year, uint32 month, uint32 day, DateTimeKindEnum kind)
+    DateTime::DateTime(uint32_t year, uint32_t month, uint32_t day, DateTimeKindEnum kind)
         : DateTime(year, month, day, 0, 0, 0, 0, kind)
     {
     }
 
-    DateTime::DateTime(uint32 year, uint32 month, uint32 day, uint32 hour, uint32 minute, uint32 second, DateTimeKindEnum kind)
+    DateTime::DateTime(uint32_t year, uint32_t month, uint32_t day, uint32_t hour, uint32_t minute, uint32_t second, DateTimeKindEnum kind)
         : DateTime(year, month, day, hour, minute, second, 0, kind)
     {
     }
 
-    DateTime::DateTime(uint32 year, uint32 month, uint32 day, uint32 hour, uint32 minute, uint32 second, uint32 millisecond, DateTimeKindEnum kind)
+    DateTime::DateTime(uint32_t year, uint32_t month, uint32_t day, uint32_t hour, uint32_t minute, uint32_t second, uint32_t millisecond, DateTimeKindEnum kind)
     {
         std::tm tm = {0};
         tm.tm_year = year - 1900;
@@ -192,42 +192,42 @@ namespace Borg
         return FromUnixEpochMilliseconds(m_UnixEpochMilliseconds + std::llround(milliseconds), m_Kind);
     }
 
-    uint32 DateTime::Year() const
+    uint32_t DateTime::Year() const
     {
         return m_Year;
     }
 
-    uint32 DateTime::Month() const
+    uint32_t DateTime::Month() const
     {
         return m_Month;
     }
 
-    uint32 DateTime::Day() const
+    uint32_t DateTime::Day() const
     {
         return m_Day;
     }
 
-    uint32 DateTime::Hour() const
+    uint32_t DateTime::Hour() const
     {
         return m_Hour;
     }
 
-    uint32 DateTime::Minute() const
+    uint32_t DateTime::Minute() const
     {
         return m_Minute;
     }
 
-    uint32 DateTime::Second() const
+    uint32_t DateTime::Second() const
     {
         return m_Second;
     }
 
-    uint32 DateTime::Millisecond() const
+    uint32_t DateTime::Millisecond() const
     {
         return m_Millisecond;
     }
 
-    uint32 DateTime::DayOfYear() const
+    uint32_t DateTime::DayOfYear() const
     {
         return m_DayOfYear;
     }
@@ -303,17 +303,17 @@ namespace Borg
         return TimeSpan(days, hours, minutes, seconds, ms);
     }
 
-    TimeSpan::TimeSpan(int32 hours, int32 minutes, int32 seconds)
+    TimeSpan::TimeSpan(int32_t hours, int32_t minutes, int32_t seconds)
         : TimeSpan(0, hours, minutes, seconds, 0)
     {
     }
 
-    TimeSpan::TimeSpan(int32 days, int32 hours, int32 minutes, int32 seconds)
+    TimeSpan::TimeSpan(int32_t days, int32_t hours, int32_t minutes, int32_t seconds)
         : TimeSpan(days, hours, minutes, seconds, 0)
     {
     }
 
-    TimeSpan::TimeSpan(int32 days, int32 hours, int32 minutes, int32 seconds, int32 milliseconds)
+    TimeSpan::TimeSpan(int32_t days, int32_t hours, int32_t minutes, int32_t seconds, int32_t milliseconds)
         : m_Days(days), m_Hours(hours), m_Minutes(minutes), m_Seconds(seconds), m_Milliseconds(milliseconds)
     {
         auto ms =
@@ -340,7 +340,7 @@ namespace Borg
         return FromMilliseconds(m_TotalMilliseconds - timespan.m_TotalMilliseconds);
     }
 
-    int32 TimeSpan::Days() const
+    int32_t TimeSpan::Days() const
     {
         return m_Days;
     }
@@ -350,7 +350,7 @@ namespace Borg
         return m_TotalDays;
     }
 
-    int32 TimeSpan::Hours() const
+    int32_t TimeSpan::Hours() const
     {
         return m_Hours;
     }
@@ -360,7 +360,7 @@ namespace Borg
         return m_TotalHours;
     }
 
-    int32 TimeSpan::Minutes() const
+    int32_t TimeSpan::Minutes() const
     {
         return m_Minutes;
     }
@@ -370,7 +370,7 @@ namespace Borg
         return m_TotalMinutes;
     }
 
-    int32 TimeSpan::Seconds() const
+    int32_t TimeSpan::Seconds() const
     {
         return m_Seconds;
     }
@@ -380,7 +380,7 @@ namespace Borg
         return m_TotalSeconds;
     }
 
-    int32 TimeSpan::Milliseconds() const
+    int32_t TimeSpan::Milliseconds() const
     {
         return m_Milliseconds;
     }
