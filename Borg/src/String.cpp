@@ -34,7 +34,8 @@ namespace Borg
     // Move constructor and assignment operator.
     String::String(String &&input)
     {
-        throw std::exception("Not implemented");
+        m_Impl = nullptr;
+        std::swap(m_Impl, input.m_Impl);
     }
 
     String String::operator=(String &&input)
