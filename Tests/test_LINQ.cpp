@@ -1,6 +1,7 @@
 #include "Borg/LINQ.h"
 #include <gtest/gtest.h>
 #include <vector>
+#include <algorithm>
 
 using namespace Borg;
 
@@ -39,19 +40,26 @@ TEST(LINQ, struct)
                       .ToVector();
 }
 
-template <typename Source, typename Target>
-std::vector<Target> Select(const std::vector<Source> &input, Func<Target, Source> func)
+template <typename Source, typename F, typename Return = std::invoke_result<F, Source>::type>
+auto Select(const std::vector<Source> &input, F func)
 {
-    std::vector<Target> result;
-    
+    std::vector<Return> result;
+
     for (Source x : input)
     {
-        Target t = func(std::move(x));
+        Return t = func(std::move(x));
         result.push_back(t);
     }
-        
 
     return result;
+}
+
+template <typename T, typename F, typename R = typename std::result_of<F(T)>::type>
+auto select(const std::vector<T> &c, F f)
+{
+    std::vector<R> v;
+    std::transform(std::begin(c), std::end(c), std::back_inserter(v), f);
+    return v;
 }
 
 TEST(LINQ, select)
@@ -59,6 +67,6 @@ TEST(LINQ, select)
     std::vector<Ref<Person>> persons = {
         CreateRef<Person>("Hans", 35),
         CreateRef<Person>("Peter", 24)};
-    auto result = Select<Ref<Person>, std::string>(persons, [](Ref<Person> x) -> std::string
-                                                   { return x->name; });
+    auto result = Select(
+        persons, [](Ref<Person> x) -> auto { return x->age; });
 }
