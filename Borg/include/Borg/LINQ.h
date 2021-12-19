@@ -9,8 +9,8 @@ namespace Borg
     class WhereEnumerator : public IEnumerator<TSource>
     {
     public:
-        WhereEnumerator(Ref<IEnumerator<TSource>> enumerator, Func<bool, TSource> whereFunc)
-            : m_WhereFunc(whereFunc), m_ParentEnumerator(enumerator)
+        WhereEnumerator(Ref<IEnumerator<TSource>> enumerator, Func<bool, TSource> predicate)
+            : m_Predicate(predicate), m_ParentEnumerator(enumerator)
         {
         }
 
@@ -23,7 +23,7 @@ namespace Borg
         {
             while (m_ParentEnumerator->MoveNext())
             {
-                if (m_WhereFunc(m_ParentEnumerator->Current()))
+                if (m_Predicate(m_ParentEnumerator->Current()))
                     return true;
             }
 
@@ -37,11 +37,11 @@ namespace Borg
 
     private:
         Ref<IEnumerator<TSource>> m_ParentEnumerator;
-        Func<bool, TSource> m_WhereFunc;
+        Func<bool, TSource> m_Predicate;
     };
 
-    template <typename TSource, typename TFunc, typename TReturn = std::invoke_result<TFunc, TSource>::type>
-    class SelectEnumerator : public IEnumerator<TReturn>
+    template <typename TSource, typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
+    class SelectEnumerator : public IEnumerator<TResult>
     {
     public:
         SelectEnumerator(Ref<IEnumerator<TSource>> enumerator, TFunc func)
@@ -49,7 +49,7 @@ namespace Borg
         {
         }
 
-        TReturn Current() const override
+        TResult Current() const override
         {
             return m_SelectFunc(m_ParentEnumerator->Current());
         }
@@ -80,9 +80,14 @@ namespace Borg
 
         ~LINQEnumerator() = default;
 
-        int Count()
+        /**
+         * @brief Returns the number of elements in a sequence.
+         *
+         * @return uint32_t
+         */
+        uint32_t Count()
         {
-            auto count = 0;
+            uint32_t count = 0;
 
             while (m_Enumerator->MoveNext())
                 ++count;
@@ -90,18 +95,52 @@ namespace Borg
             return count;
         }
 
-        LINQEnumerator<TSource> Where(Func<bool, TSource> filter)
+        /**
+         * @brief Returns an uint64 that represents the number of elements in a sequence.
+         *
+         * @return uint64_t
+         */
+        uint64_t LongCount()
         {
-            return LINQEnumerator<TSource>(CreateRef<WhereEnumerator<TSource>>(m_Enumerator, filter));
+            uint32_t count = 0;
+
+            while (m_Enumerator->MoveNext())
+                ++count;
+
+            return count;
         }
 
-        template <typename TFunc, typename TReturn = std::invoke_result<TFunc, TSource>::type>
-        LINQEnumerator<TReturn> Select(TFunc func)
+        /**
+         * @brief Filters a sequence of values based on a predicate.
+         *
+         * @param predicate
+         * @return LINQEnumerator<TSource>
+         */
+        LINQEnumerator<TSource> Where(Func<bool, TSource> predicate)
         {
-            return LINQEnumerator<TReturn>(CreateRef<SelectEnumerator<TSource, TFunc>>(m_Enumerator, func));
-            ;
+            return LINQEnumerator<TSource>(CreateRef<WhereEnumerator<TSource>>(m_Enumerator, predicate));
         }
 
+        /**
+         * @brief Projects each element of a sequence into a new form.
+         * 
+         * @tparam TFunc 
+         * @tparam TResult 
+         * @tparam TSource>::type 
+         * @param func 
+         * @return LINQEnumerator<TResult> 
+         */
+        template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
+        LINQEnumerator<TResult> Select(TFunc func)
+        {
+            return LINQEnumerator<TResult>(CreateRef<SelectEnumerator<TSource, TFunc>>(m_Enumerator, func));
+        }
+
+        /**
+         * @brief Creates a std::vector<TSource> from an IEnumerable<T>.
+         * 
+         * @return std::vector<TSource> 
+         */
         std::vector<TSource> ToVector() const
         {
             std::vector<TSource> result;
