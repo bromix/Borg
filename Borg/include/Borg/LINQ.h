@@ -76,12 +76,12 @@ namespace Borg
 
         /**
          * @brief Sorts the elements of a sequence in ascending order.
-         * 
-         * @tparam TFunc 
-         * @tparam TResult 
-         * @tparam TSource>::type 
-         * @param func 
-         * @return LINQEnumerator<TSource> 
+         *
+         * @tparam TFunc
+         * @tparam TResult
+         * @tparam TSource>::type
+         * @param func
+         * @return LINQEnumerator<TSource>
          */
         template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
         LINQEnumerator<TSource> OrderBy(TFunc func)
@@ -93,8 +93,17 @@ namespace Borg
             return LINQEnumerator<TSource>(CreateRef<VectorEnumerator<TSource>>(orderedVector));
         }
 
+        /**
+         * @brief Sorts the elements of a sequence in descending order.
+         *
+         * @tparam TFunc
+         * @tparam TResult
+         * @tparam TSource>::type
+         * @param func
+         * @return LINQEnumerator<TSource>
+         */
         template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
-        LINQEnumerator<TSource> OrderByDescending (TFunc func)
+        LINQEnumerator<TSource> OrderByDescending(TFunc func)
         {
             auto orderedVector = ToVector();
             std::sort(orderedVector.begin(), orderedVector.end(), [func](TSource a, TSource b)
