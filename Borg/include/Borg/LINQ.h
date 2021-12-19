@@ -5,25 +5,25 @@
 
 namespace Borg
 {
-    template <typename T>
-    class LambaEnumerator : public IEnumerator<T>
+    template <typename TSource>
+    class WhereEnumerator : public IEnumerator<TSource>
     {
     public:
-        LambaEnumerator(Ref<IEnumerator<T>> enumerator, Func<bool, T> func)
-            : m_Func(func), m_Enumerator(enumerator)
+        WhereEnumerator(Ref<IEnumerator<TSource>> enumerator, Func<bool, TSource> whereFunc)
+            : m_WhereFunc(whereFunc), m_ParentEnumerator(enumerator)
         {
         }
 
-        T Current() const override
+        TSource Current() const override
         {
-            return m_Enumerator->Current();
+            return m_ParentEnumerator->Current();
         }
 
         bool MoveNext() override
         {
-            while (m_Enumerator->MoveNext())
+            while (m_ParentEnumerator->MoveNext())
             {
-                if (m_Func(m_Enumerator->Current()))
+                if (m_WhereFunc(m_ParentEnumerator->Current()))
                     return true;
             }
 
@@ -32,19 +32,19 @@ namespace Borg
 
         void Reset()
         {
-            m_Enumerator->Reset();
+            m_ParentEnumerator->Reset();
         }
 
     private:
-        Ref<IEnumerator<T>> m_Enumerator;
-        Func<bool, T> m_Func;
+        Ref<IEnumerator<TSource>> m_ParentEnumerator;
+        Func<bool, TSource> m_WhereFunc;
     };
 
-    template <typename T>
+    template <typename TSource>
     class LINQEnumerator
     {
     public:
-        LINQEnumerator(const Ref<IEnumerator<T>> &enumerator)
+        LINQEnumerator(const Ref<IEnumerator<TSource>> &enumerator)
             : m_Enumerator(enumerator)
         {
         }
@@ -61,28 +61,28 @@ namespace Borg
             return count;
         }
 
-        LINQEnumerator<T> Where(Func<bool, T> filter)
+        LINQEnumerator<TSource> Where(Func<bool, TSource> filter)
         {
-            return LINQEnumerator<T>(CreateRef<LambaEnumerator<T>>(m_Enumerator, filter));
+            return LINQEnumerator<TSource>(CreateRef<WhereEnumerator<TSource>>(m_Enumerator, filter));
         }
 
-        template <typename F, typename Return = std::invoke_result<F, T>::type>
-        std::vector<Return> Select(F func)
+        template <typename TFunc, typename TReturn = std::invoke_result<TFunc, TSource>::type>
+        std::vector<TReturn> Select(TFunc func)
         {
-            std::vector<Return> result;
+            std::vector<TReturn> result;
 
             while (m_Enumerator->MoveNext())
             {
-                Return t = func(m_Enumerator->Current());
+                TReturn t = func(m_Enumerator->Current());
                 result.push_back(t);
             }
 
             return result;
         }
 
-        std::vector<T> ToVector() const
+        std::vector<TSource> ToVector() const
         {
-            std::vector<T> result;
+            std::vector<TSource> result;
 
             while (m_Enumerator->MoveNext())
                 result.push_back(m_Enumerator->Current());
@@ -91,7 +91,7 @@ namespace Borg
         }
 
     private:
-        Ref<IEnumerator<T>> m_Enumerator;
+        Ref<IEnumerator<TSource>> m_Enumerator;
     };
 
     class LINQ
