@@ -61,12 +61,12 @@ namespace Borg
 
         /**
          * @brief Projects each element of a sequence into a new form.
-         * 
-         * @tparam TFunc 
-         * @tparam TResult 
-         * @tparam TSource>::type 
-         * @param func 
-         * @return LINQEnumerator<TResult> 
+         *
+         * @tparam TFunc
+         * @tparam TResult
+         * @tparam TSource>::type
+         * @param func
+         * @return LINQEnumerator<TResult>
          */
         template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
         LINQEnumerator<TResult> Select(TFunc func)
@@ -75,9 +75,28 @@ namespace Borg
         }
 
         /**
-         * @brief Creates a std::vector<TSource> from an IEnumerable<T>.
+         * @brief Sorts the elements of a sequence in ascending order.
          * 
-         * @return std::vector<TSource> 
+         * @tparam TFunc 
+         * @tparam TResult 
+         * @tparam TSource>::type 
+         * @param func 
+         * @return LINQEnumerator<TSource> 
+         */
+        template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
+        LINQEnumerator<TSource> OrderBy(TFunc func)
+        {
+            auto orderedVector = ToVector();
+            std::sort(orderedVector.begin(), orderedVector.end(), [func](TSource a, TSource b)
+                      { return func(a) < func(b); });
+
+            return LINQEnumerator<TSource>(CreateRef<VectorEnumerator<TSource>>(orderedVector));
+        }
+
+        /**
+         * @brief Creates a std::vector<TSource> from an IEnumerable<T>.
+         *
+         * @return std::vector<TSource>
          */
         std::vector<TSource> ToVector() const
         {

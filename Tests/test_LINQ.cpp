@@ -47,6 +47,18 @@ TEST(LINQ, struct)
                       .ToVector();
 }
 
+TEST(LINQ, OrderBy)
+{
+    std::vector<Ref<Person>> persons = {
+        CreateRef<Person>("Hans", 35),
+        CreateRef<Person>("Detlef", 35),
+        CreateRef<Person>("Adam", 24)};
+    auto result = LINQ::From(persons)
+                      .OrderBy([](Ref<Person> x)
+                               { return x->name; })
+                      .ToVector();
+}
+
 TEST(LINQ, select)
 {
     std::vector<Ref<Person>> persons = {
