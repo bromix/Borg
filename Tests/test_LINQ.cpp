@@ -18,7 +18,14 @@ public:
     int age = 0;
 };
 
-TEST(LINQ, test)
+TEST(LINQ, Count)
+{
+    std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    auto result = LINQ::From(numbers).Count();
+    ASSERT_EQ(10, result);
+}
+
+TEST(LINQ, Where)
 {
     std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     auto result = LINQ::From(numbers)

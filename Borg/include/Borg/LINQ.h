@@ -51,6 +51,16 @@ namespace Borg
 
         ~LINQEnumerator() = default;
 
+        int Count()
+        {
+            auto count = 0;
+
+            while (m_Enumerator->MoveNext())
+                ++count;
+
+            return count;
+        }
+
         LINQEnumerator<T> Where(Func<bool, T> filter)
         {
             return LINQEnumerator<T>(CreateRef<LambaEnumerator<T>>(m_Enumerator, filter));
@@ -61,7 +71,7 @@ namespace Borg
         {
             std::vector<Return> result;
 
-            while(m_Enumerator->MoveNext())
+            while (m_Enumerator->MoveNext())
             {
                 Return t = func(m_Enumerator->Current());
                 result.push_back(t);
