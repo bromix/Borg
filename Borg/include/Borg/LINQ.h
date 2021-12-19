@@ -56,6 +56,20 @@ namespace Borg
             return LINQEnumerator<T>(CreateRef<LambaEnumerator<T>>(m_Enumerator, filter));
         }
 
+        template <typename F, typename Return = std::invoke_result<F, T>::type>
+        std::vector<Return> Select(F func)
+        {
+            std::vector<Return> result;
+
+            while(m_Enumerator->MoveNext())
+            {
+                Return t = func(m_Enumerator->Current());
+                result.push_back(t);
+            }
+
+            return result;
+        }
+
         std::vector<T> ToVector() const
         {
             std::vector<T> result;
