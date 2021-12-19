@@ -48,3 +48,15 @@ TEST(LINQ, select)
 
     auto result = LINQ::From(persons).Select([](Ref<Person> x) -> auto { return x->age; });
 }
+
+TEST(LINQ, WhereAndSelect)
+{
+    std::vector<Ref<Person>> persons = {
+        CreateRef<Person>("Hans", 35),
+        CreateRef<Person>("Peter", 24)};
+
+    auto result = LINQ::From(persons)
+                      .Where([](Ref<Person> x) -> bool
+                             { return x->name == "Hans"; })
+                      .Select([](Ref<Person> x) -> auto { return x->age; });
+}
