@@ -53,7 +53,9 @@ TEST(LINQ, select)
         CreateRef<Person>("Hans", 35),
         CreateRef<Person>("Peter", 24)};
 
-    auto result = LINQ::From(persons).Select([](Ref<Person> x) -> auto { return x->age; });
+    auto result = LINQ::From(persons)
+                      .Select([](Ref<Person> x) -> auto { return x->age; })
+                      .ToVector();
 }
 
 TEST(LINQ, WhereAndSelect)
@@ -65,5 +67,6 @@ TEST(LINQ, WhereAndSelect)
     auto result = LINQ::From(persons)
                       .Where([](Ref<Person> x) -> bool
                              { return x->name == "Hans"; })
-                      .Select([](Ref<Person> x) -> auto { return x->age; });
+                      .Select([](Ref<Person> x) -> auto { return x->age; })
+                      .ToVector();
 }

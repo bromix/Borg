@@ -40,6 +40,35 @@ namespace Borg
         Func<bool, TSource> m_WhereFunc;
     };
 
+    template <typename TSource, typename TFunc, typename TReturn = std::invoke_result<TFunc, TSource>::type>
+    class SelectEnumerator : public IEnumerator<TReturn>
+    {
+    public:
+        SelectEnumerator(Ref<IEnumerator<TSource>> enumerator, TFunc func)
+            : m_SelectFunc(func), m_ParentEnumerator(enumerator)
+        {
+        }
+
+        TReturn Current() const override
+        {
+            return m_SelectFunc(m_ParentEnumerator->Current());
+        }
+
+        bool MoveNext() override
+        {
+            return m_ParentEnumerator->MoveNext();
+        }
+
+        void Reset()
+        {
+            m_ParentEnumerator->Reset();
+        }
+
+    private:
+        Ref<IEnumerator<TSource>> m_ParentEnumerator;
+        TFunc m_SelectFunc;
+    };
+
     template <typename TSource>
     class LINQEnumerator
     {
@@ -67,17 +96,10 @@ namespace Borg
         }
 
         template <typename TFunc, typename TReturn = std::invoke_result<TFunc, TSource>::type>
-        std::vector<TReturn> Select(TFunc func)
+        LINQEnumerator<TReturn> Select(TFunc func)
         {
-            std::vector<TReturn> result;
-
-            while (m_Enumerator->MoveNext())
-            {
-                TReturn t = func(m_Enumerator->Current());
-                result.push_back(t);
-            }
-
-            return result;
+            return LINQEnumerator<TReturn>(CreateRef<SelectEnumerator<TSource, TFunc>>(m_Enumerator, func));
+            ;
         }
 
         std::vector<TSource> ToVector() const
