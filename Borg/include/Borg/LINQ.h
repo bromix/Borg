@@ -93,6 +93,16 @@ namespace Borg
             return LINQEnumerator<TSource>(CreateRef<VectorEnumerator<TSource>>(orderedVector));
         }
 
+        template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
+        LINQEnumerator<TSource> OrderByDescending (TFunc func)
+        {
+            auto orderedVector = ToVector();
+            std::sort(orderedVector.begin(), orderedVector.end(), [func](TSource a, TSource b)
+                      { return func(a) > func(b); });
+
+            return LINQEnumerator<TSource>(CreateRef<VectorEnumerator<TSource>>(orderedVector));
+        }
+
         /**
          * @brief Creates a std::vector<TSource> from an IEnumerable<T>.
          *

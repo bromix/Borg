@@ -59,6 +59,18 @@ TEST(LINQ, OrderBy)
                       .ToVector();
 }
 
+TEST(LINQ, OrderByDescending)
+{
+    std::vector<Ref<Person>> persons = {
+        CreateRef<Person>("Hans", 35),
+        CreateRef<Person>("Detlef", 35),
+        CreateRef<Person>("Adam", 24)};
+    auto result = LINQ::From(persons)
+                      .OrderByDescending([](Ref<Person> x)
+                               { return x->name; })
+                      .ToVector();
+}
+
 TEST(LINQ, select)
 {
     std::vector<Ref<Person>> persons = {
