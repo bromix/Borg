@@ -19,7 +19,8 @@ namespace Borg
 
         bool MoveNext() override
         {
-            if (++m_Index < m_Vector.size())
+            ++m_Index;
+            if (m_Index < m_Vector.size())
                 return true;
             return false;
         }

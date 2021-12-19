@@ -1,6 +1,6 @@
 #pragma once
 #include "Types.h"
-#include "VectorEnumerator.h"
+#include "StdEnumerators.h"
 #include "IEnumerator.h"
 
 namespace Borg
@@ -60,7 +60,7 @@ namespace Borg
         {
             std::vector<T> result;
 
-            while(m_Enumerator->MoveNext())
+            while (m_Enumerator->MoveNext())
                 result.push_back(m_Enumerator->Current());
 
             return result;
