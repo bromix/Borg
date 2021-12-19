@@ -2,73 +2,11 @@
 #include "Types.h"
 #include "StdEnumerators.h"
 #include "IEnumerator.h"
+#include "LINQ/WhereEnumerator.h"
+#include "LINQ/SelectEnumerator.h"
 
 namespace Borg
 {
-    template <typename TSource>
-    class WhereEnumerator : public IEnumerator<TSource>
-    {
-    public:
-        WhereEnumerator(Ref<IEnumerator<TSource>> enumerator, Func<bool, TSource> predicate)
-            : m_Predicate(predicate), m_ParentEnumerator(enumerator)
-        {
-        }
-
-        TSource Current() const override
-        {
-            return m_ParentEnumerator->Current();
-        }
-
-        bool MoveNext() override
-        {
-            while (m_ParentEnumerator->MoveNext())
-            {
-                if (m_Predicate(m_ParentEnumerator->Current()))
-                    return true;
-            }
-
-            return false;
-        }
-
-        void Reset()
-        {
-            m_ParentEnumerator->Reset();
-        }
-
-    private:
-        Ref<IEnumerator<TSource>> m_ParentEnumerator;
-        Func<bool, TSource> m_Predicate;
-    };
-
-    template <typename TSource, typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
-    class SelectEnumerator : public IEnumerator<TResult>
-    {
-    public:
-        SelectEnumerator(Ref<IEnumerator<TSource>> enumerator, TFunc func)
-            : m_SelectFunc(func), m_ParentEnumerator(enumerator)
-        {
-        }
-
-        TResult Current() const override
-        {
-            return m_SelectFunc(m_ParentEnumerator->Current());
-        }
-
-        bool MoveNext() override
-        {
-            return m_ParentEnumerator->MoveNext();
-        }
-
-        void Reset()
-        {
-            m_ParentEnumerator->Reset();
-        }
-
-    private:
-        Ref<IEnumerator<TSource>> m_ParentEnumerator;
-        TFunc m_SelectFunc;
-    };
-
     template <typename TSource>
     class LINQEnumerator
     {
