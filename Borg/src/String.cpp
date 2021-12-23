@@ -16,19 +16,18 @@ namespace Borg
     {
     }
 
-    // Copy constructor and assignment operator.
-    String::String(const String &input)
+    String::String(const String &input) : m_Impl(input.m_Impl->CreateCopy())
     {
-        throw std::exception("Not implemented");
     }
 
-    String::String(Ref<IString> &&input) : m_Impl(input)
+    String::String(Ref<IString> &&input) : m_Impl(std::move(input))
     {
     }
 
     String String::operator=(const String &input)
     {
-        throw std::exception("Not implemented");
+        m_Impl = input.m_Impl->CreateCopy();
+        return *this;
     }
 
     // Move constructor and assignment operator.
@@ -40,15 +39,17 @@ namespace Borg
 
     String String::operator=(String &&input)
     {
-        throw std::exception("Not implemented");
+        m_Impl = nullptr;
+        std::swap(m_Impl, input.m_Impl);
+        return *this;
     }
 
-    bool String::operator==(const char* rhs) const noexcept
+    bool String::operator==(const char *rhs) const noexcept
     {
         return *this == String(rhs);
     }
-    
-    bool String::operator==(const wchar_t* rhs) const noexcept
+
+    bool String::operator==(const wchar_t *rhs) const noexcept
     {
         return *this == String(rhs);
     }
@@ -95,12 +96,12 @@ namespace Borg
         return IsNull() || IsEmpty();
     }
 
-    bool operator==(const char* lhs, const String &rhs)
+    bool operator==(const char *lhs, const String &rhs)
     {
         return String(lhs) == rhs;
     }
 
-    bool operator==(const wchar_t* lhs, const String &rhs)
+    bool operator==(const wchar_t *lhs, const String &rhs)
     {
         return String(lhs) == rhs;
     }

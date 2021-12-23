@@ -73,6 +73,11 @@ namespace Borg
         cleanup();
     }
 
+    Ref<String::IString> Utf16String::CreateCopy() const
+    {
+        return CreateRef<Utf16String>(m_Data);
+    }
+
     Ref<String::IString> Utf16String::ToLower() const
     {
         Ref<Utf16String> copy = CreateRef<Utf16String>(m_Data);
