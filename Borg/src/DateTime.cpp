@@ -19,41 +19,6 @@ namespace Borg
         MonthArgumentOutOfRangeException(const String &paramName) : ArgumentOutOfRangeException(paramName, "month is less than 1 or greater than 12.") {}
     };
 
-    class DayArgumentOutOfRangeException : public ArgumentOutOfRangeException
-    {
-    public:
-        DayArgumentOutOfRangeException() : DayArgumentOutOfRangeException("day") {}
-        DayArgumentOutOfRangeException(const String &paramName) : ArgumentOutOfRangeException(paramName, "day is less than 1 or greater than the number of days in month.") {}
-    };
-
-    class HourArgumentOutOfRangeException : public ArgumentOutOfRangeException
-    {
-    public:
-        HourArgumentOutOfRangeException() : HourArgumentOutOfRangeException("hour") {}
-        HourArgumentOutOfRangeException(const String &paramName) : ArgumentOutOfRangeException(paramName, "hour is less than 0 or greater than 23.") {}
-    };
-
-    class MinuteArgumentOutOfRangeException : public ArgumentOutOfRangeException
-    {
-    public:
-        MinuteArgumentOutOfRangeException() : MinuteArgumentOutOfRangeException("minute") {}
-        MinuteArgumentOutOfRangeException(const String &paramName) : ArgumentOutOfRangeException(paramName, "minute is less than 0 or greater than 59.") {}
-    };
-
-    class SecondArgumentOutOfRangeException : public ArgumentOutOfRangeException
-    {
-    public:
-        SecondArgumentOutOfRangeException() : SecondArgumentOutOfRangeException("second") {}
-        SecondArgumentOutOfRangeException(const String &paramName) : ArgumentOutOfRangeException(paramName, "second is less than 0 or greater than 59.") {}
-    };
-
-    class MillisecondArgumentOutOfRangeException : public ArgumentOutOfRangeException
-    {
-    public:
-        MillisecondArgumentOutOfRangeException() : MillisecondArgumentOutOfRangeException("millisecond") {}
-        MillisecondArgumentOutOfRangeException(const String &paramName) : ArgumentOutOfRangeException(paramName, "millisecond is less than 0 or greater than 999.") {}
-    };
-
     // ================
     // === DateTime ===
     // ================
@@ -170,19 +135,19 @@ namespace Borg
             throw MonthArgumentOutOfRangeException();
 
         if (day < 1 || day > DaysInMonth(year, month))
-            throw DayArgumentOutOfRangeException();
+            throw ArgumentOutOfRangeException("day", "day is less than 1 or greater than the number of days in month.");
 
         if (hour < 0 || hour > 23)
-            throw HourArgumentOutOfRangeException();
+            throw ArgumentOutOfRangeException("hour", "hour is less than 0 or greater than 23.");
 
         if (minute < 0 || minute > 59)
-            throw MinuteArgumentOutOfRangeException();
+            throw ArgumentOutOfRangeException("minute", "minute is less than 0 or greater than 59.");
 
         if (second < 0 || second > 59)
-            throw SecondArgumentOutOfRangeException();
+            throw ArgumentOutOfRangeException("second", "second is less than 0 or greater than 59.");
 
         if (millisecond < 0 || millisecond > 999)
-            throw MillisecondArgumentOutOfRangeException();
+            throw ArgumentOutOfRangeException("millisecond", "millisecond is less than 0 or greater than 999.");
 
         std::tm tm = {0};
         tm.tm_year = year - 1900;
