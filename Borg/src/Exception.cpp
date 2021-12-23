@@ -2,6 +2,8 @@
 
 namespace Borg
 {
+    Exception::Exception() {}
+
     Exception::Exception(const String &message)
         : m_Message(message)
     {
@@ -11,6 +13,10 @@ namespace Borg
     {
         return m_Message;
     }
+
+    NotImplementedException::NotImplementedException() : Exception() {}
+
+    NotImplementedException::NotImplementedException(const String &message) : Exception(message) {}
 
     ArgumentException::ArgumentException(const String &message)
         : Exception(message)

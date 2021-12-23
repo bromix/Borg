@@ -8,6 +8,11 @@ namespace Borg
     {
     public:
         /**
+         * @brief Initializes a new instance of the Exception class.
+         */
+        Exception();
+
+        /**
          * @brief Initializes a new instance of the Exception class with a specified error message.
          *
          * @param message
@@ -23,6 +28,22 @@ namespace Borg
 
     private:
         String m_Message;
+    };
+
+    class NotImplementedException : public Exception
+    {
+    public:
+        /**
+         * @brief Initializes a new instance of the NotImplementedException class with default properties.
+         */
+        NotImplementedException();
+
+        /**
+         * @brief Initializes a new instance of the NotImplementedException class with a specified error message.
+         *
+         * @param message
+         */
+        NotImplementedException(const String &message);
     };
 
     class ArgumentException : public Exception
