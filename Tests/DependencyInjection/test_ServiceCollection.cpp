@@ -182,7 +182,7 @@ TEST(ServiceCollection, AddScopedByInterface)
 TEST(ServiceCollection, AddScopedInterfaceByCallback)
 {
     ServiceCollection sc{};
-    sc.AddScoped<IProduct>([](const ServiceProvider &sp) -> Borg::Ref<IProduct>
+    sc.AddScoped<IProduct>([](const ServiceProvider &sp)
                               { return Borg::CreateRef<Product>("File Explorer", "1.0.0"); });
     auto serviceProvider = sc.BuildServiceProvider();
     auto product = serviceProvider->GetService<IProduct>();
