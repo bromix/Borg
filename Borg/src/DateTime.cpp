@@ -1,10 +1,59 @@
 #include "Borg/DateTime.h"
+#include "Borg/Exception.h"
 #include <chrono>
 #include <cmath>
-#include <exception>
 
 namespace Borg
 {
+    class YearArgumentOutOfRangeException : public ArgumentOutOfRangeException
+    {
+    public:
+        YearArgumentOutOfRangeException() : YearArgumentOutOfRangeException("year") {}
+        YearArgumentOutOfRangeException(const String &paramName) : ArgumentOutOfRangeException(paramName, "year is less than 1 or greater than 9999.") {}
+    };
+
+    class MonthArgumentOutOfRangeException : public ArgumentOutOfRangeException
+    {
+    public:
+        MonthArgumentOutOfRangeException() : MonthArgumentOutOfRangeException("month") {}
+        MonthArgumentOutOfRangeException(const String &paramName) : ArgumentOutOfRangeException(paramName, "month is less than 1 or greater than 12.") {}
+    };
+
+    class DayArgumentOutOfRangeException : public ArgumentOutOfRangeException
+    {
+    public:
+        DayArgumentOutOfRangeException() : DayArgumentOutOfRangeException("day") {}
+        DayArgumentOutOfRangeException(const String &paramName) : ArgumentOutOfRangeException(paramName, "day is less than 1 or greater than the number of days in month.") {}
+    };
+
+    class HourArgumentOutOfRangeException : public ArgumentOutOfRangeException
+    {
+    public:
+        HourArgumentOutOfRangeException() : HourArgumentOutOfRangeException("hour") {}
+        HourArgumentOutOfRangeException(const String &paramName) : ArgumentOutOfRangeException(paramName, "hour is less than 0 or greater than 23.") {}
+    };
+
+    class MinuteArgumentOutOfRangeException : public ArgumentOutOfRangeException
+    {
+    public:
+        MinuteArgumentOutOfRangeException() : MinuteArgumentOutOfRangeException("minute") {}
+        MinuteArgumentOutOfRangeException(const String &paramName) : ArgumentOutOfRangeException(paramName, "minute is less than 0 or greater than 59.") {}
+    };
+
+    class SecondArgumentOutOfRangeException : public ArgumentOutOfRangeException
+    {
+    public:
+        SecondArgumentOutOfRangeException() : SecondArgumentOutOfRangeException("second") {}
+        SecondArgumentOutOfRangeException(const String &paramName) : ArgumentOutOfRangeException(paramName, "second is less than 0 or greater than 59.") {}
+    };
+
+    class MillisecondArgumentOutOfRangeException : public ArgumentOutOfRangeException
+    {
+    public:
+        MillisecondArgumentOutOfRangeException() : MillisecondArgumentOutOfRangeException("millisecond") {}
+        MillisecondArgumentOutOfRangeException(const String &paramName) : ArgumentOutOfRangeException(paramName, "millisecond is less than 0 or greater than 999.") {}
+    };
+
     // ================
     // === DateTime ===
     // ================
@@ -38,6 +87,9 @@ namespace Borg
 
     DateTime DateTime::FromUnixEpochMilliseconds(uint64_t millisecondsSinceEpoch, DateTimeKindEnum kind)
     {
+        if (millisecondsSinceEpoch < 0)
+            throw ArgumentOutOfRangeException("millisecondsSinceEpoch", "value is less than 0 or represents a time greater than MaxValue.");
+
         uint32_t milliseconds = millisecondsSinceEpoch % 1000;
         int64_t secondsSinceEpoch = millisecondsSinceEpoch / 1000;
 
@@ -66,6 +118,9 @@ namespace Borg
 
     uint32_t DateTime::DaysInMonth(uint32_t year, uint32_t month)
     {
+        if (year < 1 || year > 9999)
+            throw YearArgumentOutOfRangeException();
+
         switch (month)
         {
         case 1:  // January
@@ -85,12 +140,14 @@ namespace Borg
             return 30;
         }
 
-        // TODO: ArgumentOutOfRangeException
-        throw std::exception("ArgumentOutOfRangeException");
+        throw MonthArgumentOutOfRangeException();
     }
 
     bool DateTime::IsLeapYear(uint32_t year)
     {
+        if (year < 1 || year > 9999)
+            throw YearArgumentOutOfRangeException();
+
         return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
     }
 
@@ -106,6 +163,27 @@ namespace Borg
 
     DateTime::DateTime(uint32_t year, uint32_t month, uint32_t day, uint32_t hour, uint32_t minute, uint32_t second, uint32_t millisecond, DateTimeKindEnum kind)
     {
+        if (year < 1 || year > 9999)
+            throw YearArgumentOutOfRangeException();
+
+        if (month < 1 || month > 12)
+            throw MonthArgumentOutOfRangeException();
+
+        if (day < 1 || day > DaysInMonth(year, month))
+            throw DayArgumentOutOfRangeException();
+
+        if (hour < 0 || hour > 23)
+            throw HourArgumentOutOfRangeException();
+
+        if (minute < 0 || minute > 59)
+            throw MinuteArgumentOutOfRangeException();
+
+        if (second < 0 || second > 59)
+            throw SecondArgumentOutOfRangeException();
+
+        if (millisecond < 0 || millisecond > 999)
+            throw MillisecondArgumentOutOfRangeException();
+
         std::tm tm = {0};
         tm.tm_year = year - 1900;
         tm.tm_mon = month - 1;
