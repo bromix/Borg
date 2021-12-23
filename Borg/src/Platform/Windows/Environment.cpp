@@ -23,10 +23,11 @@ namespace Borg
             nullptr,
             &buffer);
 
+        if (hr == E_INVALIDARG)
+            throw ArgumentException("folder is not a member if KNOWNFOLDERID", "folder");
+
         if (FAILED(hr))
-        {
-            // TODO: provide Exception class for failed HRs and throw.
-        }
+            throw Exception("SHGetKnownFolderPath failed");
 
         // Create copy of the buffer.
         String result(buffer);
