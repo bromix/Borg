@@ -22,7 +22,6 @@ namespace Borg
     template <typename TTarget, typename TSource>
     constexpr Ref<TTarget> RefCast(Ref<TSource> value)
     {
-        auto rest = std::is_void<TSource>::value;
         Ref<TTarget> target = RefAs<TTarget>(value);
         if (!target)
             throw InvalidCastException("Failed to cast TSource to TTarget");

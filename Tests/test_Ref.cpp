@@ -41,6 +41,19 @@ TEST(Ref, RefAsIsNull)
     ASSERT_EQ(nullptr, circle);
 }
 
+TEST(Ref, RefIs)
+{
+    Ref<IAnimal> animal = CreateRef<Shark>();
+    if (auto shark = RefAs<Shark>(animal))
+    {
+        auto x = 0;
+    }
+    // RefIs<Shark>(animal, [](Ref<Shark> shark)
+    //                  { auto x = 0; });
+    // Ref<Shark> shark = RefAs<Shark>(animal);
+    //ASSERT_NE(nullptr, shark);
+}
+
 TEST(Ref, RefCastThrow)
 {
     auto call = []
