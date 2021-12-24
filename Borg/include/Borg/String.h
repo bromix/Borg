@@ -11,6 +11,8 @@ namespace Borg
         String(std::nullptr_t);
         String(const char *input);
         String(const wchar_t *input);
+        String(const std::string& input);
+        String(const std::wstring& input);
 
         // Copy constructor and assignment operator.
         String(const String &input);
@@ -20,9 +22,11 @@ namespace Borg
         String(String &&input);
         String operator=(String &&input);
 
-        bool operator==(const char* rhs) const noexcept;
-        bool operator==(const wchar_t* rhs) const noexcept;
         bool operator==(const String &rhs) const noexcept;
+        bool operator==(const char *rhs) const noexcept;
+        bool operator==(const wchar_t *rhs) const noexcept;
+        bool operator==(const std::string &rhs) const noexcept;
+        bool operator==(const std::wstring &rhs) const noexcept;
 
         /**
          * @brief Returns a copy of this string converted to lowercase.
@@ -45,14 +49,22 @@ namespace Borg
          * @return true if value matches the beginning of this string; otherwise, false.
          */
         bool StartsWith(const String &text) const noexcept;
+        bool StartsWith(const char* text) const noexcept;
+        bool StartsWith(const wchar_t* &text) const noexcept;
+        bool StartsWith(const std::string &text) const noexcept;
+        bool StartsWith(const std::wstring &text) const noexcept;
 
         /**
          * @brief Determines whether the end of this string instance matches the specified string.
-         * 
-         * @param text 
+         *
+         * @param text
          * @return true if value matches the end of this instance; otherwise, false.
          */
         bool EndsWith(const String &text) const noexcept;
+        bool EndsWith(const char* text) const noexcept;
+        bool EndsWith(const wchar_t* &text) const noexcept;
+        bool EndsWith(const std::string &text) const noexcept;
+        bool EndsWith(const std::wstring &text) const noexcept;
 
         /**
          * @brief Indicates if the specified string is null.
@@ -87,6 +99,6 @@ namespace Borg
         Ref<IString> m_Impl;
     };
 
-    bool operator==(const char* lhs, const String &rhs);
-    bool operator==(const wchar_t* lhs, const String &rhs);
+    bool operator==(const char *lhs, const String &rhs);
+    bool operator==(const wchar_t *lhs, const String &rhs);
 }
