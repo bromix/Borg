@@ -40,3 +40,23 @@ TEST(Ref, RefAsIsNull)
     Ref<Circle> circle = RefAs<Circle>(animal);
     ASSERT_EQ(nullptr, circle);
 }
+
+TEST(Ref, RefCastThrow)
+{
+    auto call = []
+    {
+        try
+        {
+            Ref<IAnimal> animal = CreateRef<Shark>();
+            Ref<Circle> circle = RefCast<Circle>(animal);
+        }
+        catch (const InvalidCastException &e)
+        {
+            // and this tests that it has the correct message
+            EXPECT_STREQ("Failed to cast TSource to TTarget", e.what() );
+            throw;
+        }
+    };
+
+    EXPECT_THROW(call(), InvalidCastException);
+}
