@@ -1,4 +1,5 @@
 #include "Borg/Exception.h"
+#include "Borg/String.h"
 
 namespace Borg
 {
@@ -18,6 +19,13 @@ namespace Borg
     {
         return m_Message;
     }
+
+    // =================================
+    // ===== InvalidCastException =====
+    // =================================
+
+    InvalidCastException::InvalidCastException() : Exception() {}
+    InvalidCastException::InvalidCastException(const String &message) : Exception(message) {}
 
     // ==================================
     // ===== NullReferenceException =====

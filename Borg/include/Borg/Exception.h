@@ -13,7 +13,7 @@ namespace Borg
         Exception();
         ~Exception() = default;
 
-        const char* what() const noexcept;
+        const char *what() const noexcept;
 
         /**
          * @brief Initializes a new instance of the Exception class with a specified error message.
@@ -33,7 +33,23 @@ namespace Borg
         String m_Message;
     };
 
-    class NullReferenceException: public Exception
+    class InvalidCastException : public Exception
+    {
+    public:
+        /**
+         * @brief Initializes a new instance of the InvalidCastException class.
+         */
+        InvalidCastException();
+
+        /**
+         * @brief Initializes a new instance of the InvalidCastException class with a specified error message.
+         *
+         * @param message
+         */
+        InvalidCastException(const String &message);
+    };
+
+    class NullReferenceException : public Exception
     {
     public:
         /**
@@ -43,8 +59,8 @@ namespace Borg
 
         /**
          * @brief Initializes a new instance of the NullReferenceException class with a specified error message.
-         * 
-         * @param message 
+         *
+         * @param message
          */
         NullReferenceException(const String &message);
     };

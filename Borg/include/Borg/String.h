@@ -1,5 +1,6 @@
 #pragma once
-#include "Borg/Types.h"
+#include "Ref.h"
+#include <string>
 
 namespace Borg
 {
