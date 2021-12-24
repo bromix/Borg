@@ -91,6 +91,14 @@ TEST(String, Insert_5)
     ASSERT_EQ(15, helloNewWorld.Length());
 }
 
+TEST(String, Insert_End)
+{
+    String text = "Hello";
+    String helloWorld = text.Insert(5, " World");
+    ASSERT_EQ("Hello World", helloWorld);
+    ASSERT_EQ(11, helloWorld.Length());
+}
+
 // TEST(String, Append)
 // {
 //     String world = " World";

@@ -111,7 +111,7 @@ namespace Borg
 
     Ref<String::IString> Utf16String::Insert(int startIndex, std::wstring_view value) const
     {
-        if (startIndex < 0 || startIndex >= m_Length)
+        if (startIndex < 0 || startIndex > m_Length)
             throw ArgumentOutOfRangeException("startIndex");
 
         // Construct String with an initialzed length.
