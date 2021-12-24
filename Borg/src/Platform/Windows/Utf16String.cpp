@@ -1,4 +1,4 @@
-#include "Borg/Exception.h"
+#include "Borg/RefCast.h"
 #include "Utf16String.h"
 #include "Windows.h"
 
@@ -135,7 +135,7 @@ namespace Borg
 
     bool Utf16String::StartsWith(const Ref<IString> &text) const
     {
-        Ref<Utf16String> other = std::dynamic_pointer_cast<Utf16String>(text);
+        Ref<Utf16String> other = RefCast<Utf16String>(text);
         return StartsWith(other->m_Data);
     }
 
@@ -153,7 +153,7 @@ namespace Borg
 
     bool Utf16String::EndsWith(const Ref<IString> &text) const
     {
-        Ref<Utf16String> other = std::dynamic_pointer_cast<Utf16String>(text);
+        Ref<Utf16String> other = RefCast<Utf16String>(text);
         return EndsWith(other->m_Data);
     }
 
@@ -178,7 +178,7 @@ namespace Borg
 
     int Utf16String::CompareTo(const Ref<IString> &rhs) const
     {
-        Ref<Utf16String> other = std::dynamic_pointer_cast<Utf16String>(rhs);
+        Ref<Utf16String> other = RefCast<Utf16String>(rhs);
         return CompareTo(other->m_Data);
     }
 

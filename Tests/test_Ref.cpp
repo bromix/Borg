@@ -1,4 +1,4 @@
-#include "Borg/Types.h"
+#include "Borg/Borg.h"
 #include <gtest/gtest.h>
 
 using namespace Borg;
