@@ -224,24 +224,49 @@ namespace Borg
         return IsNull() || IsEmpty();
     }
 
+    String String::operator+(const String &rhs) const noexcept
+    {
+        return Append(rhs);
+    }
+
+    String String::operator+(const char *rhs) const noexcept
+    {
+        return Append(rhs);
+    }
+
+    String String::operator+(const wchar_t *rhs) const noexcept
+    {
+        return Append(rhs);
+    }
+
+    String String::operator+(const std::string& rhs) const noexcept
+    {
+        return Append(rhs);
+    }
+
+    String String::operator+(const std::wstring& rhs) const noexcept
+    {
+        return Append(rhs);
+    }
+
     String operator+(const char *lhs, const String &rhs)
     {
-        return rhs.Insert(0, lhs);
+        return rhs.Prepend(lhs);
     }
 
     String operator+(const wchar_t *lhs, const String &rhs)
     {
-        throw NotImplementedException();
+        return rhs.Prepend(lhs);
     }
 
     String operator+(const std::string &lhs, const String &rhs)
     {
-        throw NotImplementedException();
+        return rhs.Prepend(lhs);
     }
 
     String operator+(const std::wstring &lhs, const String &rhs)
     {
-        throw NotImplementedException();
+        return rhs.Prepend(lhs);
     }
 
     bool operator==(const char *lhs, const String &rhs)

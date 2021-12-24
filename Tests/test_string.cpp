@@ -114,3 +114,19 @@ TEST(String, Prepend)
     ASSERT_EQ("Hello World", helloWorld);
     ASSERT_EQ(11, helloWorld.Length());
 }
+
+TEST(String, PlusOperator)
+{
+    String world = "World";
+    String helloWorld = "Hello " + world;
+    ASSERT_EQ("Hello World", helloWorld);
+    ASSERT_EQ(11, helloWorld.Length());
+}
+
+TEST(String, MultiPlusOperator)
+{
+    String text = "New";
+    String helloNewWorld = "Hello " + text + " World";
+    ASSERT_EQ("Hello New World", helloNewWorld);
+    ASSERT_EQ(15, helloNewWorld.Length());
+}
