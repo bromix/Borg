@@ -75,9 +75,16 @@ TEST(String, EndsWith)
     ASSERT_FALSE(test.EndsWith("Hello"));
 }
 
-TEST(String, Append)
+TEST(String, Insert_0)
 {
-    String world = " World";
-    String helloWorld = "Hello" + world;
+    String text = "World";
+    String helloWorld = text.Insert(0, "Hello ");
     ASSERT_EQ("Hello World", helloWorld);
 }
+
+// TEST(String, Append)
+// {
+//     String world = " World";
+//     String helloWorld = "Hello" + world;
+//     ASSERT_EQ("Hello World", helloWorld);
+// }

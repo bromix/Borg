@@ -43,6 +43,19 @@ namespace Borg
         String ToUpper() const noexcept;
 
         /**
+         * @brief Returns a new string in which a specified string is inserted at a specified index position in this instance.
+         *
+         * @param startIndex
+         * @param value
+         * @return String
+         */
+        String Insert(int startIndex, const String &value) const;
+        String Insert(int startIndex, const char *value) const;
+        String Insert(int startIndex, const wchar_t *&value) const;
+        String Insert(int startIndex, const std::string &value) const;
+        String Insert(int startIndex, const std::wstring &value) const;
+
+        /**
          * @brief Determines whether the beginning of this string instance matches the specified string.
          *
          * @param text

@@ -1,3 +1,4 @@
+#include "Borg/Exception.h"
 #include "Utf16String.h"
 #include "Windows.h"
 
@@ -70,7 +71,7 @@ namespace Borg
 
     Utf16String::~Utf16String()
     {
-        cleanup();
+        reset();
     }
 
     Ref<String::IString> Utf16String::CreateCopy() const
@@ -92,6 +93,30 @@ namespace Borg
         return copy;
     }
 
+    Ref<String::IString> Utf16String::Insert(int startIndex, const Ref<String::IString> &value) const
+    {
+        Ref<Utf16String> copy = CreateRef<Utf16String>(m_Data);
+        return Insert(startIndex, copy->m_Data);
+    }
+
+    Ref<String::IString> Utf16String::Insert(int startIndex, std::string_view value) const
+    {
+        return Insert(startIndex, Utf16String(value).m_Data);
+    }
+
+    Ref<String::IString> Utf16String::Insert(int startIndex, std::wstring_view value) const
+    {
+        if (startIndex < 0 || startIndex >= m_Length)
+            throw ArgumentOutOfRangeException("startIndex");
+
+        // Construct String with an initialzed length.
+        Ref<Utf16String> newString = CreateRef<Utf16String>(m_Length + value.length());
+
+        memcpy(static_cast<void *>(newString->m_Data), value.data(), value.length() * sizeof(wchar_t));
+        memcpy(static_cast<void *>(newString->m_Data + value.length()), m_Data, m_Length * sizeof(wchar_t));
+        return newString;
+    }
+
     bool Utf16String::StartsWith(const Ref<IString> &text) const
     {
         Ref<Utf16String> other = std::dynamic_pointer_cast<Utf16String>(text);
@@ -105,6 +130,7 @@ namespace Borg
 
     bool Utf16String::StartsWith(std::wstring_view text) const
     {
+        // TODO: check length
         auto result = wcsncmp(m_Data, text.data(), text.length());
         return result == 0;
     }
@@ -122,6 +148,7 @@ namespace Borg
 
     bool Utf16String::EndsWith(std::wstring_view text) const
     {
+        // TODO: check length
         // move the pointer relative to the end.
         const wchar_t *ptr = m_Data + m_Length - text.length();
         auto result = wcsncmp(ptr, text.data(), text.length());
@@ -149,7 +176,12 @@ namespace Borg
         return std::wcscmp(m_Data, rhs.data());
     }
 
-    void Utf16String::cleanup()
+    Utf16String::Utf16String(std::size_t length)
+    {
+        prepare(length);
+    }
+
+    void Utf16String::reset()
     {
         if (m_Data == nullptr)
             return;
@@ -161,7 +193,8 @@ namespace Borg
 
     void Utf16String::prepare(std::size_t length)
     {
-        cleanup();
+        // TODO: check length (max)
+        reset();
         m_Length = length;
         m_Data = new wchar_t[(m_Length + 1) * sizeof(wchar_t)];
         m_Data[m_Length] = '\0';

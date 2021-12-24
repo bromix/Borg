@@ -75,6 +75,31 @@ namespace Borg
         return m_Impl->ToUpper();
     }
 
+    String String::Insert(int startIndex, const String &value) const
+    {
+        return m_Impl->Insert(startIndex, value.m_Impl);
+    }
+
+    String String::Insert(int startIndex, const char *value) const
+    {
+        return m_Impl->Insert(startIndex, value);
+    }
+
+    String String::Insert(int startIndex, const wchar_t *&value) const
+    {
+        return m_Impl->Insert(startIndex, value);
+    }
+
+    String String::Insert(int startIndex, const std::string &value) const
+    {
+        return m_Impl->Insert(startIndex, value);
+    }
+
+    String String::Insert(int startIndex, const std::wstring &value) const
+    {
+        return m_Impl->Insert(startIndex, value);
+    }
+
     bool String::StartsWith(const String &text) const noexcept
     {
         return m_Impl->StartsWith(text.m_Impl);

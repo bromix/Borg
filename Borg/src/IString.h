@@ -18,6 +18,10 @@ namespace Borg
         virtual Ref<IString> ToLower() const = 0;
         virtual Ref<IString> ToUpper() const = 0;
 
+        virtual Ref<IString> Insert(int startIndex, const Ref<IString> &value) const = 0;
+        virtual Ref<IString> Insert(int startIndex, std::string_view value) const = 0;
+        virtual Ref<IString> Insert(int startIndex, std::wstring_view value) const = 0;
+
         virtual bool StartsWith(const Ref<IString> &text) const = 0;
         virtual bool StartsWith(std::string_view text) const = 0;
         virtual bool StartsWith(std::wstring_view text) const = 0;
