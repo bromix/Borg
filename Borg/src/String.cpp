@@ -1,6 +1,6 @@
 #include "Borg/String.h"
+#include "Borg/Exception.h"
 #include "IString.h"
-#include <stdexcept>
 
 namespace Borg
 {
@@ -144,7 +144,22 @@ namespace Borg
 
     String operator+(const char *lhs, const String &rhs)
     {
-        throw std::exception();
+        throw NotImplementedException();
+    }
+
+    String operator+(const wchar_t *lhs, const String &rhs)
+    {
+        throw NotImplementedException();
+    }
+
+    String operator+(const std::string &lhs, const String &rhs)
+    {
+        throw NotImplementedException();
+    }
+
+    String operator+(const std::wstring &lhs, const String &rhs)
+    {
+        throw NotImplementedException();
     }
 
     bool operator==(const char *lhs, const String &rhs)
@@ -153,6 +168,16 @@ namespace Borg
     }
 
     bool operator==(const wchar_t *lhs, const String &rhs)
+    {
+        return rhs == lhs;
+    }
+
+    bool operator==(const std::string &lhs, const String &rhs)
+    {
+        return rhs == lhs;
+    }
+
+    bool operator==(const std::wstring &lhs, const String &rhs)
     {
         return rhs == lhs;
     }

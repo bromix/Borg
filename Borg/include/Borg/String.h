@@ -11,9 +11,8 @@ namespace Borg
         String(std::nullptr_t);
         String(const char *input);
         String(const wchar_t *input);
-        String(const std::string& input);
-        String(const std::wstring& input);
-        
+        String(const std::string &input);
+        String(const std::wstring &input);
 
         // Copy constructor and assignment operator.
         String(const String &input);
@@ -50,8 +49,8 @@ namespace Borg
          * @return true if value matches the beginning of this string; otherwise, false.
          */
         bool StartsWith(const String &text) const noexcept;
-        bool StartsWith(const char* text) const noexcept;
-        bool StartsWith(const wchar_t* &text) const noexcept;
+        bool StartsWith(const char *text) const noexcept;
+        bool StartsWith(const wchar_t *&text) const noexcept;
         bool StartsWith(const std::string &text) const noexcept;
         bool StartsWith(const std::wstring &text) const noexcept;
 
@@ -62,8 +61,8 @@ namespace Borg
          * @return true if value matches the end of this instance; otherwise, false.
          */
         bool EndsWith(const String &text) const noexcept;
-        bool EndsWith(const char* text) const noexcept;
-        bool EndsWith(const wchar_t* &text) const noexcept;
+        bool EndsWith(const char *text) const noexcept;
+        bool EndsWith(const wchar_t *&text) const noexcept;
         bool EndsWith(const std::string &text) const noexcept;
         bool EndsWith(const std::wstring &text) const noexcept;
 
@@ -101,6 +100,12 @@ namespace Borg
     };
 
     String operator+(const char *lhs, const String &rhs);
+    String operator+(const wchar_t *lhs, const String &rhs);
+    String operator+(const std::string &lhs, const String &rhs);
+    String operator+(const std::wstring &lhs, const String &rhs);
+
     bool operator==(const char *lhs, const String &rhs);
     bool operator==(const wchar_t *lhs, const String &rhs);
+    bool operator==(const std::string &lhs, const String &rhs);
+    bool operator==(const std::wstring &lhs, const String &rhs);
 }

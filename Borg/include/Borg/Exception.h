@@ -11,6 +11,9 @@ namespace Borg
          * @brief Initializes a new instance of the Exception class.
          */
         Exception();
+        ~Exception() = default;
+
+        const char* what() const noexcept;
 
         /**
          * @brief Initializes a new instance of the Exception class with a specified error message.
@@ -37,6 +40,7 @@ namespace Borg
          * @brief Initializes a new instance of the NotImplementedException class with default properties.
          */
         NotImplementedException();
+        ~NotImplementedException() = default;
 
         /**
          * @brief Initializes a new instance of the NotImplementedException class with a specified error message.
@@ -53,6 +57,7 @@ namespace Borg
          * @brief Initializes a new instance of the ArgumentException class.
          */
         ArgumentException();
+        ~ArgumentException() = default;
 
         /**
          * @brief Initializes a new instance of the ArgumentException class with a specified error message.
@@ -87,6 +92,7 @@ namespace Borg
          * @brief Initializes a new instance of the ArgumentNullException class.
          */
         ArgumentNullException();
+        ~ArgumentNullException() = default;
 
         /**
          * @brief Initializes a new instance of the ArgumentNullException class with the name of the parameter that causes this exception.
@@ -107,6 +113,12 @@ namespace Borg
     class ArgumentOutOfRangeException : public ArgumentException
     {
     public:
+        /**
+         * @brief Initializes a new instance of the ArgumentOutOfRangeException class.
+         */
+        ArgumentOutOfRangeException();
+        ~ArgumentOutOfRangeException() = default;
+
         /**
          * @brief Initializes a new instance of the ArgumentOutOfRangeException class with the name of the parameter that causes this exception.
          *
