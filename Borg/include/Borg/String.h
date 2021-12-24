@@ -28,6 +28,11 @@ namespace Borg
         bool operator==(const std::string &rhs) const noexcept;
         bool operator==(const std::wstring &rhs) const noexcept;
 
+        /**
+         * @brief Gets the number of characters in the current String object.
+         *
+         * @return std::size_t
+         */
         std::size_t Length() const;
 
         /**
@@ -56,6 +61,18 @@ namespace Borg
         String Insert(int startIndex, const wchar_t *&value) const;
         String Insert(int startIndex, const std::string &value) const;
         String Insert(int startIndex, const std::wstring &value) const;
+
+        String Append(const String &value) const;
+        String Append(const char *value) const;
+        String Append(const wchar_t *&value) const;
+        String Append(const std::string &value) const;
+        String Append(const std::wstring &value) const;
+
+        String Prepend(const String &value) const;
+        String Prepend(const char *value) const;
+        String Prepend(const wchar_t *&value) const;
+        String Prepend(const std::string &value) const;
+        String Prepend(const std::wstring &value) const;
 
         /**
          * @brief Determines whether the beginning of this string instance matches the specified string.

@@ -107,6 +107,56 @@ namespace Borg
         return m_Impl->Insert(startIndex, value);
     }
 
+    String String::Append(const String &value) const
+    {
+        return Insert(Length(), value);
+    }
+
+    String String::Append(const char *value) const
+    {
+        return Insert(Length(), value);
+    }
+
+    String String::Append(const wchar_t *&value) const
+    {
+        return Insert(Length(), value);
+    }
+
+    String String::Append(const std::string &value) const
+    {
+        return Insert(Length(), value);
+    }
+
+    String String::Append(const std::wstring &value) const
+    {
+        return Insert(Length(), value);
+    }
+
+    String String::Prepend(const String &value) const
+    {
+        return Insert(0, value);
+    }
+
+    String String::Prepend(const char *value) const
+    {
+        return Insert(0, value);
+    }
+
+    String String::Prepend(const wchar_t *&value) const
+    {
+        return Insert(0, value);
+    }
+
+    String String::Prepend(const std::string &value) const
+    {
+        return Insert(0, value);
+    }
+
+    String String::Prepend(const std::wstring &value) const
+    {
+        return Insert(0, value);
+    }
+
     bool String::StartsWith(const String &text) const noexcept
     {
         return m_Impl->StartsWith(text.m_Impl);
@@ -176,7 +226,7 @@ namespace Borg
 
     String operator+(const char *lhs, const String &rhs)
     {
-        throw NotImplementedException();
+        return rhs.Insert(0, lhs);
     }
 
     String operator+(const wchar_t *lhs, const String &rhs)

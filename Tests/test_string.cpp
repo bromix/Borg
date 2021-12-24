@@ -99,9 +99,18 @@ TEST(String, Insert_End)
     ASSERT_EQ(11, helloWorld.Length());
 }
 
-// TEST(String, Append)
-// {
-//     String world = " World";
-//     String helloWorld = "Hello" + world;
-//     ASSERT_EQ("Hello World", helloWorld);
-// }
+TEST(String, Append)
+{
+    String hello = "Hello";
+    String helloWorld = hello.Append(" World");
+    ASSERT_EQ("Hello World", helloWorld);
+    ASSERT_EQ(11, helloWorld.Length());
+}
+
+TEST(String, Prepend)
+{
+    String world = "World";
+    String helloWorld = world.Prepend("Hello ");
+    ASSERT_EQ("Hello World", helloWorld);
+    ASSERT_EQ(11, helloWorld.Length());
+}
