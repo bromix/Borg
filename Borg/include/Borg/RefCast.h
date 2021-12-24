@@ -14,15 +14,31 @@ namespace Borg
      * @return constexpr Ref<TTarget>
      */
     template <typename TTarget, typename TSource>
-    constexpr Ref<TTarget> RefAs(TSource value)
+    constexpr Ref<TTarget> RefAs(Ref<TSource> value)
     {
         return std::dynamic_pointer_cast<TTarget>(value);
     }
 
     template <typename TTarget, typename TSource>
-    constexpr Ref<TTarget> RefCast(TSource value)
+    constexpr Ref<TTarget> RefCast(Ref<TSource> value)
     {
-        Ref<TTarget> target = std::dynamic_pointer_cast<TTarget>(value);
+        auto rest = std::is_void<TSource>::value;
+        Ref<TTarget> target = RefAs<TTarget>(value);
+        if (!target)
+            throw InvalidCastException("Failed to cast TSource to TTarget");
+        return target;
+    }
+
+    template <typename TTarget>
+    constexpr Ref<TTarget> RefAs(Ref<void> value)
+    {
+        return std::static_pointer_cast<TTarget>(value);
+    }
+
+    template <typename TTarget>
+    constexpr Ref<TTarget> RefCast(Ref<void> value)
+    {
+        Ref<TTarget> target = RefAs<TTarget>(value);
         if (!target)
             throw InvalidCastException("Failed to cast TSource to TTarget");
         return target;

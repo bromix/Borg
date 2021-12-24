@@ -1,5 +1,6 @@
 #pragma once
 #include <mutex>
+#include "Borg/RefCast.h"
 #include "Service.h"
 
 namespace Borg::DependencyInjection
@@ -78,7 +79,7 @@ namespace Borg::DependencyInjection
     template <typename ServiceType>
     Ref<ServiceType> IService::getServiceImplementation(const ServiceProvider &serviceProvider)
     {
-        return std::static_pointer_cast<ServiceType>(m_GetServiceImplemenationFunc(serviceProvider));
+        return RefCast<ServiceType>(m_GetServiceImplemenationFunc(serviceProvider));
     }
 
     template <typename ServiceType>
@@ -92,7 +93,7 @@ namespace Borg::DependencyInjection
                 if (!m_ServiceInstance)
                     m_ServiceInstance = getServiceImplementation<ServiceType>(serviceProvider);
 
-                return std::static_pointer_cast<ServiceType>(m_ServiceInstance);
+                return RefCast<ServiceType>(m_ServiceInstance);
             }
         }
 
