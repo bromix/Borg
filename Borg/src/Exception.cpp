@@ -18,6 +18,8 @@ namespace Borg
 
     NotImplementedException::NotImplementedException(const String &message) : Exception(message) {}
 
+    ArgumentException::ArgumentException() : Exception() {}
+
     ArgumentException::ArgumentException(const String &message)
         : Exception(message)
     {
@@ -32,6 +34,12 @@ namespace Borg
     {
         return m_ParamName;
     }
+
+    ArgumentNullException::ArgumentNullException() : ArgumentException() {}
+
+    ArgumentNullException::ArgumentNullException(const String &paramName) : ArgumentException(paramName) {}
+
+    ArgumentNullException::ArgumentNullException(const String &paramName, const String &message) : ArgumentException(paramName, message) {}
 
     ArgumentOutOfRangeException::ArgumentOutOfRangeException(const String &paramName)
         : ArgumentOutOfRangeException(paramName, "Argument is out of range")

@@ -50,6 +50,11 @@ namespace Borg
     {
     public:
         /**
+         * @brief Initializes a new instance of the ArgumentException class.
+         */
+        ArgumentException();
+
+        /**
          * @brief Initializes a new instance of the ArgumentException class with a specified error message.
          *
          * @param message
@@ -73,6 +78,30 @@ namespace Borg
 
     private:
         String m_ParamName;
+    };
+
+    class ArgumentNullException : public ArgumentException
+    {
+    public:
+        /**
+         * @brief Initializes a new instance of the ArgumentNullException class.
+         */
+        ArgumentNullException();
+
+        /**
+         * @brief Initializes a new instance of the ArgumentNullException class with the name of the parameter that causes this exception.
+         *
+         * @param paramName
+         */
+        ArgumentNullException(const String &paramName);
+
+        /**
+         * @brief Initializes an instance of the ArgumentNullException class with a specified error message and the name of the parameter that causes this exception.
+         *
+         * @param paramName
+         * @param message
+         */
+        ArgumentNullException(const String &paramName, const String &message);
     };
 
     class ArgumentOutOfRangeException : public ArgumentException
