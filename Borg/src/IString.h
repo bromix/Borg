@@ -13,13 +13,21 @@ namespace Borg
 
         virtual Ref<IString> CreateCopy() const = 0;
 
-        virtual Ref<IString> ToLower() const = 0;
-        virtual Ref<IString> ToUpper() const = 0;
-        virtual bool StartsWith(const Ref<IString> &text) const = 0;
-        virtual bool EndsWith(const Ref<IString> &text) const = 0;
-
         virtual bool IsEmpty() const = 0;
 
+        virtual Ref<IString> ToLower() const = 0;
+        virtual Ref<IString> ToUpper() const = 0;
+
+        virtual bool StartsWith(const Ref<IString> &text) const = 0;
+        virtual bool StartsWith(std::string_view text) const = 0;
+        virtual bool StartsWith(std::wstring_view text) const = 0;
+
+        virtual bool EndsWith(const Ref<IString> &text) const = 0;
+        virtual bool EndsWith(std::string_view text) const = 0;
+        virtual bool EndsWith(std::wstring_view text) const = 0;
+
         virtual int CompareTo(const Ref<IString> &rhs) const = 0;
+        virtual int CompareTo(std::string_view rhs) const = 0;
+        virtual int CompareTo(std::wstring_view rhs) const = 0;
     };
 }

@@ -74,3 +74,10 @@ TEST(String, EndsWith)
     ASSERT_TRUE(test.EndsWith("World"));
     ASSERT_FALSE(test.EndsWith("Hello"));
 }
+
+TEST(String, Append)
+{
+    String world = " World";
+    String helloWorld = "Hello" + world;
+    ASSERT_EQ("Hello World", helloWorld);
+}

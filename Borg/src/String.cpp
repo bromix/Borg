@@ -8,21 +8,17 @@ namespace Borg
 
     String::String(std::nullptr_t) {}
 
-    String::String(const char *input) : m_Impl(IString::Create(input))
-    {
-    }
+    String::String(const char *input) : m_Impl(IString::Create(input)) {}
 
-    String::String(const wchar_t *input) : m_Impl(IString::Create(input))
-    {
-    }
+    String::String(const wchar_t *input) : m_Impl(IString::Create(input)) {}
 
-    String::String(const String &input) : m_Impl(input.m_Impl->CreateCopy())
-    {
-    }
+    String::String(const std::string &input) : m_Impl(IString::Create(input)) {}
 
-    String::String(Ref<IString> &&input) : m_Impl(std::move(input))
-    {
-    }
+    String::String(const std::wstring &input) : m_Impl(IString::Create(input)) {}
+
+    String::String(const String &input) : m_Impl(input.m_Impl->CreateCopy()) {}
+
+    String::String(Ref<IString> &&input) : m_Impl(std::move(input)) {}
 
     String String::operator=(const String &input)
     {
@@ -44,19 +40,29 @@ namespace Borg
         return *this;
     }
 
+    bool String::operator==(const String &rhs) const noexcept
+    {
+        return m_Impl->CompareTo(rhs.m_Impl) == 0;
+    }
+
     bool String::operator==(const char *rhs) const noexcept
     {
-        return *this == String(rhs);
+        return m_Impl->CompareTo(rhs) == 0;
     }
 
     bool String::operator==(const wchar_t *rhs) const noexcept
     {
-        return *this == String(rhs);
+        return m_Impl->CompareTo(rhs) == 0;
     }
 
-    bool String::operator==(const String &rhs) const noexcept
+    bool String::operator==(const std::string &rhs) const noexcept
     {
-        return m_Impl->CompareTo(rhs.m_Impl) == 0;
+        return m_Impl->CompareTo(rhs) == 0;
+    }
+
+    bool String::operator==(const std::wstring &rhs) const noexcept
+    {
+        return m_Impl->CompareTo(rhs) == 0;
     }
 
     String String::ToLower() const noexcept
@@ -74,9 +80,49 @@ namespace Borg
         return m_Impl->StartsWith(text.m_Impl);
     }
 
+    bool String::StartsWith(const char *text) const noexcept
+    {
+        return m_Impl->StartsWith(text);
+    }
+
+    bool String::StartsWith(const wchar_t *&text) const noexcept
+    {
+        return m_Impl->StartsWith(text);
+    }
+
+    bool String::StartsWith(const std::string &text) const noexcept
+    {
+        return m_Impl->StartsWith(text);
+    }
+
+    bool String::StartsWith(const std::wstring &text) const noexcept
+    {
+        return m_Impl->StartsWith(text);
+    }
+
     bool String::EndsWith(const String &text) const noexcept
     {
         return m_Impl->EndsWith(text.m_Impl);
+    }
+
+    bool String::EndsWith(const char *text) const noexcept
+    {
+        return m_Impl->EndsWith(text);
+    }
+
+    bool String::EndsWith(const wchar_t *&text) const noexcept
+    {
+        return m_Impl->EndsWith(text);
+    }
+
+    bool String::EndsWith(const std::string &text) const noexcept
+    {
+        return m_Impl->EndsWith(text);
+    }
+
+    bool String::EndsWith(const std::wstring &text) const noexcept
+    {
+        return m_Impl->EndsWith(text);
     }
 
     bool String::IsNull() const noexcept
@@ -96,13 +142,18 @@ namespace Borg
         return IsNull() || IsEmpty();
     }
 
+    String operator+(const char *lhs, const String &rhs)
+    {
+        throw std::exception();
+    }
+
     bool operator==(const char *lhs, const String &rhs)
     {
-        return String(lhs) == rhs;
+        return rhs == lhs;
     }
 
     bool operator==(const wchar_t *lhs, const String &rhs)
     {
-        return String(lhs) == rhs;
+        return rhs == lhs;
     }
 }

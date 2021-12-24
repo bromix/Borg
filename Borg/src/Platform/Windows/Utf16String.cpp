@@ -95,17 +95,36 @@ namespace Borg
     bool Utf16String::StartsWith(const Ref<IString> &text) const
     {
         Ref<Utf16String> other = std::dynamic_pointer_cast<Utf16String>(text);
-        auto result = wcsncmp(m_Data, other->m_Data, other->m_Length);
+        return StartsWith(other->m_Data);
+    }
+
+    bool Utf16String::StartsWith(std::string_view text) const
+    {
+        return StartsWith(Utf16String(text).m_Data);
+    }
+
+    bool Utf16String::StartsWith(std::wstring_view text) const
+    {
+        auto result = wcsncmp(m_Data, text.data(), text.length());
         return result == 0;
     }
 
     bool Utf16String::EndsWith(const Ref<IString> &text) const
     {
         Ref<Utf16String> other = std::dynamic_pointer_cast<Utf16String>(text);
+        return EndsWith(other->m_Data);
+    }
 
+    bool Utf16String::EndsWith(std::string_view text) const
+    {
+        return EndsWith(Utf16String(text).m_Data);
+    }
+
+    bool Utf16String::EndsWith(std::wstring_view text) const
+    {
         // move the pointer relative to the end.
-        const wchar_t *ptr = m_Data + m_Length - other->m_Length;
-        auto result = wcsncmp(ptr, other->m_Data, other->m_Length);
+        const wchar_t *ptr = m_Data + m_Length - text.length();
+        auto result = wcsncmp(ptr, text.data(), text.length());
         return result == 0;
     }
 
@@ -117,7 +136,17 @@ namespace Borg
     int Utf16String::CompareTo(const Ref<IString> &rhs) const
     {
         Ref<Utf16String> other = std::dynamic_pointer_cast<Utf16String>(rhs);
-        return std::wcscmp(m_Data, other->m_Data);
+        return CompareTo(other->m_Data);
+    }
+
+    int Utf16String::CompareTo(std::string_view rhs) const
+    {
+        return CompareTo(Utf16String(rhs).m_Data);
+    }
+
+    int Utf16String::CompareTo(std::wstring_view rhs) const
+    {
+        return std::wcscmp(m_Data, rhs.data());
     }
 
     void Utf16String::cleanup()

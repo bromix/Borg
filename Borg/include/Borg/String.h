@@ -13,6 +13,7 @@ namespace Borg
         String(const wchar_t *input);
         String(const std::string& input);
         String(const std::wstring& input);
+        
 
         // Copy constructor and assignment operator.
         String(const String &input);
@@ -99,6 +100,7 @@ namespace Borg
         Ref<IString> m_Impl;
     };
 
+    String operator+(const char *lhs, const String &rhs);
     bool operator==(const char *lhs, const String &rhs);
     bool operator==(const wchar_t *lhs, const String &rhs);
 }
