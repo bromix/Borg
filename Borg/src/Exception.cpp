@@ -19,6 +19,13 @@ namespace Borg
         return m_Message;
     }
 
+    // ==================================
+    // ===== NullReferenceException =====
+    // ==================================
+
+    NullReferenceException::NullReferenceException() : Exception() {}
+    NullReferenceException::NullReferenceException(const String &message) : Exception(message) {}
+
     // ===================================
     // ===== NotImplementedException =====
     // ===================================

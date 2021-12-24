@@ -80,6 +80,15 @@ TEST(String, Insert_0)
     String text = "World";
     String helloWorld = text.Insert(0, "Hello ");
     ASSERT_EQ("Hello World", helloWorld);
+    ASSERT_EQ(11, helloWorld.Length());
+}
+
+TEST(String, Insert_5)
+{
+    String text = "Hello World";
+    String helloNewWorld = text.Insert(5, " New");
+    ASSERT_EQ("Hello New World", helloNewWorld);
+    ASSERT_EQ(15, helloNewWorld.Length());
 }
 
 // TEST(String, Append)

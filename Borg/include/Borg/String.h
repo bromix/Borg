@@ -28,6 +28,8 @@ namespace Borg
         bool operator==(const std::string &rhs) const noexcept;
         bool operator==(const std::wstring &rhs) const noexcept;
 
+        std::size_t Length() const;
+
         /**
          * @brief Returns a copy of this string converted to lowercase.
          *

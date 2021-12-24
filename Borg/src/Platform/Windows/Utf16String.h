@@ -18,6 +18,8 @@ namespace Borg
 
         Ref<IString> CreateCopy() const override;
 
+        std::size_t Length() const override;
+
         Ref<IString> ToLower() const override;
         Ref<IString> ToUpper() const override;
 

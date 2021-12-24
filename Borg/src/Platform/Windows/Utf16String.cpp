@@ -66,7 +66,7 @@ namespace Borg
     Utf16String::Utf16String(std::wstring_view input)
     {
         prepare(input.length());
-        memcpy(static_cast<void *>(m_Data), input.data(), input.length() * sizeof(wchar_t));
+        std::wmemcpy(m_Data, input.data(), input.length());
     }
 
     Utf16String::~Utf16String()
@@ -77,6 +77,11 @@ namespace Borg
     Ref<String::IString> Utf16String::CreateCopy() const
     {
         return CreateRef<Utf16String>(m_Data);
+    }
+
+    std::size_t Utf16String::Length() const
+    {
+        return m_Length;
     }
 
     Ref<String::IString> Utf16String::ToLower() const
@@ -112,8 +117,19 @@ namespace Borg
         // Construct String with an initialzed length.
         Ref<Utf16String> newString = CreateRef<Utf16String>(m_Length + value.length());
 
-        memcpy(static_cast<void *>(newString->m_Data), value.data(), value.length() * sizeof(wchar_t));
-        memcpy(static_cast<void *>(newString->m_Data + value.length()), m_Data, m_Length * sizeof(wchar_t));
+        wchar_t *targetData = newString->m_Data;
+        wchar_t *sourceData = m_Data;
+
+        if (startIndex > 0)
+            std::wmemcpy(targetData, sourceData, startIndex);
+
+        targetData += startIndex;
+        std::wmemcpy(targetData, value.data(), value.length());
+
+        targetData += value.length();
+        sourceData += startIndex;
+        std::wmemcpy(targetData, sourceData, m_Length - startIndex);
+
         return newString;
     }
 

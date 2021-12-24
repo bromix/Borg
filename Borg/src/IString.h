@@ -13,6 +13,8 @@ namespace Borg
 
         virtual Ref<IString> CreateCopy() const = 0;
 
+        virtual std::size_t Length() const = 0;
+
         virtual bool IsEmpty() const = 0;
 
         virtual Ref<IString> ToLower() const = 0;

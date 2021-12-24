@@ -33,6 +33,22 @@ namespace Borg
         String m_Message;
     };
 
+    class NullReferenceException: public Exception
+    {
+    public:
+        /**
+         * @brief Initializes a new instance of the NullReferenceException class.
+         */
+        NullReferenceException();
+
+        /**
+         * @brief Initializes a new instance of the NullReferenceException class with a specified error message.
+         * 
+         * @param message 
+         */
+        NullReferenceException(const String &message);
+    };
+
     class NotImplementedException : public Exception
     {
     public:

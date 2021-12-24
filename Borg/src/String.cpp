@@ -65,6 +65,13 @@ namespace Borg
         return m_Impl->CompareTo(rhs) == 0;
     }
 
+    std::size_t String::Length() const
+    {
+        if (m_Impl == nullptr)
+            throw NullReferenceException("Can not get the length of the string.");
+        return m_Impl->Length();
+    }
+
     String String::ToLower() const noexcept
     {
         return m_Impl->ToLower();
