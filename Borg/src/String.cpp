@@ -20,6 +20,10 @@ namespace Borg
 
     String::String(Ref<IString> &&input) : m_Impl(std::move(input)) {}
 
+    String::String(const char *input, std::size_t length) : m_Impl(IString::Create(std::string_view(input, length))) {}
+
+    String::String(const wchar_t *input, std::size_t length) : m_Impl(IString::Create(std::wstring_view(input, length))) {}
+
     String String::operator=(const String &input)
     {
         m_Impl = input.m_Impl->CreateCopy();
@@ -239,12 +243,12 @@ namespace Borg
         return Append(rhs);
     }
 
-    String String::operator+(const std::string& rhs) const noexcept
+    String String::operator+(const std::string &rhs) const noexcept
     {
         return Append(rhs);
     }
 
-    String String::operator+(const std::wstring& rhs) const noexcept
+    String String::operator+(const std::wstring &rhs) const noexcept
     {
         return Append(rhs);
     }

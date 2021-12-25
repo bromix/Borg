@@ -20,6 +20,13 @@ namespace Borg
         return m_Message;
     }
 
+    // =====================================
+    // ===== InvalidOperationException =====
+    // =====================================
+
+    InvalidOperationException::InvalidOperationException():Exception(){}
+    InvalidOperationException::InvalidOperationException(const String& message): Exception(message){}
+
     // =================================
     // ===== InvalidCastException =====
     // =================================

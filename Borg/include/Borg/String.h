@@ -15,6 +15,9 @@ namespace Borg
         String(const std::string &input);
         String(const std::wstring &input);
 
+        String(const char *input, std::size_t length);
+        String(const wchar_t *input, std::size_t length);
+
         // Copy constructor and assignment operator.
         String(const String &input);
         String operator=(const String &input);
@@ -118,8 +121,8 @@ namespace Borg
         String operator+(const String &rhs) const noexcept;
         String operator+(const char *rhs) const noexcept;
         String operator+(const wchar_t *rhs) const noexcept;
-        String operator+(const std::string& rhs) const noexcept;
-        String operator+(const std::wstring& rhs) const noexcept;
+        String operator+(const std::string &rhs) const noexcept;
+        String operator+(const std::wstring &rhs) const noexcept;
 
         bool operator==(const String &rhs) const noexcept;
         bool operator==(const char *rhs) const noexcept;

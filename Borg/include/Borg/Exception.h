@@ -33,6 +33,22 @@ namespace Borg
         String m_Message;
     };
 
+    class InvalidOperationException: public Exception
+    {
+    public:
+        /**
+         * @brief Initializes a new instance of the InvalidOperationException class.
+         */
+        InvalidOperationException();
+
+        /**
+         * @brief Initializes a new instance of the InvalidOperationException class with a specified error message.
+         * 
+         * @param message 
+         */
+        InvalidOperationException(const String& message);
+    };
+
     class InvalidCastException : public Exception
     {
     public:

@@ -34,5 +34,12 @@ namespace Borg
          * @return String
          */
         static String GetFolderPath(SpecialFolder specialFolder);
+
+        /**
+         * @brief Gets the NetBIOS name of this local computer.
+         * 
+         * @return String 
+         */
+        static String MachineName();
     };
 }
