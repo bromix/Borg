@@ -26,6 +26,10 @@ namespace Borg
         };
 
         Environment() = delete;
+        Environment(const Environment &) = delete;
+        Environment(Environment &&) = delete;
+        Environment operator=(const Environment &) = delete;
+        Environment operator=(Environment &&) = delete;
 
         /**
          * @brief Gets the path to the system special folder that is identified by the specified enumeration.
