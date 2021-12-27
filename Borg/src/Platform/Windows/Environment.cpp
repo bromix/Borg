@@ -60,4 +60,10 @@ namespace Borg
             throw InvalidOperationException("The name of this computer cannot be obtained.");
         return String(buffer.Data(), count - 1);
     }
+
+    String Environment::NewLine()
+    {
+        static String newLine("\r\n");
+        return newLine;
+    }
 }

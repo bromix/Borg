@@ -15,6 +15,12 @@ TEST(Environment, UserName)
     ASSERT_FALSE(userName.IsNullOrEmpty());
 }
 
+TEST(Environment, NewLine)
+{
+    auto newLine = Environment::NewLine();
+    ASSERT_FALSE(newLine.IsNullOrEmpty());
+}
+
 TEST(Environment, GetSpecialFolder_LocalApplicationData)
 {
     auto path = Environment::GetFolderPath(Environment::SpecialFolder::LocalApplicationData);

@@ -52,5 +52,12 @@ namespace Borg
          * @return String 
          */
         static String UserName();
+
+        /**
+         * @brief Gets the newline string defined for this environment.
+         * 
+         * @return String 
+         */
+        static String NewLine();
     };
 }
