@@ -1,5 +1,6 @@
 #pragma once
 #include "Borg/MemoryBlock.h"
+#include <string_view>
 
 namespace Borg
 {
@@ -27,6 +28,26 @@ namespace Borg
         std::size_t Count() const
         {
             return m_Count > 0 ? m_Count - 1 : 0;
+        }
+
+        /**
+         * @brief Cast operator to const std::basic_string_view<T>.
+         * 
+         * @return const std::basic_string_view<T> 
+         */
+        operator const std::basic_string_view<T>()
+        {
+            return m_Data;
+        }
+
+        /**
+         * @brief Cast operator to std::basic_string_view<T>.
+         * 
+         * @return std::basic_string_view<T> 
+         */
+        operator std::basic_string_view<T>() const
+        {
+            return m_Data;
         }
     };
 

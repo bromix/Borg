@@ -104,12 +104,12 @@ namespace Borg
     Ref<String::IString> Utf16String::Insert(int startIndex, const Ref<String::IString> &value) const
     {
         Ref<Utf16String> copy = CreateRef<Utf16String>(m_StringBuffer);
-        return Insert(startIndex, copy->m_StringBuffer.Data());
+        return Insert(startIndex, copy->m_StringBuffer);
     }
 
     Ref<String::IString> Utf16String::Insert(int startIndex, std::string_view value) const
     {
-        return Insert(startIndex, Utf16String(value).m_StringBuffer.Data());
+        return Insert(startIndex, Utf16String(value).m_StringBuffer);
     }
 
     Ref<String::IString> Utf16String::Insert(int startIndex, std::wstring_view value) const
@@ -138,30 +138,30 @@ namespace Borg
     bool Utf16String::StartsWith(const Ref<IString> &text) const
     {
         Ref<Utf16String> other = RefCast<Utf16String>(text);
-        return StartsWith(other->m_StringBuffer.Data());
+        return StartsWith(other->m_StringBuffer);
     }
 
     bool Utf16String::StartsWith(std::string_view text) const
     {
-        return StartsWith(Utf16String(text).m_StringBuffer.Data());
+        return StartsWith(Utf16String(text).m_StringBuffer);
     }
 
     bool Utf16String::StartsWith(std::wstring_view text) const
     {
         // TODO: check length
-        auto result = wcsncmp(m_StringBuffer.Data(), text.data(), text.length());
+        auto result = wcsncmp(m_StringBuffer, text.data(), text.length());
         return result == 0;
     }
 
     bool Utf16String::EndsWith(const Ref<IString> &text) const
     {
         Ref<Utf16String> other = RefCast<Utf16String>(text);
-        return EndsWith(other->m_StringBuffer.Data());
+        return EndsWith(other->m_StringBuffer);
     }
 
     bool Utf16String::EndsWith(std::string_view text) const
     {
-        return EndsWith(Utf16String(text).m_StringBuffer.Data());
+        return EndsWith(Utf16String(text).m_StringBuffer);
     }
 
     bool Utf16String::EndsWith(std::wstring_view text) const
@@ -170,7 +170,7 @@ namespace Borg
             return false;
 
         // We must subtract the null-termination '\0'
-        const wchar_t *ptr = m_StringBuffer.Data() + m_StringBuffer.Count() - text.length();
+        const wchar_t *ptr = m_StringBuffer + m_StringBuffer.Count() - text.length();
         auto result = wcsncmp(ptr, text.data(), text.length());
         return result == 0;
     }
@@ -183,17 +183,17 @@ namespace Borg
     int Utf16String::CompareTo(const Ref<IString> &rhs) const
     {
         Ref<Utf16String> other = RefCast<Utf16String>(rhs);
-        return CompareTo(other->m_StringBuffer.Data());
+        return CompareTo(other->m_StringBuffer);
     }
 
     int Utf16String::CompareTo(std::string_view rhs) const
     {
-        return CompareTo(Utf16String(rhs).m_StringBuffer.Data());
+        return CompareTo(Utf16String(rhs).m_StringBuffer);
     }
 
     int Utf16String::CompareTo(std::wstring_view rhs) const
     {
-        return std::wcscmp(m_StringBuffer.Data(), rhs.data());
+        return std::wcscmp(m_StringBuffer, rhs.data());
     }
 
     Utf16String::Utf16String(std::size_t length)
