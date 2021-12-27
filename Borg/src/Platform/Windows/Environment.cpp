@@ -66,4 +66,9 @@ namespace Borg
         static String newLine("\r\n");
         return newLine;
     }
+
+    String Environment::CommandLine()
+    {
+        return String(GetCommandLineW());
+    }
 }

@@ -59,5 +59,12 @@ namespace Borg
          * @return String 
          */
         static String NewLine();
+
+        /**
+         * @brief Gets the command line for this process.
+         * 
+         * @return String 
+         */
+        static String CommandLine();
     };
 }

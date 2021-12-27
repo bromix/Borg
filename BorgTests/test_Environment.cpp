@@ -21,6 +21,12 @@ TEST(Environment, NewLine)
     ASSERT_FALSE(newLine.IsNullOrEmpty());
 }
 
+TEST(Environment, CommandLine)
+{
+    auto commandLine = Environment::CommandLine();
+    ASSERT_FALSE(commandLine.IsNullOrEmpty());
+}
+
 TEST(Environment, GetSpecialFolder_LocalApplicationData)
 {
     auto path = Environment::GetFolderPath(Environment::SpecialFolder::LocalApplicationData);
