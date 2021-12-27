@@ -148,7 +148,8 @@ namespace Borg
 
     bool Utf16String::StartsWith(std::wstring_view text) const
     {
-        // TODO: check length
+        if(text.length() > m_StringBuffer.Count())
+            return false;
         auto result = wcsncmp(m_StringBuffer, text.data(), text.length());
         return result == 0;
     }
@@ -170,7 +171,7 @@ namespace Borg
             return false;
 
         // We must subtract the null-termination '\0'
-        const wchar_t *ptr = m_StringBuffer + m_StringBuffer.Count() - text.length();
+        auto ptr = &m_StringBuffer[m_StringBuffer.Count() - text.length()];
         auto result = wcsncmp(ptr, text.data(), text.length());
         return result == 0;
     }

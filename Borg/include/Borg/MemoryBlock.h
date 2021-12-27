@@ -99,7 +99,8 @@ namespace Borg
          */
         operator const T *();
 
-        T &operator[](std::size_t index);
+        T &operator[](std::size_t index) const;
+        const T &operator[](std::size_t index);
 
         MemoryBlock<T> &operator=(const MemoryBlock<T> &input);
         MemoryBlock<T> &operator=(MemoryBlock<T> &&input);
@@ -193,7 +194,15 @@ namespace Borg
     }
 
     template <typename T>
-    T &MemoryBlock<T>::operator[](std::size_t index)
+    T &MemoryBlock<T>::operator[](std::size_t index) const
+    {
+        if (index >= m_Count)
+            throw ArgumentOutOfRangeException("index");
+        return m_Data[index];
+    }
+
+    template <typename T>
+    const T &MemoryBlock<T>::operator[](std::size_t index)
     {
         if (index >= m_Count)
             throw ArgumentOutOfRangeException("index");
