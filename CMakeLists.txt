@@ -4,4 +4,4 @@ project(Borg)
 
 add_subdirectory(Borg)
 
-add_subdirectory(Tests)
+add_subdirectory(BorgTests)
