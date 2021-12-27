@@ -1,6 +1,6 @@
 #include "Borg/Environment.h"
 #include "Borg/Exception.h"
-#include "Borg/MemoryBlock.h"
+#include "Borg/StringMemory.h"
 #include "Windows.h"
 #include <map>
 #include <array>
@@ -45,7 +45,7 @@ namespace Borg
 
     String Environment::MachineName()
     {
-        MemoryBlock<wchar_t> buffer{MAX_COMPUTERNAME_LENGTH + 1};
+        WideCharMemory buffer{MAX_COMPUTERNAME_LENGTH};
         DWORD count = buffer.Count();
         if (GetComputerNameW(buffer.Data(), &count) == FALSE)
             throw InvalidOperationException("The name of this computer cannot be obtained.");

@@ -43,12 +43,12 @@ namespace Borg
         prepare(utf16Length);
 
         int result = ::MultiByteToWideChar(
-            CP_UTF8,        // Source string is in UTF-8
-            kFlags,         // Conversion flags
-            input.data(),   // Source UTF-8 string pointer
-            input.length(), // Length of source UTF-8 string, in chars
-            m_Data,         // Pointer to destination buffer
-            utf16Length     // Size of destination buffer, in wchar_ts
+            CP_UTF8,               // Source string is in UTF-8
+            kFlags,                // Conversion flags
+            input.data(),          // Source UTF-8 string pointer
+            input.length(),        // Length of source UTF-8 string, in chars
+            m_StringBuffer.Data(), // Pointer to destination buffer
+            utf16Length            // Size of destination buffer, in wchar_ts
         );
 
         // FIXME: throw
@@ -66,59 +66,61 @@ namespace Borg
     Utf16String::Utf16String(std::wstring_view input)
     {
         prepare(input.length());
-        std::wmemcpy(m_Data, input.data(), input.length());
+        m_StringBuffer.CopyFrom(input);
+    }
+
+    Utf16String::Utf16String(const WideCharMemory &buffer) : m_StringBuffer(buffer)
+    {
     }
 
     Utf16String::~Utf16String()
     {
-        reset();
     }
 
     Ref<String::IString> Utf16String::CreateCopy() const
     {
-        return CreateRef<Utf16String>(m_Data);
+        return CreateRef<Utf16String>(m_StringBuffer);
     }
 
     std::size_t Utf16String::Length() const
     {
-        return m_Length;
+        return m_StringBuffer.Count();
     }
 
     Ref<String::IString> Utf16String::ToLower() const
     {
-        Ref<Utf16String> copy = CreateRef<Utf16String>(m_Data);
-        ::CharLowerW(copy->m_Data);
+        Ref<Utf16String> copy = CreateRef<Utf16String>(m_StringBuffer);
+        ::CharLowerW(copy->m_StringBuffer.Data());
         return copy;
     }
 
     Ref<String::IString> Utf16String::ToUpper() const
     {
-        Ref<Utf16String> copy = CreateRef<Utf16String>(m_Data);
-        ::CharUpperW(copy->m_Data);
+        Ref<Utf16String> copy = CreateRef<Utf16String>(m_StringBuffer);
+        ::CharUpperW(copy->m_StringBuffer.Data());
         return copy;
     }
 
     Ref<String::IString> Utf16String::Insert(int startIndex, const Ref<String::IString> &value) const
     {
-        Ref<Utf16String> copy = CreateRef<Utf16String>(m_Data);
-        return Insert(startIndex, copy->m_Data);
+        Ref<Utf16String> copy = CreateRef<Utf16String>(m_StringBuffer);
+        return Insert(startIndex, copy->m_StringBuffer.Data());
     }
 
     Ref<String::IString> Utf16String::Insert(int startIndex, std::string_view value) const
     {
-        return Insert(startIndex, Utf16String(value).m_Data);
+        return Insert(startIndex, Utf16String(value).m_StringBuffer.Data());
     }
 
     Ref<String::IString> Utf16String::Insert(int startIndex, std::wstring_view value) const
     {
-        if (startIndex < 0 || startIndex > m_Length)
+        if (startIndex < 0 || startIndex > m_StringBuffer.Count())
             throw ArgumentOutOfRangeException("startIndex");
 
-        // Construct String with an initialzed length.
-        Ref<Utf16String> newString = CreateRef<Utf16String>(m_Length + value.length());
+        Ref<Utf16String> newString = CreateRef<Utf16String>(m_StringBuffer.Count() + value.length());
 
-        wchar_t *targetData = newString->m_Data;
-        wchar_t *sourceData = m_Data;
+        wchar_t *targetData = newString->m_StringBuffer.Data();
+        wchar_t *sourceData = m_StringBuffer.Data();
 
         if (startIndex > 0)
             std::wmemcpy(targetData, sourceData, startIndex);
@@ -128,7 +130,7 @@ namespace Borg
 
         targetData += value.length();
         sourceData += startIndex;
-        std::wmemcpy(targetData, sourceData, m_Length - startIndex);
+        std::wmemcpy(targetData, sourceData, m_StringBuffer.Count() - startIndex);
 
         return newString;
     }
@@ -136,60 +138,62 @@ namespace Borg
     bool Utf16String::StartsWith(const Ref<IString> &text) const
     {
         Ref<Utf16String> other = RefCast<Utf16String>(text);
-        return StartsWith(other->m_Data);
+        return StartsWith(other->m_StringBuffer.Data());
     }
 
     bool Utf16String::StartsWith(std::string_view text) const
     {
-        return StartsWith(Utf16String(text).m_Data);
+        return StartsWith(Utf16String(text).m_StringBuffer.Data());
     }
 
     bool Utf16String::StartsWith(std::wstring_view text) const
     {
         // TODO: check length
-        auto result = wcsncmp(m_Data, text.data(), text.length());
+        auto result = wcsncmp(m_StringBuffer.Data(), text.data(), text.length());
         return result == 0;
     }
 
     bool Utf16String::EndsWith(const Ref<IString> &text) const
     {
         Ref<Utf16String> other = RefCast<Utf16String>(text);
-        return EndsWith(other->m_Data);
+        return EndsWith(other->m_StringBuffer.Data());
     }
 
     bool Utf16String::EndsWith(std::string_view text) const
     {
-        return EndsWith(Utf16String(text).m_Data);
+        return EndsWith(Utf16String(text).m_StringBuffer.Data());
     }
 
     bool Utf16String::EndsWith(std::wstring_view text) const
     {
-        // TODO: check length
-        // move the pointer relative to the end.
-        const wchar_t *ptr = m_Data + m_Length - text.length();
+        if (text.length() > m_StringBuffer.Count())
+            return false;
+
+        // We must subtract the null-termination '\0'
+        const wchar_t *ptr = m_StringBuffer.Data() + m_StringBuffer.Count() - text.length();
         auto result = wcsncmp(ptr, text.data(), text.length());
         return result == 0;
     }
 
     bool Utf16String::IsEmpty() const
     {
-        return m_Length == 0;
+        return m_StringBuffer.Count() == 0;
     }
 
     int Utf16String::CompareTo(const Ref<IString> &rhs) const
     {
         Ref<Utf16String> other = RefCast<Utf16String>(rhs);
-        return CompareTo(other->m_Data);
+        return CompareTo(other->m_StringBuffer.Data());
     }
 
     int Utf16String::CompareTo(std::string_view rhs) const
     {
-        return CompareTo(Utf16String(rhs).m_Data);
+        return CompareTo(Utf16String(rhs).m_StringBuffer.Data());
     }
 
     int Utf16String::CompareTo(std::wstring_view rhs) const
     {
-        return std::wcscmp(m_Data, rhs.data());
+        return std::wcscmp(m_StringBuffer.Data(), rhs.data());
     }
 
     Utf16String::Utf16String(std::size_t length)
@@ -197,22 +201,8 @@ namespace Borg
         prepare(length);
     }
 
-    void Utf16String::reset()
+    void Utf16String::prepare(std::size_t count)
     {
-        if (m_Data == nullptr)
-            return;
-
-        delete[] m_Data;
-        m_Data = nullptr;
-        m_Length = 0;
-    }
-
-    void Utf16String::prepare(std::size_t length)
-    {
-        // TODO: check length (max)
-        reset();
-        m_Length = length;
-        m_Data = new wchar_t[(m_Length + 1) * sizeof(wchar_t)];
-        m_Data[m_Length] = '\0';
+        m_StringBuffer = WideCharMemory(count);
     }
 }
