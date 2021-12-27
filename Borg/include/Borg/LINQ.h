@@ -1,12 +1,17 @@
 #pragma once
 #include "Types.h"
+#include "RefCast.h"
 #include "StdEnumerators.h"
 #include "IEnumerator.h"
 #include "LINQ/WhereEnumerator.h"
 #include "LINQ/SelectEnumerator.h"
+#include "LINQ/OrderEnumerator.h"
 
 namespace Borg
 {
+    template <typename TSource>
+    class LINQOrderedEnumerator;
+
     template <typename TSource>
     class LINQEnumerator
     {
@@ -84,13 +89,9 @@ namespace Borg
          * @return LINQEnumerator<TSource>
          */
         template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
-        LINQEnumerator<TSource> OrderBy(TFunc func)
+        LINQOrderedEnumerator<TSource> OrderBy(TFunc func)
         {
-            auto orderedVector = ToVector();
-            std::sort(orderedVector.begin(), orderedVector.end(), [func](TSource a, TSource b)
-                      { return func(a) < func(b); });
-
-            return LINQEnumerator<TSource>(CreateRef<VectorEnumerator<TSource>>(orderedVector));
+            return LINQOrderedEnumerator<TSource>(m_Enumerator, func);
         }
 
         /**
@@ -103,13 +104,9 @@ namespace Borg
          * @return LINQEnumerator<TSource>
          */
         template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
-        LINQEnumerator<TSource> OrderByDescending(TFunc func)
+        LINQOrderedEnumerator<TSource> OrderByDescending(TFunc func)
         {
-            auto orderedVector = ToVector();
-            std::sort(orderedVector.begin(), orderedVector.end(), [func](TSource a, TSource b)
-                      { return func(a) > func(b); });
-
-            return LINQEnumerator<TSource>(CreateRef<VectorEnumerator<TSource>>(orderedVector));
+            return LINQOrderedEnumerator<TSource>(m_Enumerator, func);
         }
 
         /**
@@ -127,8 +124,59 @@ namespace Borg
             return result;
         }
 
-    private:
+    protected:
         Ref<IEnumerator<TSource>> m_Enumerator;
+    };
+
+    template <typename TSource>
+    class LINQOrderedEnumerator : public LINQEnumerator<TSource>, public IComparer<TSource>
+    {
+    public:
+        template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
+        LINQOrderedEnumerator(const Ref<IEnumerator<TSource>> &enumerator, TFunc func)
+            : LINQEnumerator<TSource>(CreateRef<OrderEnumerator<TSource>>(enumerator, this))
+        {
+            m_Comparer.push_back(AddComparer<TFunc>(func));
+        }
+
+        ~LINQOrderedEnumerator() = default;
+
+        int Compare(TSource left, TSource right) const
+        {
+            for (auto comparer : m_Comparer)
+            {
+                if (comparer(left, right) < 0)
+                    return -1;
+                if (comparer(left, right) > 0)
+                    return 1;
+            }
+            return 0;
+        }
+
+        template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
+        LINQOrderedEnumerator<TSource> ThenBy(TFunc func)
+        {
+            m_Comparer.push_back(AddComparer<TFunc>(func));
+            return *this;
+        }
+
+    private:
+        template <typename TFunc>
+        auto AddComparer(TFunc func)
+        {
+            return [func](const TSource& left, const TSource& right)
+            {
+                auto rleft = func(left);
+                auto rright = func(right);
+
+                if (rleft < rright)
+                    return -1;
+                if (rleft > rright)
+                    return 1;
+                return 0;
+            };
+        }
+        std::vector<Func<int, const TSource&, const TSource&>> m_Comparer;
     };
 
     class LINQ

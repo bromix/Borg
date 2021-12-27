@@ -67,8 +67,32 @@ TEST(LINQ, OrderByDescending)
         CreateRef<Person>("Adam", 24)};
     auto result = LINQ::From(persons)
                       .OrderByDescending([](Ref<Person> x)
-                               { return x->name; })
+                                         { return x->name; })
                       .ToVector();
+}
+
+TEST(LINQ, OrderByThenBy)
+{
+    std::vector<std::string> fruits = {"grape", "passionfruit", "banana", "mango", "orange", "raspberry", "apple", "blueberry"};
+    auto result = LINQ::From(fruits)
+                      .OrderBy([](const std::string value)
+                               { return value.length(); })
+                      .ThenBy([](const std::string value)
+                              { return value; })
+                      .ToVector();
+
+    /*
+    This code produces the following output:
+
+    apple
+    grape
+    mango
+    banana
+    orange
+    blueberry
+    raspberry
+    passionfruit
+*/
 }
 
 TEST(LINQ, select)
