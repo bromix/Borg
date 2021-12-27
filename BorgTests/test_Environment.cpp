@@ -9,6 +9,12 @@ TEST(Environment, MachineName)
     ASSERT_FALSE(machineName.IsNullOrEmpty());
 }
 
+TEST(Environment, UserName)
+{
+    auto userName = Environment::UserName();
+    ASSERT_FALSE(userName.IsNullOrEmpty());
+}
+
 TEST(Environment, GetSpecialFolder_LocalApplicationData)
 {
     auto path = Environment::GetFolderPath(Environment::SpecialFolder::LocalApplicationData);

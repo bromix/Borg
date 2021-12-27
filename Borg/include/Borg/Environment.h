@@ -45,5 +45,12 @@ namespace Borg
          * @return String 
          */
         static String MachineName();
+
+        /**
+         * @brief Gets the user name of the person who is associated with the current thread.
+         * 
+         * @return String 
+         */
+        static String UserName();
     };
 }
