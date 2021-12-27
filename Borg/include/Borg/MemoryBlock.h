@@ -78,6 +78,27 @@ namespace Borg
          */
         T *Data() const;
 
+        /**
+         * @brief Pointer to the beginning of the data.
+         *
+         * @return const T*
+         */
+        const T *Data();
+
+        /**
+         * @brief Pointer to the beginning of the data.
+         *
+         * @return T*
+         */
+        operator T *() const;
+
+        /**
+         * @brief Pointer to the beginning of the data.
+         *
+         * @return const T*
+         */
+        operator const T *();
+
         T &operator[](std::size_t index);
 
         MemoryBlock<T> &operator=(const MemoryBlock<T> &input);
@@ -149,6 +170,24 @@ namespace Borg
 
     template <typename T>
     T *MemoryBlock<T>::Data() const
+    {
+        return m_Data;
+    }
+
+    template <typename T>
+    const T *MemoryBlock<T>::Data()
+    {
+        return m_Data;
+    }
+
+    template <typename T>
+    MemoryBlock<T>::operator T *() const
+    {
+        return m_Data;
+    }
+
+    template <typename T>
+    MemoryBlock<T>::operator const T *()
     {
         return m_Data;
     }

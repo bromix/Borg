@@ -47,7 +47,7 @@ namespace Borg
             kFlags,                // Conversion flags
             input.data(),          // Source UTF-8 string pointer
             input.length(),        // Length of source UTF-8 string, in chars
-            m_StringBuffer.Data(), // Pointer to destination buffer
+            m_StringBuffer, // Pointer to destination buffer
             utf16Length            // Size of destination buffer, in wchar_ts
         );
 
@@ -90,14 +90,14 @@ namespace Borg
     Ref<String::IString> Utf16String::ToLower() const
     {
         Ref<Utf16String> copy = CreateRef<Utf16String>(m_StringBuffer);
-        ::CharLowerW(copy->m_StringBuffer.Data());
+        ::CharLowerW(copy->m_StringBuffer);
         return copy;
     }
 
     Ref<String::IString> Utf16String::ToUpper() const
     {
         Ref<Utf16String> copy = CreateRef<Utf16String>(m_StringBuffer);
-        ::CharUpperW(copy->m_StringBuffer.Data());
+        ::CharUpperW(copy->m_StringBuffer);
         return copy;
     }
 
@@ -119,8 +119,8 @@ namespace Borg
 
         Ref<Utf16String> newString = CreateRef<Utf16String>(m_StringBuffer.Count() + value.length());
 
-        wchar_t *targetData = newString->m_StringBuffer.Data();
-        wchar_t *sourceData = m_StringBuffer.Data();
+        wchar_t *targetData = newString->m_StringBuffer;
+        wchar_t *sourceData = m_StringBuffer;
 
         if (startIndex > 0)
             std::wmemcpy(targetData, sourceData, startIndex);

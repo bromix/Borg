@@ -47,18 +47,18 @@ namespace Borg
     {
         MemoryBlock<wchar_t> buffer{MAX_COMPUTERNAME_LENGTH + 1};
         DWORD count = buffer.Count();
-        if (GetComputerNameW(buffer.Data(), &count) == FALSE)
+        if (GetComputerNameW(buffer, &count) == FALSE)
             throw InvalidOperationException("The name of this computer cannot be obtained.");
-        return String(buffer.Data(), count - 1);
+        return String(buffer, count - 1);
     }
 
     String Environment::UserName()
     {
         MemoryBlock<wchar_t> buffer{UNLEN + 1};
         DWORD count = buffer.Count();
-        if (GetUserNameW(buffer.Data(), &count) == FALSE)
+        if (GetUserNameW(buffer, &count) == FALSE)
             throw InvalidOperationException("The name of this computer cannot be obtained.");
-        return String(buffer.Data(), count - 1);
+        return String(buffer, count - 1);
     }
 
     String Environment::NewLine()
