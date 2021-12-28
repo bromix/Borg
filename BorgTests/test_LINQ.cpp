@@ -32,11 +32,27 @@ TEST(LINQ, First)
     ASSERT_EQ(1, result);
 }
 
+TEST(LINQ, FirstWithPredicate)
+{
+    std::vector<int> numbers = {9, 34, 65, 92, 87, 435, 3, 54, 83, 23, 87, 435, 67, 12, 19};
+    auto result = LINQ::From(numbers).First([](int x)
+                                            { return x > 80; });
+    ASSERT_EQ(92, result);
+}
+
 TEST(LINQ, Last)
 {
     std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     auto result = LINQ::From(numbers).Last();
     ASSERT_EQ(10, result);
+}
+
+TEST(LINQ, LastWithPredicate)
+{
+    std::vector<int> numbers = {9, 34, 65, 92, 87, 435, 3, 54, 83, 23, 87, 67, 12, 19};
+    auto result = LINQ::From(numbers).Last([](int x)
+                                           { return x > 80; });
+    ASSERT_EQ(87, result);
 }
 
 TEST(LINQ, Count)
@@ -46,7 +62,7 @@ TEST(LINQ, Count)
     ASSERT_EQ(10, result);
 }
 
-TEST(LINQ, CountWithWhere)
+TEST(LINQ, CountWithPredicate)
 {
     std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     auto result = LINQ::From(numbers).Count([](int x)

@@ -149,9 +149,9 @@ namespace Borg
 
         /**
          * @brief Returns a number that represents how many elements in the specified sequence satisfy a condition.
-         * 
-         * @param predicate 
-         * @return uint32_t 
+         *
+         * @param predicate
+         * @return uint32_t
          */
         uint32_t Count(Func<bool, TSource> predicate)
         {
@@ -159,7 +159,7 @@ namespace Borg
             auto enumerator = GetEnumerator();
             while (enumerator->MoveNext())
             {
-                if(predicate(enumerator->Current()))
+                if (predicate(enumerator->Current()))
                     ++count;
             }
             return count;
@@ -181,9 +181,9 @@ namespace Borg
 
         /**
          * @brief Returns an uint64_t that represents how many elements in a sequence satisfy a condition.
-         * 
-         * @param predicate 
-         * @return uint64_t 
+         *
+         * @param predicate
+         * @return uint64_t
          */
         uint64_t LongCount(Func<bool, TSource> predicate)
         {
@@ -191,7 +191,7 @@ namespace Borg
             auto enumerator = GetEnumerator();
             while (enumerator->MoveNext())
             {
-                if(predicate(enumerator->Current()))
+                if (predicate(enumerator->Current()))
                     ++count;
             }
             return count;
@@ -212,6 +212,24 @@ namespace Borg
         }
 
         /**
+         * @brief Returns the first element in a sequence that satisfies a specified condition.
+         *
+         * @param predicate
+         * @return TSource
+         */
+        TSource First(Func<bool, TSource> predicate) const
+        {
+            auto enumerator = GetEnumerator();
+            while (enumerator->MoveNext())
+            {
+                if (predicate(enumerator->Current()))
+                    return enumerator->Current();
+            }
+
+            throw InvalidOperationException("No element satisfies the condition");
+        }
+
+        /**
          * @brief Returns the last element of a sequence.
          *
          * @return TSource
@@ -225,6 +243,29 @@ namespace Borg
 
             if (result.has_value())
                 return result.value();
+
+            throw InvalidOperationException("No element satisfies the condition");
+        }
+
+        /**
+         * @brief Returns the last element of a sequence that satisfies a specified condition.
+         * 
+         * @param predicate 
+         * @return TSource 
+         */
+        TSource Last(Func<bool, TSource> predicate) const
+        {
+            auto enumerator = GetEnumerator();
+            std::optional<TSource> result;
+            while (enumerator->MoveNext())
+            {
+                if (predicate(enumerator->Current()))
+                    result = enumerator->Current();
+            }
+
+            if (result.has_value())
+                return result.value();
+
             throw InvalidOperationException("No element satisfies the condition");
         }
 
