@@ -1,5 +1,5 @@
 #pragma once
-#include "IEnumerator.h"
+#include "IEnumerable.h"
 
 namespace Borg
 {
@@ -32,6 +32,21 @@ namespace Borg
 
     private:
         int m_Index = -1;
+        std::vector<T> m_Vector;
+    };
+
+    template <typename T>
+    class VectorEnumerable : public IEnumerable<T>
+    {
+    public:
+        VectorEnumerable(const std::vector<T> &input) : m_Vector(input){}
+        VectorEnumerable(std::vector<T> &&input) : m_Vector(std::move(input)){}
+
+        Ref<IEnumerator<T>> GetEnumerator() const override
+        {
+            return CreateRef<VectorEnumerator<T>>(m_Vector);
+        }
+    private:
         std::vector<T> m_Vector;
     };
 }

@@ -2,7 +2,7 @@
 #include "Types.h"
 #include "RefCast.h"
 #include "StdEnumerators.h"
-#include "IEnumerator.h"
+#include "IEnumerable.h"
 #include "LINQ/WhereEnumerator.h"
 #include "LINQ/SelectEnumerator.h"
 #include "LINQ/OrderEnumerator.h"
@@ -164,7 +164,7 @@ namespace Borg
         template <typename TFunc>
         auto AddComparer(TFunc func)
         {
-            return [func](const TSource& left, const TSource& right)
+            return [func](const TSource &left, const TSource &right)
             {
                 auto rleft = func(left);
                 auto rright = func(right);
@@ -176,7 +176,50 @@ namespace Borg
                 return 0;
             };
         }
-        std::vector<Func<int, const TSource&, const TSource&>> m_Comparer;
+        std::vector<Func<int, const TSource &, const TSource &>> m_Comparer;
+    };
+
+    template <typename TSource>
+    class LINQEnumberable : public IEnumerable<TSource>
+    {
+    public:
+        LINQEnumberable(const Ref<IEnumerable<TSource>> &innerEnumerable) : m_InnerEnumerable(innerEnumerable) {}
+        Ref<IEnumerator<TSource>> GetEnumerator() const override
+        {
+            return m_InnerEnumerable->GetEnumerator();
+        }
+
+        uint32_t Count() const
+        {
+            uint32_t count = 0;
+            auto enumerator = GetEnumerator();
+            while (enumerator->MoveNext())
+                ++count;
+            return count;
+        }
+
+        uint64_t LongCount() const
+        {
+            uint64_t count = 0;
+            auto enumerator = GetEnumerator();
+            while (enumerator->MoveNext())
+                ++count;
+            return count;
+        }
+
+        std::vector<TSource> ToVector() const
+        {
+            std::vector<TSource> result;
+
+            auto enumerator = GetEnumerator();
+            while (enumerator->MoveNext())
+                result.push_back(enumerator->Current());
+
+            return result;
+        }
+
+    private:
+        Ref<IEnumerable<TSource>> m_InnerEnumerable;
     };
 
     class LINQ
@@ -184,10 +227,16 @@ namespace Borg
     public:
         LINQ() = default;
 
+        // template <typename T>
+        // static LINQEnumerator<T> From(const std::vector<T> &input)
+        // {
+        //     return LINQEnumerator<T>(CreateRef<VectorEnumerator<T>>(input));
+        // }
+
         template <typename T>
-        static LINQEnumerator<T> From(const std::vector<T> &input)
+        static LINQEnumberable<T> From(const std::vector<T> &input)
         {
-            return LINQEnumerator<T>(CreateRef<VectorEnumerator<T>>(input));
+            return LINQEnumberable<T>(CreateRef<VectorEnumerable<T>>(input));
         }
     };
 }
