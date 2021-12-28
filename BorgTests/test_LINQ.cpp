@@ -171,7 +171,7 @@ TEST(LINQ, OrderByThenByDescending)
     ASSERT_EQ("passionfruit", result[7]);
 }
 
-TEST(LINQ, select)
+TEST(LINQ, Select)
 {
     std::vector<Person> persons = {
         {"Hans", 35},
