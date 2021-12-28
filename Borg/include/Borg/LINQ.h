@@ -235,7 +235,25 @@ namespace Borg
             LINQComparer for sorting.
             */
             auto comparer = CreateRef<LINQComparer<TSource>>();
-            comparer->AddSelectorForSort(selectFunction);
+            comparer->AddSelectorForSort(selectFunction, false);
+
+            auto orderEnumerable = CreateRef<OrderEnumerable<TSource>>(m_InnerEnumerable, comparer);
+
+            return LINQOrderedEnumberable<TSource>(orderEnumerable, comparer);
+        }
+
+        template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
+        LINQOrderedEnumberable<TSource> OrderByDescending(TFunc selectFunction)
+        {
+            /*
+            LINQOrderedEnumberable and OrderEnumerable share the same
+            instance of LINQComparer.
+            In LINQOrderedEnumberable we can add additional comparer/
+            selector functions. The OrderEnumerable will call the
+            LINQComparer for sorting.
+            */
+            auto comparer = CreateRef<LINQComparer<TSource>>();
+            comparer->AddSelectorForSort(selectFunction, true);
 
             auto orderEnumerable = CreateRef<OrderEnumerable<TSource>>(m_InnerEnumerable, comparer);
 
@@ -263,17 +281,17 @@ namespace Borg
         }
 
         template <typename TFunc>
-        void AddSelectorForSort(TFunc selectFunction)
+        void AddSelectorForSort(TFunc selectFunction, bool descending)
         {
-            auto sortFunction = [selectFunction](const TSource &left, const TSource &right)
+            auto sortFunction = [selectFunction, descending](const TSource &left, const TSource &right)
             {
                 auto selectLeft = selectFunction(left);
                 auto selectRight = selectFunction(right);
 
                 if (selectLeft < selectRight)
-                    return -1;
+                    return descending ? 1 : -1;
                 if (selectLeft > selectRight)
-                    return 1;
+                    return descending ? -1 : 1;
                 return 0;
             };
 
@@ -296,7 +314,7 @@ namespace Borg
         template <typename TFunc>
         LINQOrderedEnumberable<TSource> ThenBy(TFunc selectFunction)
         {
-            m_Comparer->AddSelectorForSort(selectFunction);
+            m_Comparer->AddSelectorForSort(selectFunction, false);
             return *this;
         }
 

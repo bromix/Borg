@@ -115,17 +115,20 @@ TEST(LINQ, OrderBy)
     ASSERT_EQ(8, result[2].Age);
 }
 
-// TEST(LINQ, OrderByDescending)
-// {
-//     std::vector<Ref<Person>> persons = {
-//         CreateRef<Person>("Hans", 35),
-//         CreateRef<Person>("Detlef", 35),
-//         CreateRef<Person>("Adam", 24)};
-//     auto result = LINQ::From(persons)
-//                       .OrderByDescending([](Ref<Person> x)
-//                                          { return x->name; })
-//                       .ToVector();
-// }
+TEST(LINQ, OrderByDescending)
+{
+    auto result = LINQ::From({62, 83, 5, 13, 63, 97})
+                      .OrderByDescending([](auto x)
+                                         { return x; })
+                      .ToVector();
+
+    ASSERT_EQ(97, result[0]);
+    ASSERT_EQ(83, result[1]);
+    ASSERT_EQ(63, result[2]);
+    ASSERT_EQ(62, result[3]);
+    ASSERT_EQ(13, result[4]);
+    ASSERT_EQ(5, result[5]);
+}
 
 TEST(LINQ, OrderByThenBy)
 {
