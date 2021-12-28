@@ -296,7 +296,7 @@ namespace Borg
         template <typename TFunc>
         LINQOrderedEnumberable<TSource> ThenBy(TFunc selectFunction)
         {
-            m_Comparer->AddSelectorForSort(std::forward(selectFunction));
+            m_Comparer->AddSelectorForSort(selectFunction);
             return *this;
         }
 

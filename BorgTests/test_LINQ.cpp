@@ -127,29 +127,25 @@ TEST(LINQ, OrderBy)
 //                       .ToVector();
 // }
 
-// TEST(LINQ, OrderByThenBy)
-// {
-//     std::vector<std::string> fruits = {"grape", "passionfruit", "banana", "mango", "orange", "raspberry", "apple", "blueberry"};
-//     auto result = LINQ::From(fruits)
-//                       .OrderBy([](const std::string value)
-//                                { return value.length(); })
-//                       .ThenBy([](const std::string value)
-//                               { return value; })
-//                       .ToVector();
+TEST(LINQ, OrderByThenBy)
+{
+    std::vector<String> fruits = {"grape", "passionfruit", "banana", "mango", "orange", "raspberry", "apple", "blueberry"};
+    auto result = LINQ::From(fruits)
+                      .OrderBy([](const auto& value)
+                               { return value.Length(); })
+                      .ThenBy([](const auto& value)
+                              { return value; })
+                      .ToVector();
 
-//     /*
-//     This code produces the following output:
-
-//     apple
-//     grape
-//     mango
-//     banana
-//     orange
-//     blueberry
-//     raspberry
-//     passionfruit
-// */
-// }
+    ASSERT_EQ("apple", result[0]);
+    ASSERT_EQ("grape", result[1]);
+    ASSERT_EQ("mango", result[2]);
+    ASSERT_EQ("banana", result[3]);
+    ASSERT_EQ("orange", result[4]);
+    ASSERT_EQ("blueberry", result[5]);
+    ASSERT_EQ("raspberry", result[6]);
+    ASSERT_EQ("passionfruit", result[7]);
+}
 
 TEST(LINQ, select)
 {

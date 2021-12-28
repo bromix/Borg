@@ -69,9 +69,14 @@ namespace Borg
         return m_Impl->CompareTo(rhs) == 0;
     }
 
-    int String::operator<(const String &rhs) const noexcept
+    bool String::operator<(const String &rhs) const noexcept
     {
-        return m_Impl->CompareTo(rhs.m_Impl);
+        return m_Impl->CompareTo(rhs.m_Impl) < 0;
+    }
+
+    bool String::operator>(const String &rhs) const noexcept
+    {
+        return m_Impl->CompareTo(rhs.m_Impl) > 0;
     }
 
     std::size_t String::Length() const
