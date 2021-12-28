@@ -7,26 +7,14 @@ using namespace Borg;
 
 struct Person
 {
-    Person(const std::string &name, int age)
-    {
-        this->name = name;
-        this->age = age;
-    }
-
-    std::string name = "";
-    int age = 0;
+    String Name;
+    int Age;
 };
 
 struct Pet
 {
-    Pet(const String &name, int age)
-    {
-        this->name = name;
-        this->age = age;
-    }
-
-    String name = "";
-    int age = 0;
+    String Name;
+    int Age;
 };
 
 TEST(LINQ, FromVector)
@@ -93,13 +81,14 @@ TEST(LINQ, Where)
 
 TEST(LINQ, All)
 {
-    auto pets = {Pet{"Barley", 10},
-                 Pet{"Boots", 4},
-                 Pet{"Whiskers", 6}};
+    std::vector<Pet> pets = {
+        {"Barley", 0},
+        {"Boots", 4},
+        {"Whiskers", 6}};
 
     auto result = LINQ::From(pets)
                       .All([](const Pet &pet)
-                           { return pet.name.StartsWith("B"); });
+                           { return pet.Name.StartsWith("B"); });
 
     ASSERT_FALSE(result);
 }
@@ -154,24 +143,26 @@ TEST(LINQ, All)
 
 TEST(LINQ, select)
 {
-    std::vector<Ref<Person>> persons = {
-        CreateRef<Person>("Hans", 35),
-        CreateRef<Person>("Peter", 24)};
+    std::vector<Person> persons = {
+        {"Hans", 35},
+        {"Peter", 24}};
 
     auto result = LINQ::From(persons)
-                      .Select([](Ref<Person> x) -> auto { return x->age; })
+                      .Select([](const Person &x)
+                              { return x.Age; })
                       .ToVector();
 }
 
 TEST(LINQ, WhereAndSelect)
 {
-    std::vector<Ref<Person>> persons = {
-        CreateRef<Person>("Hans", 35),
-        CreateRef<Person>("Peter", 24)};
+    std::vector<Person> persons = {
+        {"Hans", 35},
+        {"Peter", 24}};
 
     auto result = LINQ::From(persons)
-                      .Where([](Ref<Person> x) -> bool
-                             { return x->name == "Hans"; })
-                      .Select([](Ref<Person> x) -> auto { return x->age; })
+                      .Where([](const Person &x)
+                             { return x.Name == "Hans"; })
+                      .Select([](const Person &x)
+                              { return x.Age; })
                       .ToVector();
 }
