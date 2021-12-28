@@ -224,6 +224,15 @@ namespace Borg
             return result;
         }
 
+        /**
+         * @brief Sorts the elements of a sequence in ascending order according to a key.
+         * 
+         * @tparam TFunc 
+         * @tparam TResult 
+         * @tparam TSource>::type 
+         * @param selectFunction 
+         * @return LINQOrderedEnumberable<TSource> 
+         */
         template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
         LINQOrderedEnumberable<TSource> OrderBy(TFunc selectFunction)
         {
@@ -242,6 +251,15 @@ namespace Borg
             return LINQOrderedEnumberable<TSource>(orderEnumerable, comparer);
         }
 
+        /**
+         * @brief Sorts the elements of a sequence in descending order according to a key.
+         * 
+         * @tparam TFunc 
+         * @tparam TResult 
+         * @tparam TSource>::type 
+         * @param selectFunction 
+         * @return LINQOrderedEnumberable<TSource> 
+         */
         template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
         LINQOrderedEnumberable<TSource> OrderByDescending(TFunc selectFunction)
         {
@@ -311,6 +329,13 @@ namespace Borg
         {
         }
 
+        /**
+         * @brief Performs a subsequent ordering of the elements in a sequence in ascending order according to a key.
+         * 
+         * @tparam TFunc 
+         * @param selectFunction 
+         * @return LINQOrderedEnumberable<TSource> 
+         */
         template <typename TFunc>
         LINQOrderedEnumberable<TSource> ThenBy(TFunc selectFunction)
         {
@@ -318,6 +343,13 @@ namespace Borg
             return *this;
         }
 
+        /**
+         * @brief Performs a subsequent ordering of the elements in a sequence in descending order, according to a key.
+         * 
+         * @tparam TFunc 
+         * @param selectFunction 
+         * @return LINQOrderedEnumberable<TSource> 
+         */
         template <typename TFunc>
         LINQOrderedEnumberable<TSource> ThenByDescending(TFunc selectFunction)
         {
