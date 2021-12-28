@@ -18,46 +18,17 @@ namespace Borg
     {
     public:
         template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
-        LINQEnumerator<TResult> Select(TFunc func)
-        {
-            return LINQEnumerator<TResult>(CreateRef<SelectEnumerator<TSource, TFunc>>(m_Enumerator, func));
-        }
-
-        /**
-         * @brief Sorts the elements of a sequence in ascending order.
-         *
-         * @tparam TFunc
-         * @tparam TResult
-         * @tparam TSource>::type
-         * @param func
-         * @return LINQEnumerator<TSource>
-         */
-        template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
         LINQOrderedEnumerator<TSource> OrderBy(TFunc func)
         {
             return LINQOrderedEnumerator<TSource>(m_Enumerator, func);
         }
 
-        /**
-         * @brief Sorts the elements of a sequence in descending order.
-         *
-         * @tparam TFunc
-         * @tparam TResult
-         * @tparam TSource>::type
-         * @param func
-         * @return LINQEnumerator<TSource>
-         */
         template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
         LINQOrderedEnumerator<TSource> OrderByDescending(TFunc func)
         {
             return LINQOrderedEnumerator<TSource>(m_Enumerator, func);
         }
 
-        /**
-         * @brief Creates a std::vector<TSource> from an IEnumerable<T>.
-         *
-         * @return std::vector<TSource>
-         */
         std::vector<TSource> ToVector() const
         {
             std::vector<TSource> result;
@@ -319,6 +290,12 @@ namespace Borg
     {
     public:
         LINQ() = default;
+
+        template<typename T>
+        static LINQEnumberable<T> From(std::initializer_list<T> input)
+        {
+            return LINQEnumberable<T>(CreateRef<VectorEnumerable<T>>(input));
+        }
 
         template <typename T>
         static LINQEnumberable<T> From(const std::vector<T> &input)

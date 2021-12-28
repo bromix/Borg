@@ -72,8 +72,7 @@ TEST(LINQ, CountWithPredicate)
 
 TEST(LINQ, Where)
 {
-    std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    auto result = LINQ::From(numbers)
+    auto result = LINQ::From({1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
                       .Where([](int x) -> bool
                              { return x > 5; })
                       .Where([](int x) -> bool
