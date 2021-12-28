@@ -207,6 +207,11 @@ namespace Borg
             return count;
         }
 
+        LINQEnumberable<TSource> Where(Func<bool, TSource> predicate)
+        {
+            return LINQEnumberable<TSource>(CreateRef<WhereEnumerable<TSource>>(m_InnerEnumerable, predicate));
+        }
+
         std::vector<TSource> ToVector() const
         {
             std::vector<TSource> result;
@@ -226,12 +231,6 @@ namespace Borg
     {
     public:
         LINQ() = default;
-
-        // template <typename T>
-        // static LINQEnumerator<T> From(const std::vector<T> &input)
-        // {
-        //     return LINQEnumerator<T>(CreateRef<VectorEnumerator<T>>(input));
-        // }
 
         template <typename T>
         static LINQEnumberable<T> From(const std::vector<T> &input)

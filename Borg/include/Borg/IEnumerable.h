@@ -1,9 +1,17 @@
 #pragma once
 #include "Types.h"
-#include "IEnumerator.h"
 
 namespace Borg
 {
+    template <typename T>
+    class IEnumerator
+    {
+    public:
+        virtual ~IEnumerator() = default;
+        virtual T Current() const = 0;
+        virtual bool MoveNext() = 0;
+    };
+
     template <typename T>
     class IEnumerable
     {
