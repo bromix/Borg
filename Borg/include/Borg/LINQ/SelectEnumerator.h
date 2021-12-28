@@ -20,13 +20,26 @@ namespace Borg
             return m_ParentEnumerator->MoveNext();
         }
 
-        void Reset()
-        {
-            m_ParentEnumerator->Reset();
-        }
-
     private:
         Ref<IEnumerator<TSource>> m_ParentEnumerator;
         TFunc m_SelectFunc;
+    };
+
+    template <typename TSource, typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
+    class SelectEnumerable : public IEnumerable<TResult>
+    {
+    public:
+        SelectEnumerable(Ref<IEnumerable<TSource>> innerEnumerable, TFunc selectFunction)
+            : m_SelectFunction(selectFunction), m_InnerEnumerable(innerEnumerable)
+        {
+        }
+
+        Ref<IEnumerator<TResult>> GetEnumerator() const override
+        {
+            return CreateRef<SelectEnumerator<TSource, TFunc>>(m_InnerEnumerable->GetEnumerator(), m_SelectFunction);
+        }
+    private:
+        Ref<IEnumerable<TSource>> m_InnerEnumerable;
+        TFunc m_SelectFunction;
     };
 }

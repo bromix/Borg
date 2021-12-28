@@ -16,63 +16,6 @@ namespace Borg
     class LINQEnumerator
     {
     public:
-        LINQEnumerator(const Ref<IEnumerator<TSource>> &enumerator)
-            : m_Enumerator(enumerator)
-        {
-        }
-
-        ~LINQEnumerator() = default;
-
-        /**
-         * @brief Returns the number of elements in a sequence.
-         *
-         * @return uint32_t
-         */
-        uint32_t Count()
-        {
-            uint32_t count = 0;
-
-            while (m_Enumerator->MoveNext())
-                ++count;
-
-            return count;
-        }
-
-        /**
-         * @brief Returns an uint64 that represents the number of elements in a sequence.
-         *
-         * @return uint64_t
-         */
-        uint64_t LongCount()
-        {
-            uint32_t count = 0;
-
-            while (m_Enumerator->MoveNext())
-                ++count;
-
-            return count;
-        }
-
-        /**
-         * @brief Filters a sequence of values based on a predicate.
-         *
-         * @param predicate
-         * @return LINQEnumerator<TSource>
-         */
-        LINQEnumerator<TSource> Where(Func<bool, TSource> predicate)
-        {
-            return LINQEnumerator<TSource>(CreateRef<WhereEnumerator<TSource>>(m_Enumerator, predicate));
-        }
-
-        /**
-         * @brief Projects each element of a sequence into a new form.
-         *
-         * @tparam TFunc
-         * @tparam TResult
-         * @tparam TSource>::type
-         * @param func
-         * @return LINQEnumerator<TResult>
-         */
         template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
         LINQEnumerator<TResult> Select(TFunc func)
         {
@@ -210,6 +153,12 @@ namespace Borg
         LINQEnumberable<TSource> Where(Func<bool, TSource> predicate)
         {
             return LINQEnumberable<TSource>(CreateRef<WhereEnumerable<TSource>>(m_InnerEnumerable, predicate));
+        }
+
+        template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
+        LINQEnumberable<TResult> Select(TFunc func)
+        {
+            return LINQEnumberable<TResult>(CreateRef<SelectEnumerable<TSource, TFunc>>(m_InnerEnumerable, func));
         }
 
         std::vector<TSource> ToVector() const
