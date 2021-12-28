@@ -8,7 +8,7 @@
             "name": "Run Test (Windows)",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/Tests/Debug/Tests.exe",
+            "program": "${workspaceFolder}/build/BorgTests/Debug/BorgTests.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
