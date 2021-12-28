@@ -318,6 +318,13 @@ namespace Borg
             return *this;
         }
 
+        template <typename TFunc>
+        LINQOrderedEnumberable<TSource> ThenByDescending(TFunc selectFunction)
+        {
+            m_Comparer->AddSelectorForSort(selectFunction, true);
+            return *this;
+        }
+
     private:
         Ref<LINQComparer<TSource>> m_Comparer;
     };

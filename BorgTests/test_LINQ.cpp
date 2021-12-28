@@ -150,6 +150,26 @@ TEST(LINQ, OrderByThenBy)
     ASSERT_EQ("passionfruit", result[7]);
 }
 
+TEST(LINQ, OrderByThenByDescending)
+{
+    std::vector<String> fruits = {"grape", "passionfruit", "banana", "mango", "orange", "raspberry", "apple", "blueberry"};
+    auto result = LINQ::From(fruits)
+                      .OrderBy([](const auto& value)
+                               { return value.Length(); })
+                      .ThenByDescending([](const auto& value)
+                              { return value; })
+                      .ToVector();
+
+    ASSERT_EQ("mango", result[0]);
+    ASSERT_EQ("grape", result[1]);
+    ASSERT_EQ("apple", result[2]);
+    ASSERT_EQ("orange", result[3]);
+    ASSERT_EQ("banana", result[4]);
+    ASSERT_EQ("raspberry", result[5]);
+    ASSERT_EQ("blueberry", result[6]);
+    ASSERT_EQ("passionfruit", result[7]);
+}
+
 TEST(LINQ, select)
 {
     std::vector<Person> persons = {
