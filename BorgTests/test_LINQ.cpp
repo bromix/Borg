@@ -77,6 +77,11 @@ TEST(LINQ, Where)
                       .Where([](int x) -> bool
                              { return x % 2 == 0; })
                       .ToVector();
+
+    ASSERT_EQ(3, result.size());
+    ASSERT_EQ(6, result[0]);
+    ASSERT_EQ(8, result[1]);
+    ASSERT_EQ(10, result[2]);
 }
 
 TEST(LINQ, All)
@@ -151,6 +156,9 @@ TEST(LINQ, select)
                       .Select([](const Person &x)
                               { return x.Age; })
                       .ToVector();
+    ASSERT_EQ(2, result.size());
+    ASSERT_EQ(35, result[0]);
+    ASSERT_EQ(24, result[1]);
 }
 
 TEST(LINQ, WhereAndSelect)
@@ -165,4 +173,6 @@ TEST(LINQ, WhereAndSelect)
                       .Select([](const Person &x)
                               { return x.Age; })
                       .ToVector();
+    ASSERT_EQ(1, result.size());
+    ASSERT_EQ(35, result[0]);
 }
