@@ -39,13 +39,19 @@ namespace Borg
     class VectorEnumerable : public IEnumerable<T>
     {
     public:
-        VectorEnumerable(const std::vector<T> &input) : m_Vector(input){}
-        VectorEnumerable(std::vector<T> &&input) : m_Vector(std::move(input)){}
+        VectorEnumerable(const std::vector<T> &input) : m_Vector(input) {}
+        VectorEnumerable(std::vector<T> &&input) : m_Vector(std::move(input)) {}
 
         Ref<IEnumerator<T>> GetEnumerator() const override
         {
             return CreateRef<VectorEnumerator<T>>(m_Vector);
         }
+
+        std::vector<T> ToVector() const
+        {
+            return m_Vector;
+        }
+
     private:
         std::vector<T> m_Vector;
     };

@@ -215,8 +215,15 @@ namespace Borg
          */
         std::vector<TSource> ToVector() const
         {
-            std::vector<TSource> result;
+            /*
+            Little optimization. A VectorEnumerable<TSource> has already an
+            internal vector with the result. We can call the VectorEnumerable<TSource>
+            directly to return the vector and skip creating a new one.
+            */
+            if (auto _vector = RefAs<VectorEnumerable<TSource>>(m_InnerEnumerable))
+                return _vector->ToVector();
 
+            std::vector<TSource> result;
             auto enumerator = GetEnumerator();
             while (enumerator->MoveNext())
                 result.push_back(enumerator->Current());
@@ -226,12 +233,12 @@ namespace Borg
 
         /**
          * @brief Sorts the elements of a sequence in ascending order according to a key.
-         * 
-         * @tparam TFunc 
-         * @tparam TResult 
-         * @tparam TSource>::type 
-         * @param selectFunction 
-         * @return LINQOrderedEnumberable<TSource> 
+         *
+         * @tparam TFunc
+         * @tparam TResult
+         * @tparam TSource>::type
+         * @param selectFunction
+         * @return LINQOrderedEnumberable<TSource>
          */
         template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
         LINQOrderedEnumberable<TSource> OrderBy(TFunc selectFunction)
@@ -253,12 +260,12 @@ namespace Borg
 
         /**
          * @brief Sorts the elements of a sequence in descending order according to a key.
-         * 
-         * @tparam TFunc 
-         * @tparam TResult 
-         * @tparam TSource>::type 
-         * @param selectFunction 
-         * @return LINQOrderedEnumberable<TSource> 
+         *
+         * @tparam TFunc
+         * @tparam TResult
+         * @tparam TSource>::type
+         * @param selectFunction
+         * @return LINQOrderedEnumberable<TSource>
          */
         template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
         LINQOrderedEnumberable<TSource> OrderByDescending(TFunc selectFunction)
@@ -331,10 +338,10 @@ namespace Borg
 
         /**
          * @brief Performs a subsequent ordering of the elements in a sequence in ascending order according to a key.
-         * 
-         * @tparam TFunc 
-         * @param selectFunction 
-         * @return LINQOrderedEnumberable<TSource> 
+         *
+         * @tparam TFunc
+         * @param selectFunction
+         * @return LINQOrderedEnumberable<TSource>
          */
         template <typename TFunc>
         LINQOrderedEnumberable<TSource> ThenBy(TFunc selectFunction)
@@ -345,10 +352,10 @@ namespace Borg
 
         /**
          * @brief Performs a subsequent ordering of the elements in a sequence in descending order, according to a key.
-         * 
-         * @tparam TFunc 
-         * @param selectFunction 
-         * @return LINQOrderedEnumberable<TSource> 
+         *
+         * @tparam TFunc
+         * @param selectFunction
+         * @return LINQOrderedEnumberable<TSource>
          */
         template <typename TFunc>
         LINQOrderedEnumberable<TSource> ThenByDescending(TFunc selectFunction)
