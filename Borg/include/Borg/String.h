@@ -130,6 +130,8 @@ namespace Borg
         bool operator==(const std::string &rhs) const noexcept;
         bool operator==(const std::wstring &rhs) const noexcept;
 
+        int operator<(const String &rhs) const noexcept;
+
         class IString;
 
     private:

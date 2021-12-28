@@ -1,51 +1,33 @@
 #pragma once
+#include "Borg/IComparer.h"
+
 namespace Borg
 {
-    template <typename T>
-    class IComparer
-    {
-    public:
-        virtual ~IComparer() = default;
-        virtual int Compare(T left, T right) const = 0;
-    };
-
     template <typename TSource>
-    class OrderEnumerator : public IEnumerator<TSource>
+    class OrderEnumerable : public IEnumerable<TSource>
     {
     public:
-        OrderEnumerator(Ref<IEnumerator<TSource>> enumerator, IComparer<TSource> *comparer)
-            : m_ParentEnumerator(enumerator), m_comparer(comparer)
+        OrderEnumerable(const Ref<IEnumerable<TSource>>& innerEnumerable, const Ref<IComparer<TSource>>& comparer)
+            : m_InnerEnumerable(innerEnumerable), m_Comparer(comparer)
         {
         }
 
-        TSource Current() const override
+        Ref<IEnumerator<TSource>> GetEnumerator() const override
         {
-            return m_VectorEnumerator->Current();
-        }
+            std::vector<TSource> container;
+            auto enumerator = m_InnerEnumerable->GetEnumerator();
+            while (enumerator->MoveNext())
+                container.push_back(enumerator->Current());
 
-        bool MoveNext() override
-        {
-            if (!m_VectorEnumerator)
-            {
-                std::vector<TSource> tempVec;
-                while (m_ParentEnumerator->MoveNext())
-                    tempVec.push_back(m_ParentEnumerator->Current());
-                std::sort(tempVec.begin(), tempVec.end(), [this](const TSource& left, const TSource& right)
-                          { return m_comparer->Compare(left, right) < 0; });
-                m_VectorEnumerator = CreateRef<VectorEnumerator<TSource>>(tempVec);
-            }
-            return m_VectorEnumerator->MoveNext();
-        }
+            // Sort vector via delegate.
+            std::sort(container.begin(), container.end(), [this](const TSource &left, const TSource &right)
+                      { return m_Comparer->Compare(left, right) < 0; });
 
-        void Reset()
-        {
-            m_ParentEnumerator->Reset();
-            m_VectorEnumerator = nullptr;
+            return CreateRef<VectorEnumerator<TSource>>(container);
         }
 
     private:
-        IComparer<TSource> *m_comparer;
-        Ref<VectorEnumerator<TSource>> m_VectorEnumerator = nullptr;
-        Ref<IEnumerator<TSource>> m_ParentEnumerator;
+        Ref<IEnumerable<TSource>> m_InnerEnumerable;
+        Ref<IComparer<TSource>> m_Comparer;
     };
 }

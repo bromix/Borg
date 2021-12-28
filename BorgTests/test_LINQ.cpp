@@ -87,7 +87,7 @@ TEST(LINQ, Where)
 TEST(LINQ, All)
 {
     std::vector<Pet> pets = {
-        {"Barley", 0},
+        {"Barley", 8},
         {"Boots", 4},
         {"Whiskers", 6}};
 
@@ -98,17 +98,22 @@ TEST(LINQ, All)
     ASSERT_FALSE(result);
 }
 
-// TEST(LINQ, OrderBy)
-// {
-//     std::vector<Ref<Person>> persons = {
-//         CreateRef<Person>("Hans", 35),
-//         CreateRef<Person>("Detlef", 35),
-//         CreateRef<Person>("Adam", 24)};
-//     auto result = LINQ::From(persons)
-//                       .OrderBy([](Ref<Person> x)
-//                                { return x->name; })
-//                       .ToVector();
-// }
+TEST(LINQ, OrderBy)
+{
+    std::vector<Pet> pets = {
+        {"Barley", 8},
+        {"Boots", 4},
+        {"Whiskers", 1}};
+
+    auto result = LINQ::From(pets)
+                      .OrderBy([](const Pet &pet)
+                               { return pet.Age; })
+                      .ToVector();
+
+    ASSERT_EQ(1, result[0].Age);
+    ASSERT_EQ(4, result[1].Age);
+    ASSERT_EQ(8, result[2].Age);
+}
 
 // TEST(LINQ, OrderByDescending)
 // {
