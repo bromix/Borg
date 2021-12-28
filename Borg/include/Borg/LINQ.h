@@ -1,4 +1,5 @@
 #pragma once
+#include <optional>
 #include "Types.h"
 #include "RefCast.h"
 #include "StdEnumerators.h"
@@ -132,6 +133,11 @@ namespace Borg
             return m_InnerEnumerable->GetEnumerator();
         }
 
+        /**
+         * @brief Returns the number of elements in a sequence.
+         *
+         * @return uint32_t
+         */
         uint32_t Count() const
         {
             uint32_t count = 0;
@@ -141,6 +147,11 @@ namespace Borg
             return count;
         }
 
+        /**
+         * @brief Returns an uint64_t that represents the number of elements in a sequence.
+         *
+         * @return uint64_t
+         */
         uint64_t LongCount() const
         {
             uint64_t count = 0;
@@ -150,26 +161,68 @@ namespace Borg
             return count;
         }
 
-        TSource First()const
+        /**
+         * @brief Returns the first element of a sequence.
+         *
+         * @return TSource
+         */
+        TSource First() const
         {
             auto enumerator = GetEnumerator();
-            if(enumerator->MoveNext())
+            if (enumerator->MoveNext())
                 return enumerator->Current();
 
             throw InvalidOperationException("No element satisfies the condition");
         }
 
+        /**
+         * @brief Returns the last element of a sequence.
+         *
+         * @return TSource
+         */
+        TSource Last() const
+        {
+            auto enumerator = GetEnumerator();
+            std::optional<TSource> result;
+            while (enumerator->MoveNext())
+                result = enumerator->Current();
+
+            if (result.has_value())
+                return result.value();
+            throw InvalidOperationException("No element satisfies the condition");
+        }
+
+        /**
+         * @brief Filters a sequence of values based on a predicate.
+         *
+         * @param predicate
+         * @return LINQEnumberable<TSource>
+         */
         LINQEnumberable<TSource> Where(Func<bool, TSource> predicate)
         {
             return LINQEnumberable<TSource>(CreateRef<WhereEnumerable<TSource>>(m_InnerEnumerable, predicate));
         }
 
+        /**
+         * @brief Projects each element of a sequence into a new form.
+         *
+         * @tparam TFunc
+         * @tparam TResult
+         * @tparam TSource>::type
+         * @param func
+         * @return LINQEnumberable<TResult>
+         */
         template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
         LINQEnumberable<TResult> Select(TFunc func)
         {
             return LINQEnumberable<TResult>(CreateRef<SelectEnumerable<TSource, TFunc>>(m_InnerEnumerable, func));
         }
 
+        /**
+         * @brief Creates a std::vector<TSource>.
+         *
+         * @return std::vector<TSource>
+         */
         std::vector<TSource> ToVector() const
         {
             std::vector<TSource> result;
