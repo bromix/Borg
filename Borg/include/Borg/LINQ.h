@@ -325,5 +325,11 @@ namespace Borg
         {
             return LINQEnumberable<T>(CreateRef<VectorEnumerable<T>>(input));
         }
+
+        template <typename T>
+        static LINQEnumberable<T> From(std::vector<T> &&input)
+        {
+            return LINQEnumberable<T>(CreateRef<VectorEnumerable<T>>(std::move(input)));
+        }
     };
 }
