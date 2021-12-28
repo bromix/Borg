@@ -233,12 +233,50 @@ namespace Borg
     };
 
     template <typename TSource>
+    class LINQComparer : public IComparer<TSource>
+    {
+    public:
+        int Compare(const TSource &left, const TSource &right) const override
+        {
+            for (auto comparer : m_Comparer)
+            {
+                if (comparer(left, right) < 0)
+                    return -1;
+                if (comparer(left, right) > 0)
+                    return 1;
+            }
+            return 0;
+        }
+
+        template <typename TFunc>
+        void AddSelectorForSort(TFunc selectFunction)
+        {
+            auto sortFunction = [selectFunction](const TSource &left, const TSource &right)
+            {
+                auto selectLeft = selectFunction(left);
+                auto selectRight = selectFunction(right);
+
+                if (selectLeft < selectRight)
+                    return -1;
+                if (selectLeft > selectRight)
+                    return 1;
+                return 0;
+            };
+
+            m_Comparer.push_back(sortFunction);
+        }
+
+    private:
+        std::vector<Func<int, const TSource &, const TSource &>> m_Comparer;
+    };
+
+    template <typename TSource>
     class LINQOrderedEnumberable : public LINQEnumberable<TSource>
     {
     public:
         template <typename TFunc>
         LINQOrderedEnumberable(const Ref<IEnumerable<TSource>> &innerEnumerable, TFunc selectFunction)
-            : m_Comparer(CreateRef<Comparer>())
+            : m_Comparer(CreateRef<LINQComparer<TSource>>())
         {
             m_InnerEnumerable = CreateRef<OrderEnumerable<TSource>>(innerEnumerable, m_Comparer);
             m_Comparer->AddSelectorForSort(selectFunction);
@@ -252,44 +290,7 @@ namespace Borg
         }
 
     private:
-        class Comparer : public IComparer<TSource>
-        {
-        public:
-            int Compare(const TSource& left, const TSource& right) const override
-            {
-                for(auto comparer: m_Comparer)
-                {
-                    if(comparer(left, right) < 0)
-                        return -1;
-                    if(comparer(left, right) > 0)
-                        return 1;
-                }
-                return 0;
-            }
-
-            template <typename TFunc>
-            void AddSelectorForSort(TFunc selectFunction)
-            {
-                auto sortFunction = [selectFunction](const TSource& left, const TSource& right)
-                {
-                    auto selectLeft = selectFunction(left);
-                    auto selectRight = selectFunction(right);
-
-                    if (selectLeft < selectRight)
-                        return -1;
-                    if (selectLeft > selectRight)
-                        return 1;
-                    return 0;
-                };
-
-                m_Comparer.push_back(sortFunction);
-            }
-
-        private:
-            std::vector<Func<int, const TSource&, const TSource&>> m_Comparer;
-        };
-
-        Ref<Comparer> m_Comparer;
+        Ref<LINQComparer<TSource>> m_Comparer;
     };
 
     class LINQ
