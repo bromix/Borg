@@ -14,10 +14,12 @@ namespace Borg
     class LINQOrderedEnumberable;
 
     template <typename TSource>
+    class LINQComparer;
+
+    template <typename TSource>
     class LINQEnumberable : public IEnumerable<TSource>
     {
     public:
-        LINQEnumberable() = default;
         LINQEnumberable(const Ref<IEnumerable<TSource>> &innerEnumerable) : m_InnerEnumerable(innerEnumerable) {}
 
         Ref<IEnumerator<TSource>> GetEnumerator() const override
@@ -225,7 +227,19 @@ namespace Borg
         template <typename TFunc, typename TResult = std::invoke_result<TFunc, TSource>::type>
         LINQOrderedEnumberable<TSource> OrderBy(TFunc selectFunction)
         {
-            return LINQOrderedEnumberable<TSource>(m_InnerEnumerable, selectFunction);
+            /*
+            LINQOrderedEnumberable and OrderEnumerable share the same
+            instance of LINQComparer.
+            In LINQOrderedEnumberable we can add additional comparer/
+            selector functions. The OrderEnumerable will call the
+            LINQComparer for sorting.
+            */
+            auto comparer = CreateRef<LINQComparer<TSource>>();
+            comparer->AddSelectorForSort(selectFunction);
+
+            auto orderEnumerable = CreateRef<OrderEnumerable<TSource>>(m_InnerEnumerable, comparer);
+
+            return LINQOrderedEnumberable<TSource>(orderEnumerable, comparer);
         }
 
     protected:
@@ -274,12 +288,9 @@ namespace Borg
     class LINQOrderedEnumberable : public LINQEnumberable<TSource>
     {
     public:
-        template <typename TFunc>
-        LINQOrderedEnumberable(const Ref<IEnumerable<TSource>> &innerEnumerable, TFunc selectFunction)
-            : m_Comparer(CreateRef<LINQComparer<TSource>>())
+        LINQOrderedEnumberable(const Ref<IEnumerable<TSource>> &innerEnumerable, const Ref<LINQComparer<TSource>> &comparer)
+            : LINQEnumberable<TSource>(innerEnumerable), m_Comparer(comparer)
         {
-            m_InnerEnumerable = CreateRef<OrderEnumerable<TSource>>(innerEnumerable, m_Comparer);
-            m_Comparer->AddSelectorForSort(selectFunction);
         }
 
         template <typename TFunc>
