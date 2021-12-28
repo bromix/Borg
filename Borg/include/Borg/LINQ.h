@@ -220,9 +220,9 @@ namespace Borg
 
         /**
          * @brief Returns the last element of a sequence that satisfies a specified condition.
-         * 
-         * @param predicate 
-         * @return TSource 
+         *
+         * @param predicate
+         * @return TSource
          */
         TSource Last(Func<bool, TSource> predicate) const
         {
@@ -238,6 +238,25 @@ namespace Borg
                 return result.value();
 
             throw InvalidOperationException("No element satisfies the condition");
+        }
+
+        /**
+         * @brief Determines whether all elements of a sequence satisfy a condition.
+         * 
+         * @param predicate 
+         * @return true 
+         * @return false 
+         */
+        bool All(Func<bool, TSource> predicate) const
+        {
+            auto enumerator = GetEnumerator();
+            while (enumerator->MoveNext())
+            {
+                if (!predicate(enumerator->Current()))
+                    return false;
+            }
+
+            return true;
         }
 
         /**
@@ -291,7 +310,7 @@ namespace Borg
     public:
         LINQ() = default;
 
-        template<typename T>
+        template <typename T>
         static LINQEnumberable<T> From(std::initializer_list<T> input)
         {
             return LINQEnumberable<T>(CreateRef<VectorEnumerable<T>>(input));

@@ -5,9 +5,8 @@
 
 using namespace Borg;
 
-class Person
+struct Person
 {
-public:
     Person(const std::string &name, int age)
     {
         this->name = name;
@@ -15,6 +14,18 @@ public:
     }
 
     std::string name = "";
+    int age = 0;
+};
+
+struct Pet
+{
+    Pet(const String &name, int age)
+    {
+        this->name = name;
+        this->age = age;
+    }
+
+    String name = "";
     int age = 0;
 };
 
@@ -80,15 +91,17 @@ TEST(LINQ, Where)
                       .ToVector();
 }
 
-TEST(LINQ, struct)
+TEST(LINQ, All)
 {
-    std::vector<Ref<Person>> persons = {
-        CreateRef<Person>("Hans", 35),
-        CreateRef<Person>("Peter", 24)};
-    auto result = LINQ::From(persons)
-                      .Where([](Ref<Person> x) -> bool
-                             { return x->name == "Hans"; })
-                      .ToVector();
+    auto pets = {Pet{"Barley", 10},
+                 Pet{"Boots", 4},
+                 Pet{"Whiskers", 6}};
+
+    auto result = LINQ::From(pets)
+                      .All([](const Pet &pet)
+                           { return pet.name.StartsWith("B"); });
+
+    ASSERT_FALSE(result);
 }
 
 // TEST(LINQ, OrderBy)
