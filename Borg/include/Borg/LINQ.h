@@ -148,6 +148,24 @@ namespace Borg
         }
 
         /**
+         * @brief Returns a number that represents how many elements in the specified sequence satisfy a condition.
+         * 
+         * @param predicate 
+         * @return uint32_t 
+         */
+        uint32_t Count(Func<bool, TSource> predicate)
+        {
+            uint32_t count = 0;
+            auto enumerator = GetEnumerator();
+            while (enumerator->MoveNext())
+            {
+                if(predicate(enumerator->Current()))
+                    ++count;
+            }
+            return count;
+        }
+
+        /**
          * @brief Returns an uint64_t that represents the number of elements in a sequence.
          *
          * @return uint64_t
@@ -158,6 +176,24 @@ namespace Borg
             auto enumerator = GetEnumerator();
             while (enumerator->MoveNext())
                 ++count;
+            return count;
+        }
+
+        /**
+         * @brief Returns an uint64_t that represents how many elements in a sequence satisfy a condition.
+         * 
+         * @param predicate 
+         * @return uint64_t 
+         */
+        uint64_t LongCount(Func<bool, TSource> predicate)
+        {
+            uint64_t count = 0;
+            auto enumerator = GetEnumerator();
+            while (enumerator->MoveNext())
+            {
+                if(predicate(enumerator->Current()))
+                    ++count;
+            }
             return count;
         }
 

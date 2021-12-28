@@ -46,6 +46,14 @@ TEST(LINQ, Count)
     ASSERT_EQ(10, result);
 }
 
+TEST(LINQ, CountWithWhere)
+{
+    std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    auto result = LINQ::From(numbers).Count([](int x)
+                                            { return x % 2 == 0; });
+    ASSERT_EQ(5, result);
+}
+
 TEST(LINQ, Where)
 {
     std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
