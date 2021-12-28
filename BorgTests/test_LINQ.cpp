@@ -25,6 +25,13 @@ TEST(LING, FromVector)
     auto vec = result.ToVector();
 }
 
+TEST(LINQ, First)
+{
+    std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    auto result = LINQ::From(numbers).First();
+    ASSERT_EQ(1, result);
+}
+
 TEST(LINQ, Count)
 {
     std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};

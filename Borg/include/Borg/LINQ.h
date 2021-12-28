@@ -150,6 +150,15 @@ namespace Borg
             return count;
         }
 
+        TSource First()const
+        {
+            auto enumerator = GetEnumerator();
+            if(enumerator->MoveNext())
+                return enumerator->Current();
+
+            throw InvalidOperationException("No element satisfies the condition");
+        }
+
         LINQEnumberable<TSource> Where(Func<bool, TSource> predicate)
         {
             return LINQEnumberable<TSource>(CreateRef<WhereEnumerable<TSource>>(m_InnerEnumerable, predicate));
