@@ -13,6 +13,7 @@ struct Person
 
 struct Pet
 {
+    Pet(const String &name, int age) : Name(name), Age(age) {}
     String Name;
     int Age;
 };
@@ -100,19 +101,19 @@ TEST(LINQ, All)
 
 TEST(LINQ, OrderBy)
 {
-    std::vector<Pet> pets = {
-        {"Barley", 8},
-        {"Boots", 4},
-        {"Whiskers", 1}};
+    std::vector<Ref<Pet>> pets = {
+        CreateRef<Pet>("Barley", 8),
+        CreateRef<Pet>("Boots", 4),
+        CreateRef<Pet>("Whiskers", 1)};
 
     auto result = LINQ::From(pets)
-                      .OrderBy([](const Pet &pet)
-                               { return pet.Age; })
+                      .OrderBy([](const auto &pet)
+                               { return pet->Age; })
                       .ToVector();
 
-    ASSERT_EQ(1, result[0].Age);
-    ASSERT_EQ(4, result[1].Age);
-    ASSERT_EQ(8, result[2].Age);
+    ASSERT_EQ(1, result[0]->Age);
+    ASSERT_EQ(4, result[1]->Age);
+    ASSERT_EQ(8, result[2]->Age);
 }
 
 TEST(LINQ, OrderByDescending)
@@ -134,9 +135,9 @@ TEST(LINQ, OrderByThenBy)
 {
     std::vector<String> fruits = {"grape", "passionfruit", "banana", "mango", "orange", "raspberry", "apple", "blueberry"};
     auto result = LINQ::From(fruits)
-                      .OrderBy([](const auto& value)
+                      .OrderBy([](const auto &value)
                                { return value.Length(); })
-                      .ThenBy([](const auto& value)
+                      .ThenBy([](const auto &value)
                               { return value; })
                       .ToVector();
 
@@ -154,10 +155,10 @@ TEST(LINQ, OrderByThenByDescending)
 {
     std::vector<String> fruits = {"grape", "passionfruit", "banana", "mango", "orange", "raspberry", "apple", "blueberry"};
     auto result = LINQ::From(fruits)
-                      .OrderBy([](const auto& value)
+                      .OrderBy([](const auto &value)
                                { return value.Length(); })
-                      .ThenByDescending([](const auto& value)
-                              { return value; })
+                      .ThenByDescending([](const auto &value)
+                                        { return value; })
                       .ToVector();
 
     ASSERT_EQ("mango", result[0]);
