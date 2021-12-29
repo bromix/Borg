@@ -148,6 +148,8 @@ namespace Borg
         bool operator>(const std::string &rhs) const noexcept;
         bool operator>(const std::wstring &rhs) const noexcept;
 
+        explicit operator bool() const;
+
         operator std::string() const;
         operator std::wstring() const;
 

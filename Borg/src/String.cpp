@@ -144,6 +144,11 @@ namespace Borg
         return m_Impl->CompareTo(rhs) < 0;
     }
 
+    String::operator bool() const
+    {
+        return !IsNullOrEmpty();
+    }
+
     String::operator std::string() const
     {
         return *m_Impl;

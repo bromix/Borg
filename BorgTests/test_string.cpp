@@ -9,6 +9,7 @@ TEST(String, DefaultConstructor)
     ASSERT_TRUE(text.IsNull());
     ASSERT_TRUE(text.IsEmpty());
     ASSERT_TRUE(text.IsNullOrEmpty());
+    ASSERT_FALSE(text);
 }
 
 TEST(String, NullConstructor)
