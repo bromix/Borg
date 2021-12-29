@@ -252,7 +252,7 @@ namespace Borg
     template <typename T>
     MemoryBlock<T> &MemoryBlock<T>::operator=(MemoryBlock<T> &&input)
     {
-        delete m_Data;
+        delete[] m_Data;
         m_Size = 0;
         m_Count = 0;
 
