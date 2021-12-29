@@ -109,6 +109,11 @@ namespace Borg
         void CopyFrom(const MemoryBlock<T> &input);
 
     protected:
+        /**
+         * @brief Deletes the internal data pointer.
+         */
+        void reset();
+
         std::size_t m_Size = 0;
         std::size_t m_Count = 0;
 
@@ -124,7 +129,6 @@ namespace Borg
     template <typename T>
     MemoryBlock<T>::MemoryBlock(const MemoryBlock<T> &input)
     {
-        delete[] m_Data;
         *this = input;
     }
 
@@ -145,10 +149,7 @@ namespace Borg
     template <typename T>
     MemoryBlock<T>::~MemoryBlock()
     {
-        if (m_Data == nullptr)
-            return;
-        delete[] m_Data;
-        m_Data = nullptr;
+        reset();
     }
 
     template <typename T>
@@ -242,6 +243,8 @@ namespace Borg
     template <typename T>
     MemoryBlock<T> &MemoryBlock<T>::operator=(const MemoryBlock<T> &input)
     {
+        reset();
+
         m_Size = input.m_Size;
         m_Data = new T[m_Size];
         m_Count = input.m_Count;
@@ -252,14 +255,23 @@ namespace Borg
     template <typename T>
     MemoryBlock<T> &MemoryBlock<T>::operator=(MemoryBlock<T> &&input)
     {
-        delete[] m_Data;
-        m_Size = 0;
-        m_Count = 0;
+        reset();
 
         std::swap(m_Data, input.m_Data);
         std::swap(m_Count, input.m_Count);
         std::swap(m_Size, input.m_Size);
 
         return *this;
+    }
+
+    template <typename T>
+    void MemoryBlock<T>::reset()
+    {
+        if (m_Data == nullptr)
+            return;
+        delete[] m_Data;
+        m_Data = nullptr;
+        m_Count = 0;
+        m_Size = 0;
     }
 } // namespace Borg
