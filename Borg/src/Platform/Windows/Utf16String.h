@@ -43,6 +43,7 @@ namespace Borg
         int CompareTo(std::string_view rhs) const override;
         int CompareTo(std::wstring_view rhs) const override;
 
+        operator std::string() const override;
         operator std::wstring() const override;
     private:
         void prepare(std::size_t length);

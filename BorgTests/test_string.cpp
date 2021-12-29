@@ -137,3 +137,10 @@ TEST(String, toWString)
     std::wstring stdWString = hello;
     ASSERT_EQ(stdWString, hello);
 }
+
+TEST(String, toString)
+{
+    String hello = "Hello";
+    std::string stdString = hello;
+    ASSERT_EQ(stdString, hello);
+}

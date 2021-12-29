@@ -31,16 +31,6 @@ namespace Borg
         }
 
         /**
-         * @brief Cast operator to const std::basic_string_view<T>.
-         * 
-         * @return const std::basic_string_view<T> 
-         */
-        operator const std::basic_string_view<T>()
-        {
-            return m_Data;
-        }
-
-        /**
          * @brief Cast operator to std::basic_string_view<T>.
          * 
          * @return std::basic_string_view<T> 
@@ -48,6 +38,11 @@ namespace Borg
         operator std::basic_string_view<T>() const
         {
             return m_Data;
+        }
+        
+        operator std::basic_string<T>() const
+        {
+            return std::basic_string<T>(m_Data);
         }
     };
 

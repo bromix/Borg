@@ -36,6 +36,7 @@ namespace Borg
         virtual int CompareTo(std::string_view rhs) const = 0;
         virtual int CompareTo(std::wstring_view rhs) const = 0;
 
+        virtual operator std::string() const = 0;
         virtual operator std::wstring() const = 0;
     };
 }
