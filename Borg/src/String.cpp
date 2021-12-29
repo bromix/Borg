@@ -69,14 +69,79 @@ namespace Borg
         return m_Impl->CompareTo(rhs) == 0;
     }
 
+    bool String::operator!=(const String &rhs) const noexcept
+    {
+        return !(*this == rhs);
+    }
+
+    bool String::operator!=(const char *rhs) const noexcept
+    {
+        return !(*this == rhs);
+    }
+
+    bool String::operator!=(const wchar_t *rhs) const noexcept
+    {
+        return !(*this == rhs);
+    }
+
+    bool String::operator!=(const std::string &rhs) const noexcept
+    {
+        return !(*this == rhs);
+    }
+
+    bool String::operator!=(const std::wstring &rhs) const noexcept
+    {
+        return !(*this == rhs);
+    }
+
     bool String::operator<(const String &rhs) const noexcept
     {
         return m_Impl->CompareTo(rhs.m_Impl) < 0;
     }
 
+    bool String::operator<(const char *rhs) const noexcept
+    {
+        return m_Impl->CompareTo(rhs) < 0;
+    }
+
+    bool String::operator<(const wchar_t *rhs) const noexcept
+    {
+        return m_Impl->CompareTo(rhs) < 0;
+    }
+
+    bool String::operator<(const std::string &rhs) const noexcept
+    {
+        return m_Impl->CompareTo(rhs) < 0;
+    }
+
+    bool String::operator<(const std::wstring &rhs) const noexcept
+    {
+        return m_Impl->CompareTo(rhs) < 0;
+    }
+
     bool String::operator>(const String &rhs) const noexcept
     {
         return m_Impl->CompareTo(rhs.m_Impl) > 0;
+    }
+
+    bool String::operator>(const char *rhs) const noexcept
+    {
+        return m_Impl->CompareTo(rhs) < 0;
+    }
+
+    bool String::operator>(const wchar_t *rhs) const noexcept
+    {
+        return m_Impl->CompareTo(rhs) < 0;
+    }
+
+    bool String::operator>(const std::string &rhs) const noexcept
+    {
+        return m_Impl->CompareTo(rhs) < 0;
+    }
+
+    bool String::operator>(const std::wstring &rhs) const noexcept
+    {
+        return m_Impl->CompareTo(rhs) < 0;
     }
 
     std::size_t String::Length() const

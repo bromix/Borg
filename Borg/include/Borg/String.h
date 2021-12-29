@@ -130,8 +130,23 @@ namespace Borg
         bool operator==(const std::string &rhs) const noexcept;
         bool operator==(const std::wstring &rhs) const noexcept;
 
+        bool operator!=(const String &rhs) const noexcept;
+        bool operator!=(const char *rhs) const noexcept;
+        bool operator!=(const wchar_t *rhs) const noexcept;
+        bool operator!=(const std::string &rhs) const noexcept;
+        bool operator!=(const std::wstring &rhs) const noexcept;
+
         bool operator<(const String &rhs) const noexcept;
+        bool operator<(const char *rhs) const noexcept;
+        bool operator<(const wchar_t *rhs) const noexcept;
+        bool operator<(const std::string &rhs) const noexcept;
+        bool operator<(const std::wstring &rhs) const noexcept;
+
         bool operator>(const String &rhs) const noexcept;
+        bool operator>(const char *rhs) const noexcept;
+        bool operator>(const wchar_t *rhs) const noexcept;
+        bool operator>(const std::string &rhs) const noexcept;
+        bool operator>(const std::wstring &rhs) const noexcept;
 
         class IString;
 
