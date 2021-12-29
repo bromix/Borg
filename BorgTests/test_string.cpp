@@ -130,3 +130,10 @@ TEST(String, MultiPlusOperator)
     ASSERT_EQ("Hello New World", helloNewWorld);
     ASSERT_EQ(15, helloNewWorld.Length());
 }
+
+TEST(String, toWString)
+{
+    String hello = "Hello";
+    std::wstring stdWString = hello;
+    ASSERT_EQ(stdWString, hello);
+}

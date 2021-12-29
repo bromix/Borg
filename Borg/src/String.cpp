@@ -144,6 +144,11 @@ namespace Borg
         return m_Impl->CompareTo(rhs) < 0;
     }
 
+    String::operator std::wstring() const
+    {
+        return *m_Impl;
+    }
+
     std::size_t String::Length() const
     {
         if (m_Impl == nullptr)

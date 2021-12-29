@@ -197,6 +197,11 @@ namespace Borg
         return std::wcscmp(m_StringBuffer, rhs.data());
     }
 
+    Utf16String::operator std::wstring() const
+    {
+        return std::wstring(m_StringBuffer);
+    }
+
     Utf16String::Utf16String(std::size_t length)
     {
         prepare(length);
