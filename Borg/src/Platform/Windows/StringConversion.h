@@ -5,12 +5,12 @@
 
 namespace Borg
 {
-    WideCharMemory ToUtf16(std::string_view utf8)
+    WideCharMemory ToUtf16(const CharMemory& utf8)
     {
-        if (utf8.empty())
+        if (utf8.IsNullOrEmpty())
             return nullptr;
 
-        if (utf8.length() > static_cast<size_t>((std::numeric_limits<int>::max)()))
+        if (utf8.Count() > static_cast<size_t>((std::numeric_limits<int>::max)()))
         {
             // FIXME: use proper Exception.
             throw std::overflow_error(
@@ -18,11 +18,11 @@ namespace Borg
         }
 
         constexpr DWORD kFlags = MB_ERR_INVALID_CHARS;
-        const int utf8Length = static_cast<int>(utf8.length());
+        const int utf8Length = static_cast<int>(utf8.Count());
         const int utf16Length = ::MultiByteToWideChar(
             CP_UTF8,     // Source string is in UTF-8
             kFlags,      // Conversion flags
-            utf8.data(), // Source UTF-8 string pointer
+            utf8, // Source UTF-8 string pointer
             utf8Length,  // Length of the source UTF-8 string, in chars
             nullptr,     // Unused - no conversion done in this step
             0            // Request size of destination buffer, in wchar_ts
@@ -43,7 +43,7 @@ namespace Borg
         int result = ::MultiByteToWideChar(
             CP_UTF8,     // Source string is in UTF-8
             kFlags,      // Conversion flags
-            utf8.data(), // Source UTF-8 string pointer
+            utf8, // Source UTF-8 string pointer
             utf8Length,  // Length of source UTF-8 string, in chars
             utf16,       // Pointer to destination buffer
             utf16Length  // Size of destination buffer, in wchar_ts

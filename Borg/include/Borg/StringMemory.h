@@ -10,6 +10,11 @@ namespace Borg
     public:
         StringMemory(nullptr_t) : MemoryBlock<T>(nullptr) {}
 
+        StringMemory(std::basic_string_view<T> input): StringMemory(input.length())
+        {
+            CopyFrom(input);
+        }
+
         /**
          * @brief Creates a new StringMemory with null-termination.
          *
