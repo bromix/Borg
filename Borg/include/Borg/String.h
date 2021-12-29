@@ -168,4 +168,9 @@ namespace Borg
     bool operator==(const wchar_t *lhs, const String &rhs);
     bool operator==(const std::string &lhs, const String &rhs);
     bool operator==(const std::wstring &lhs, const String &rhs);
+
+    bool operator!=(const char *lhs, const String &rhs);
+    bool operator!=(const wchar_t *lhs, const String &rhs);
+    bool operator!=(const std::string &lhs, const String &rhs);
+    bool operator!=(const std::wstring &lhs, const String &rhs);
 }
