@@ -148,9 +148,25 @@ namespace Borg
         bool operator>(const std::string &rhs) const noexcept;
         bool operator>(const std::wstring &rhs) const noexcept;
 
+        /**
+         * @brief Indicates wether the specified string is NOT null and NOT empty string ("").
+         *
+         * @return true if the string is NOT null and NOT empty, false otherwise.
+         */
         explicit operator bool() const;
 
+        /**
+         * @brief Cast operator for std::string. This will create a copy of the string.
+         *
+         * @return std::string
+         */
         operator std::string() const;
+
+        /**
+         * @brief Cast operator for std::wstring. This will create a copy of the string.
+         *
+         * @return std::wstring
+         */
         operator std::wstring() const;
 
         class IString;
