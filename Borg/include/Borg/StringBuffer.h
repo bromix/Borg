@@ -5,32 +5,52 @@
 
 namespace Borg
 {
-    template <typename T, StringEncoding TEncoding>
+    template <typename T>
     class StringBuffer : public Buffer<T>, public IStringBuffer
     {
     public:
+        /**
+         * @brief Construct for a nullptr.
+         */
         StringBuffer(nullptr_t) : Buffer<T>(nullptr){};
 
-        StringBuffer(const StringBuffer<T, TEncoding> &input) : Buffer<T>(input)
-        {
-        }
+        /**
+         * @brief Copy constructor.
+         *
+         * @param input
+         */
+        StringBuffer(const StringBuffer<T> &input) : Buffer<T>(input) {}
 
-        StringBuffer<T, TEncoding>& operator=(const StringBuffer<T, TEncoding>& input)
+        /**
+         * @brief Copy assignment operator.
+         *
+         * @param input
+         * @return StringBuffer<T>&
+         */
+        StringBuffer<T> &operator=(const StringBuffer<T> &input)
         {
             Buffer<T>::operator=(input);
             return *this;
         }
 
-        StringBuffer(StringBuffer<T, TEncoding> &&input): Buffer<T>(std::move(input))
-        {
-        }
+        /**
+         * @brief Move constructor.
+         *
+         * @param input
+         */
+        StringBuffer(StringBuffer<T> &&input) : Buffer<T>(std::move(input)) {}
 
-        StringBuffer<T, TEncoding>& operator=(StringBuffer<T, TEncoding>&& input)
+        StringBuffer<T> &operator=(StringBuffer<T> &&input)
         {
             Buffer<T>::operator=(std::move(input));
             return *this;
         }
 
+        /**
+         * @brief Move assignment operator.
+         * 
+         * @param input 
+         */
         StringBuffer(std::basic_string_view<T> input) : StringBuffer(input.length())
         {
             CopyFrom(input);
@@ -56,11 +76,6 @@ namespace Borg
             return m_Count > 0 ? m_Count - 1 : 0;
         }
 
-        StringEncoding Encoding() const override
-        {
-            return TEncoding;
-        }
-
         /**
          * @brief Cast operator to std::basic_string_view<T>.
          *
@@ -76,20 +91,27 @@ namespace Borg
             return std::basic_string<T>(m_Data);
         }
 
-        StringBuffer<T, TEncoding> &Detach() override
+        /**
+         * @brief Detach the buffer from the internal buffer.
+         *
+         * @remark The caller has to release the buffer.
+         * 
+         * @return StringBuffer<T>& 
+         */
+        StringBuffer<T> &Detach() override
         {
             Buffer<T>::Detach();
             return *this;
         }
     };
 
-    using CharBuffer = StringBuffer<char, StringEncoding::Utf8>;
-    using WideCharBuffer = StringBuffer<wchar_t, StringEncoding::Utf16>;
+    using CharBuffer = StringBuffer<char>;
+    using WideCharBuffer = StringBuffer<wchar_t>;
 #ifdef __cpp_lib_char8_t
-    using Char8Buffer = StringBuffer<char8_t, StringEncoding::Utf8>;
+    using Char8Buffer = StringBuffer<char8_t>;
 #else
-    using Char8Buffer = StringBuffer<char, StringEncoding::Utf8>;
+    using Char8Buffer = StringBuffer<char>;
 #endif // __cpp_lib_char8_t
-    using Char16Buffer = StringBuffer<char16_t, StringEncoding::Utf16>;
-    using Char32Buffer = StringBuffer<char32_t, StringEncoding::Utf32>;
+    using Char16Buffer = StringBuffer<char16_t>;
+    using Char32Buffer = StringBuffer<char32_t>;
 }
