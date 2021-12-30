@@ -1,4 +1,5 @@
 #include "Borg/String.h"
+#include "Borg/StringBuffer.h"
 #include <gtest/gtest.h>
 
 using namespace Borg;
@@ -144,4 +145,10 @@ TEST(String, toString)
     String hello = "Hello";
     std::string stdString = hello;
     ASSERT_EQ(stdString, hello);
+}
+
+TEST(String, GetBytes)
+{
+    String hello = "Hello";
+    auto bytes = hello.GetBuffer<WideCharBuffer>();
 }

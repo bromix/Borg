@@ -1,5 +1,6 @@
 #pragma once
 #include "Ref.h"
+#include "IString.h"
 #include <string>
 
 namespace Borg
@@ -169,7 +170,12 @@ namespace Borg
          */
         operator std::wstring() const;
 
-        class IString;
+        template<typename T>
+        Ref<T> GetBuffer() const
+        {
+            auto internalBuffer = m_Impl->GetBuffer();
+            return CreateRef<T>(10);
+        }
 
     private:
         String(const Ref<IString> &input) = delete;

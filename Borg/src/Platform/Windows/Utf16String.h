@@ -1,10 +1,10 @@
 #pragma once
+#include "Borg/IString.h"
 #include "Borg/StringBuffer.h"
-#include "../../IString.h"
 
 namespace Borg
 {
-    class Utf16String : public String::IString
+    class Utf16String : public IString
     {
     public:
         /**
@@ -45,6 +45,8 @@ namespace Borg
 
         operator std::string() const override;
         operator std::wstring() const override;
+
+        Ref<IStringBuffer> GetBuffer() const override;
     private:
         void prepare(std::size_t length);
 

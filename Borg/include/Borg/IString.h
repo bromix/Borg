@@ -1,9 +1,10 @@
 #pragma once
-#include "Borg/String.h"
+#include <string_view>
+#include "IStringBuffer.h"
 
 namespace Borg
 {
-    class String::IString
+    class IString
     {
     public:
         static Ref<IString> Create(std::string_view input);
@@ -38,5 +39,7 @@ namespace Borg
 
         virtual operator std::string() const = 0;
         virtual operator std::wstring() const = 0;
+
+        virtual Ref<IStringBuffer> GetBuffer() const = 0;
     };
 }

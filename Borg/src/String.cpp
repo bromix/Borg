@@ -1,6 +1,5 @@
 #include "Borg/String.h"
 #include "Borg/Exception.h"
-#include "IString.h"
 
 namespace Borg
 {

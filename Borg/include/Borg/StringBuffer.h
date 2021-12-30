@@ -5,7 +5,7 @@
 namespace Borg
 {
     template <typename T>
-    class StringBuffer : public Buffer<T>
+    class StringBuffer : public Buffer<T>, public IStringBuffer
     {
     public:
         StringBuffer(nullptr_t) : Buffer<T>(nullptr){};
@@ -49,7 +49,6 @@ namespace Borg
         {
             return std::basic_string<T>(m_Data);
         }
-
     };
 
     using CharBuffer = StringBuffer<char>;

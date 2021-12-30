@@ -5,12 +5,12 @@
 
 namespace Borg
 {
-    Ref<String::IString> String::IString::Create(std::string_view input)
+    Ref<IString> IString::Create(std::string_view input)
     {
         return CreateRef<Utf16String>(input);
     }
 
-    Ref<String::IString> String::IString::Create(std::wstring_view input)
+    Ref<IString> IString::Create(std::wstring_view input)
     {
         return CreateRef<Utf16String>(input);
     }
@@ -34,7 +34,7 @@ namespace Borg
     {
     }
 
-    Ref<String::IString> Utf16String::CreateCopy() const
+    Ref<IString> Utf16String::CreateCopy() const
     {
         return CreateRef<Utf16String>(m_StringBuffer);
     }
@@ -44,32 +44,32 @@ namespace Borg
         return m_StringBuffer.Count();
     }
 
-    Ref<String::IString> Utf16String::ToLower() const
+    Ref<IString> Utf16String::ToLower() const
     {
         Ref<Utf16String> copy = CreateRef<Utf16String>(m_StringBuffer);
         ::CharLowerW(copy->m_StringBuffer);
         return copy;
     }
 
-    Ref<String::IString> Utf16String::ToUpper() const
+    Ref<IString> Utf16String::ToUpper() const
     {
         Ref<Utf16String> copy = CreateRef<Utf16String>(m_StringBuffer);
         ::CharUpperW(copy->m_StringBuffer);
         return copy;
     }
 
-    Ref<String::IString> Utf16String::Insert(int startIndex, const Ref<String::IString> &value) const
+    Ref<IString> Utf16String::Insert(int startIndex, const Ref<IString> &value) const
     {
         Ref<Utf16String> copy = CreateRef<Utf16String>(m_StringBuffer);
         return Insert(startIndex, copy->m_StringBuffer);
     }
 
-    Ref<String::IString> Utf16String::Insert(int startIndex, std::string_view value) const
+    Ref<IString> Utf16String::Insert(int startIndex, std::string_view value) const
     {
         return Insert(startIndex, Utf16String(value).m_StringBuffer);
     }
 
-    Ref<String::IString> Utf16String::Insert(int startIndex, std::wstring_view value) const
+    Ref<IString> Utf16String::Insert(int startIndex, std::wstring_view value) const
     {
         if (startIndex < 0 || startIndex > m_StringBuffer.Count())
             throw ArgumentOutOfRangeException("startIndex");
@@ -162,6 +162,12 @@ namespace Borg
     Utf16String::operator std::wstring() const
     {
         return m_StringBuffer;
+    }
+
+    Ref<IStringBuffer> Utf16String::GetBuffer() const
+    {
+        // Create a copy if this buffer.
+        return CreateRef<WideCharBuffer>(m_StringBuffer);
     }
 
     Utf16String::Utf16String(std::size_t length)
