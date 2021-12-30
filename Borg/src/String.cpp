@@ -15,7 +15,7 @@ namespace Borg
 
     String::String(const std::wstring &input) : m_Impl(IString::Create(input)) {}
 
-    String::String(const String &input)  : m_Impl(input.m_Impl ? input.m_Impl->CreateCopy() : nullptr) {}
+    String::String(const String &input) : m_Impl(input.m_Impl ? input.m_Impl->CreateCopy() : nullptr) {}
 
     String::String(Ref<IString> &&input) : m_Impl(std::move(input)) {}
 
@@ -25,7 +25,7 @@ namespace Borg
 
     String String::operator=(const String &input)
     {
-        m_Impl = input.m_Impl->CreateCopy();
+        m_Impl = input ? input.m_Impl->CreateCopy() : nullptr;
         return *this;
     }
 
