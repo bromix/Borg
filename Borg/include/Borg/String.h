@@ -170,12 +170,7 @@ namespace Borg
          */
         operator std::wstring() const;
 
-        template<typename T>
-        Ref<T> GetBuffer() const
-        {
-            auto internalBuffer = m_Impl->GetBuffer();
-            return CreateRef<T>(10);
-        }
+        Ref<IStringBuffer> GetBuffer() const;
 
     private:
         String(const Ref<IString> &input) = delete;

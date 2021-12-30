@@ -158,6 +158,11 @@ namespace Borg
         return *m_Impl;
     }
 
+    Ref<IStringBuffer> String::GetBuffer() const
+    {
+        return m_Impl->GetBuffer();
+    }
+
     std::size_t String::Length() const
     {
         if (m_Impl == nullptr)

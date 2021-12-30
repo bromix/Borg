@@ -108,6 +108,8 @@ namespace Borg
         void CopyFrom(const std::basic_string_view<T> &input);
         void CopyFrom(const Buffer<T> &input);
 
+        virtual Buffer<T> &Detach();
+
     protected:
         /**
          * @brief Deletes the internal data pointer.
@@ -116,6 +118,7 @@ namespace Borg
 
         std::size_t m_Size = 0;
         std::size_t m_Count = 0;
+        bool m_Detached = false;
 
         T *m_Data = nullptr;
     };
@@ -149,7 +152,8 @@ namespace Borg
     template <typename T>
     Buffer<T>::~Buffer()
     {
-        reset();
+        if (!m_Detached)
+            reset();
     }
 
     template <typename T>
@@ -248,6 +252,7 @@ namespace Borg
         m_Size = input.m_Size;
         m_Data = new T[m_Size];
         m_Count = input.m_Count;
+        m_Detached = input.m_Detached;
         CopyFrom(input);
         return *this;
     }
@@ -260,6 +265,7 @@ namespace Borg
         std::swap(m_Data, input.m_Data);
         std::swap(m_Count, input.m_Count);
         std::swap(m_Size, input.m_Size);
+        std::swap(m_Detached, input.m_Detached);
 
         return *this;
     }
@@ -269,10 +275,19 @@ namespace Borg
     {
         if (m_Data == nullptr)
             return;
+
         delete[] m_Data;
         m_Data = nullptr;
+        m_Detached = false;
         m_Count = 0;
         m_Size = 0;
+    }
+
+    template <typename T>
+    Buffer<T> &Buffer<T>::Detach()
+    {
+        m_Detached = true;
+        return *this;
     }
 
     using ByteBuffer = Buffer<std::byte>;

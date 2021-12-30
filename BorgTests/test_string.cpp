@@ -1,5 +1,6 @@
 #include "Borg/String.h"
 #include "Borg/StringBuffer.h"
+#include "Borg/Encoding.h"
 #include <gtest/gtest.h>
 
 using namespace Borg;
@@ -150,5 +151,7 @@ TEST(String, toString)
 TEST(String, GetBytes)
 {
     String hello = "Hello";
-    auto bytes = hello.GetBuffer<WideCharBuffer>();
+    auto cb = Encoding::ToWideCharBuffer(hello).Detach();
+
+    auto test = cb.Data();
 }
