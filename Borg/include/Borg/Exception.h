@@ -31,9 +31,10 @@ namespace Borg
 
     private:
         String m_Message;
+        std::string m_What;
     };
 
-    class InvalidOperationException: public Exception
+    class InvalidOperationException : public Exception
     {
     public:
         /**
@@ -43,10 +44,10 @@ namespace Borg
 
         /**
          * @brief Initializes a new instance of the InvalidOperationException class with a specified error message.
-         * 
-         * @param message 
+         *
+         * @param message
          */
-        InvalidOperationException(const String& message);
+        InvalidOperationException(const String &message);
     };
 
     class InvalidCastException : public Exception

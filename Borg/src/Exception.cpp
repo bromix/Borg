@@ -6,13 +6,13 @@ namespace Borg
     Exception::Exception() {}
 
     Exception::Exception(const String &message)
-        : std::exception(), m_Message(message)
+        : std::exception(), m_Message(message), m_What(message)
     {
     }
 
     const char *Exception::what() const noexcept
     {
-        return "TODO";
+        return m_What.c_str();
     }
 
     String Exception::Message() const
