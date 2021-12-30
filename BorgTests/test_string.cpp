@@ -148,10 +148,18 @@ TEST(String, toString)
     ASSERT_EQ(stdString, hello);
 }
 
-TEST(String, GetBytes)
+TEST(String, ToWideCharBuffer)
 {
     String hello = "Hello";
     auto cb = Encoding::ToWideCharBuffer(hello).Detach();
+
+    auto test = cb.Data();
+}
+
+TEST(String, ToCharBuffer)
+{
+    String hello = "Hello";
+    auto cb = Encoding::ToCharBuffer(hello).Detach();
 
     auto test = cb.Data();
 }
