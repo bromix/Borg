@@ -47,7 +47,7 @@ namespace Borg
          *
          * @return std::size_t
          */
-        std::size_t Count() const;
+        virtual std::size_t Count() const;
 
         /**
          * @brief Indicates if the Buffer is null.

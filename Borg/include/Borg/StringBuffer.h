@@ -30,7 +30,7 @@ namespace Borg
          *
          * @return std::size_t
          */
-        std::size_t Count() const
+        std::size_t Count() const override
         {
             return m_Count > 0 ? m_Count - 1 : 0;
         }
