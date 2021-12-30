@@ -1,5 +1,5 @@
 #pragma once
-#include "Borg/StringMemory.h"
+#include "Borg/StringBuffer.h"
 #include "../../IString.h"
 
 namespace Borg
@@ -15,7 +15,7 @@ namespace Borg
         Utf16String(std::size_t length);
         Utf16String(std::string_view input);
         Utf16String(std::wstring_view input);
-        Utf16String(const WideCharMemory& buffer);
+        Utf16String(const WideCharBuffer& buffer);
         ~Utf16String();
 
         Ref<IString> CreateCopy() const override;
@@ -48,6 +48,6 @@ namespace Borg
     private:
         void prepare(std::size_t length);
 
-        WideCharMemory m_StringBuffer = nullptr;
+        WideCharBuffer m_StringBuffer = nullptr;
     };
 }

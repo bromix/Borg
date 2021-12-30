@@ -1,11 +1,11 @@
 #pragma once
 #include "Windows.h"
 #include "Borg/Exception.h"
-#include "Borg/StringMemory.h"
+#include "Borg/StringBuffer.h"
 
 namespace Borg
 {
-    WideCharMemory ToUtf16(const CharMemory& utf8)
+    WideCharBuffer ToUtf16(const CharBuffer& utf8)
     {
         if (utf8.IsNullOrEmpty())
             return nullptr;
@@ -38,7 +38,7 @@ namespace Borg
             //     error);
         }
 
-        WideCharMemory utf16(utf16Length);
+        WideCharBuffer utf16(utf16Length);
 
         int result = ::MultiByteToWideChar(
             CP_UTF8,     // Source string is in UTF-8
@@ -62,7 +62,7 @@ namespace Borg
         return utf16;
     }
 
-    CharMemory ToUtf8(const WideCharMemory& utf16)
+    CharBuffer ToUtf8(const WideCharBuffer& utf16)
     {
         if (utf16.IsNullOrEmpty())
             return nullptr;
@@ -95,7 +95,7 @@ namespace Borg
             //     error);
         }
 
-        CharMemory utf8(utf8Length);
+        CharBuffer utf8(utf8Length);
 
         int result = ::WideCharToMultiByte(
             CP_UTF8,      // Source string is in UTF-8

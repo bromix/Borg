@@ -1,26 +1,26 @@
 #pragma once
-#include "Borg/MemoryBlock.h"
+#include "Borg/Buffer.h"
 #include <string_view>
 
 namespace Borg
 {
     template <typename T>
-    class StringMemory : public MemoryBlock<T>
+    class StringBuffer : public Buffer<T>
     {
     public:
-        StringMemory(nullptr_t) : MemoryBlock<T>(nullptr) {}
+        StringBuffer(nullptr_t) : Buffer<T>(nullptr) {}
 
-        StringMemory(std::basic_string_view<T> input): StringMemory(input.length())
+        StringBuffer(std::basic_string_view<T> input): StringBuffer(input.length())
         {
             CopyFrom(input);
         }
 
         /**
-         * @brief Creates a new StringMemory with null-termination.
+         * @brief Creates a new StringBuffer with null-termination.
          *
          * @param count
          */
-        StringMemory(std::size_t count) : MemoryBlock<T>(count + 1)
+        StringBuffer(std::size_t count) : Buffer<T>(count + 1)
         {
             m_Data[count] = '\0';
         }
@@ -51,6 +51,6 @@ namespace Borg
         }
     };
 
-    using CharMemory = StringMemory<char>;
-    using WideCharMemory = StringMemory<wchar_t>;
+    using CharBuffer = StringBuffer<char>;
+    using WideCharBuffer = StringBuffer<wchar_t>;
 }

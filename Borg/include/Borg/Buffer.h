@@ -5,35 +5,35 @@
 namespace Borg
 {
     template <typename T>
-    class MemoryBlock
+    class Buffer
     {
     public:
         /**
          * @brief Constructor for assigning nullptr.
          */
-        MemoryBlock(nullptr_t);
+        Buffer(nullptr_t);
 
         /**
-         * @brief Copy constructor for another MemoryBlock<T>.
+         * @brief Copy constructor for another Buffer<T>.
          *
          * @param input
          */
-        MemoryBlock(const MemoryBlock<T> &input);
+        Buffer(const Buffer<T> &input);
 
         /**
-         * @brief Move constructor for another MemoryBlock<T>.
+         * @brief Move constructor for another Buffer<T>.
          *
          * @param input
          */
-        MemoryBlock(MemoryBlock<T> &&input);
+        Buffer(Buffer<T> &&input);
 
         /**
          * @brief Constructor for reserving the internal buffer with given amount of data (not bytes!).
          *
          * @param count
          */
-        MemoryBlock(std::size_t count);
-        ~MemoryBlock();
+        Buffer(std::size_t count);
+        ~Buffer();
 
         /**
          * @brief The size in bytes.
@@ -50,21 +50,21 @@ namespace Borg
         std::size_t Count() const;
 
         /**
-         * @brief Indicates if the MemoryBlock is null.
+         * @brief Indicates if the Buffer is null.
          *
          * @return true is null, false otherwise.
          */
         bool IsNull() const;
 
         /**
-         * @brief Indicates if the MemoryBlock is empty (Count = 0, Size = 0, ...).
+         * @brief Indicates if the Buffer is empty (Count = 0, Size = 0, ...).
          *
          * @return true if empty, false otherwise.
          */
         bool IsEmpty() const;
 
         /**
-         * @brief Indicates wether the MemoryBlock is null or empty.
+         * @brief Indicates wether the Buffer is null or empty.
          *
          * @return true
          * @return false
@@ -102,11 +102,11 @@ namespace Borg
         T &operator[](std::size_t index) const;
         const T &operator[](std::size_t index);
 
-        MemoryBlock<T> &operator=(const MemoryBlock<T> &input);
-        MemoryBlock<T> &operator=(MemoryBlock<T> &&input);
+        Buffer<T> &operator=(const Buffer<T> &input);
+        Buffer<T> &operator=(Buffer<T> &&input);
 
         void CopyFrom(const std::basic_string_view<T> &input);
-        void CopyFrom(const MemoryBlock<T> &input);
+        void CopyFrom(const Buffer<T> &input);
 
     protected:
         /**
@@ -121,81 +121,81 @@ namespace Borg
     };
 
     template <typename T>
-    MemoryBlock<T>::MemoryBlock(nullptr_t)
+    Buffer<T>::Buffer(nullptr_t)
         : m_Data(nullptr), m_Size(0), m_Count(0)
     {
     }
 
     template <typename T>
-    MemoryBlock<T>::MemoryBlock(const MemoryBlock<T> &input)
+    Buffer<T>::Buffer(const Buffer<T> &input)
     {
         *this = input;
     }
 
     template <typename T>
-    MemoryBlock<T>::MemoryBlock(MemoryBlock<T> &&input)
+    Buffer<T>::Buffer(Buffer<T> &&input)
         : m_Data(nullptr), m_Size(0), m_Count(0)
     {
         *this = std::move(input);
     }
 
     template <typename T>
-    MemoryBlock<T>::MemoryBlock(std::size_t count)
+    Buffer<T>::Buffer(std::size_t count)
         : m_Count(count), m_Size(count * sizeof(T))
     {
         m_Data = new T[m_Size];
     }
 
     template <typename T>
-    MemoryBlock<T>::~MemoryBlock()
+    Buffer<T>::~Buffer()
     {
         reset();
     }
 
     template <typename T>
-    bool MemoryBlock<T>::IsNull() const
+    bool Buffer<T>::IsNull() const
     {
         return m_Data == nullptr;
     }
 
     template <typename T>
-    bool MemoryBlock<T>::IsEmpty() const
+    bool Buffer<T>::IsEmpty() const
     {
         return m_Count == 0;
     }
 
     template <typename T>
-    bool MemoryBlock<T>::IsNullOrEmpty() const
+    bool Buffer<T>::IsNullOrEmpty() const
     {
         return IsNull() || IsEmpty();
     }
 
     template <typename T>
-    T *MemoryBlock<T>::Data() const
+    T *Buffer<T>::Data() const
     {
         return m_Data;
     }
 
     template <typename T>
-    const T *MemoryBlock<T>::Data()
+    const T *Buffer<T>::Data()
     {
         return m_Data;
     }
 
     template <typename T>
-    MemoryBlock<T>::operator T *() const
+    Buffer<T>::operator T *() const
     {
         return m_Data;
     }
 
     template <typename T>
-    MemoryBlock<T>::operator const T *()
+    Buffer<T>::operator const T *()
     {
         return m_Data;
     }
 
     template <typename T>
-    T &MemoryBlock<T>::operator[](std::size_t index) const
+    T &Buffer<T>::operator[](std::size_t index) const
     {
         if (index >= m_Count)
             throw ArgumentOutOfRangeException("index");
@@ -203,7 +203,7 @@ namespace Borg
     }
 
     template <typename T>
-    const T &MemoryBlock<T>::operator[](std::size_t index)
+    const T &Buffer<T>::operator[](std::size_t index)
     {
         if (index >= m_Count)
             throw ArgumentOutOfRangeException("index");
@@ -211,19 +211,19 @@ namespace Borg
     }
 
     template <typename T>
-    std::size_t MemoryBlock<T>::Size() const
+    std::size_t Buffer<T>::Size() const
     {
         return m_Size;
     }
 
     template <typename T>
-    std::size_t MemoryBlock<T>::Count() const
+    std::size_t Buffer<T>::Count() const
     {
         return m_Count;
     }
 
     template <typename T>
-    void MemoryBlock<T>::CopyFrom(const std::basic_string_view<T> &input)
+    void Buffer<T>::CopyFrom(const std::basic_string_view<T> &input)
     {
         if (input.length() > m_Count)
             throw ArgumentOutOfRangeException("input.length()");
@@ -232,7 +232,7 @@ namespace Borg
     }
 
     template <typename T>
-    void MemoryBlock<T>::CopyFrom(const MemoryBlock<T> &input)
+    void Buffer<T>::CopyFrom(const Buffer<T> &input)
     {
         if (input.Count() > m_Count)
             throw ArgumentOutOfRangeException("input.Count()");
@@ -241,7 +241,7 @@ namespace Borg
     }
 
     template <typename T>
-    MemoryBlock<T> &MemoryBlock<T>::operator=(const MemoryBlock<T> &input)
+    Buffer<T> &Buffer<T>::operator=(const Buffer<T> &input)
     {
         reset();
 
@@ -253,7 +253,7 @@ namespace Borg
     }
 
     template <typename T>
-    MemoryBlock<T> &MemoryBlock<T>::operator=(MemoryBlock<T> &&input)
+    Buffer<T> &Buffer<T>::operator=(Buffer<T> &&input)
     {
         reset();
 
@@ -265,7 +265,7 @@ namespace Borg
     }
 
     template <typename T>
-    void MemoryBlock<T>::reset()
+    void Buffer<T>::reset()
     {
         if (m_Data == nullptr)
             return;
@@ -274,4 +274,6 @@ namespace Borg
         m_Count = 0;
         m_Size = 0;
     }
+
+    using ByteBuffer = Buffer<std::byte>;
 } // namespace Borg

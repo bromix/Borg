@@ -26,7 +26,7 @@ namespace Borg
         m_StringBuffer.CopyFrom(input);
     }
 
-    Utf16String::Utf16String(const WideCharMemory &buffer) : m_StringBuffer(buffer)
+    Utf16String::Utf16String(const WideCharBuffer &buffer) : m_StringBuffer(buffer)
     {
     }
 
@@ -171,6 +171,6 @@ namespace Borg
 
     void Utf16String::prepare(std::size_t count)
     {
-        m_StringBuffer = WideCharMemory(count);
+        m_StringBuffer = WideCharBuffer(count);
     }
 }
