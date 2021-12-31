@@ -142,6 +142,11 @@ namespace Borg
                 m_Data = new T[size];
         }
 
+        void initViaLength(std::size_t count, bool isDetached = false)
+        {
+            initViaCount(count, isDetached);
+        }
+
         void initViaCount(std::size_t count, bool isDetached = false)
         {
             m_Count = count;
@@ -182,13 +187,6 @@ namespace Borg
     {
         *this = std::move(input);
     }
-
-    // template <typename T>
-    // Buffer<T>::Buffer(std::size_t count)
-    //     : m_Count(count), m_Size(count * sizeof(T))
-    // {
-    //     m_Data = new T[m_Size];
-    // }
 
     template <typename T>
     Buffer<T>::~Buffer()

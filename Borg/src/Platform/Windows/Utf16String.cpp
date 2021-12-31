@@ -18,13 +18,12 @@ namespace Borg
 
     Utf16String::Utf16String(std::string_view input)
     {
-        m_StringBuffer = Encoding::ToWideCharBuffer(CharBuffer::From(input));
+        m_StringBuffer = Encoding::ToWideCharBuffer(CharBuffer::ViewFrom(input));
     }
 
     Utf16String::Utf16String(std::wstring_view input)
     {
-        prepare(input.length());
-        m_StringBuffer.CopyFrom(input);
+        m_StringBuffer = WideCharBuffer::CopyFrom(input);
     }
 
     Utf16String::Utf16String(const WideCharBuffer &buffer) : m_StringBuffer(buffer)

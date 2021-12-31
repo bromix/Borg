@@ -73,11 +73,6 @@ namespace Borg
             return std::basic_string<T>(m_Data);
         }
 
-        void CopyFrom(std::basic_string_view<T> input)
-        {
-            Buffer<T>::CopyFrom(input.data(), input.length() * sizeof(T));
-        }
-
         /**
          * @brief Detach the buffer from the internal buffer.
          *
@@ -91,11 +86,23 @@ namespace Borg
             return *this;
         }
 
-        static StringBuffer<T> From(std::basic_string_view<T> input)
+        void CopyFrom(const T* input, std::size_t size)
+        {
+            Buffer<T>::CopyFrom(input, size);
+        }
+
+        static StringBuffer<T> ViewFrom(std::basic_string_view<T> input)
         {
             StringBuffer<T> buffer;
             buffer.initViaCount(input.length() + 1, true);
             buffer.m_Data = const_cast<T *>(input.data());
+            return buffer;
+        }
+
+        static StringBuffer<T> CopyFrom(std::basic_string_view<T> input)
+        {
+            StringBuffer<T> buffer = FromLength(input.length());
+            buffer.CopyFrom(input.data(), buffer.Count() * sizeof(T));
             return buffer;
         }
 
