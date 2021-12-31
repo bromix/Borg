@@ -2,3 +2,4 @@
 #include <Windows.h>
 #include <Shlobj.h>
 #include <Lmcons.h>
+#include <wininet.h>
