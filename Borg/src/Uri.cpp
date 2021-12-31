@@ -55,4 +55,9 @@ namespace Borg
 
         return result;
     }
+
+    Uri::operator bool() const
+    {
+        return !m_OriginalString.IsNullOrEmpty();
+    }
 }

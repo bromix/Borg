@@ -73,6 +73,8 @@ namespace Borg
 
         String ToString() const;
 
+        operator bool() const;
+
     private:
         String m_Scheme;
         String m_Host;
