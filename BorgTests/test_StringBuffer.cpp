@@ -1,5 +1,4 @@
 #include "Borg/Borg.h"
-#include "Borg/Buffer.h"
 #include "Borg/StringBuffer.h"
 #include <gtest/gtest.h>
 

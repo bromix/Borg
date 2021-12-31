@@ -38,21 +38,18 @@ namespace Borg
             else
             {
                 m_Ptr = new T[m_ByteLength];
-                memcpy_s(m_Ptr, m_ByteLength, input.m_Ptr, input.m_ByteLength);
+                copy(input);
             }
         }
 
         ArrayBuffer(ArrayBuffer<T> &&input)
         {
-            throw NotImplementedException();
+            swap(std::move(input));
         }
 
         ~ArrayBuffer()
         {
-            if (m_IsDetached || m_Ptr == nullptr)
-                return;
-            delete[] m_Ptr;
-            m_Ptr = nullptr;
+            clear();
         }
 
         /**
@@ -130,17 +127,45 @@ namespace Borg
             return m_Ptr;
         }
 
-        ArrayBuffer<T> operator=(const ArrayBuffer<T> &input)
+        ArrayBuffer<T> &operator=(const ArrayBuffer<T> &input)
         {
-            throw NotImplementedException();
+            clear();
+            copy(input);
+
+            return *this;
         }
 
-        ArrayBuffer<T> operator=(ArrayBuffer<T> &&input)
+        ArrayBuffer<T> &operator=(ArrayBuffer<T> &&input)
         {
-            throw NotImplementedException();
+            clear();
+            swap(std::move(input));
+
+            return *this;
         }
 
     protected:
+        void copy(const ArrayBuffer<T> &input)
+        {
+            memcpy_s(m_Ptr, m_ByteLength, input.m_Ptr, input.m_ByteLength);
+        }
+
+        void swap(ArrayBuffer<T> &&input)
+        {
+            std::swap(m_IsDetached, input.m_IsDetached);
+            std::swap(m_ByteLength, input.m_ByteLength);
+            std::swap(m_Ptr, input.m_Ptr);
+        }
+
+        void clear()
+        {
+            if (m_IsDetached || m_Ptr == nullptr)
+                return;
+            delete[] m_Ptr;
+            m_Ptr = nullptr;
+            m_ByteLength = 0;
+            m_IsDetached = false;
+        }
+
         bool m_IsDetached = false;
         std::size_t m_ByteLength = 0;
         T *m_Ptr = nullptr;

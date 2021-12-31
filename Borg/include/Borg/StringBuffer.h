@@ -24,7 +24,10 @@ namespace Borg
          *
          * @param length
          */
-        StringBuffer(std::size_t length) : ArrayBuffer<T>((length + 1) * sizeof(T)) {}
+        StringBuffer(std::size_t length) : ArrayBuffer<T>((length + 1) * sizeof(T))
+        {
+            m_Ptr[length] = '\0';
+        }
 
         StringBuffer(std::basic_string_view<T> input, bool createCopy = false)
             : ArrayBuffer<T>()
@@ -85,14 +88,16 @@ namespace Borg
             return *this;
         }
 
-        StringBuffer<T> operator=(const StringBuffer<T> &input)
+        StringBuffer<T> &operator=(const StringBuffer<T> &input)
         {
-            throw NotImplementedException();
+            ArrayBuffer<T>::operator=(input);
+            return *this;
         }
 
-        StringBuffer<T> operator=(StringBuffer<T> &&input)
+        StringBuffer<T> &operator=(StringBuffer<T> &&input)
         {
-            throw NotImplementedException();
+            ArrayBuffer<T>::operator=(std::move(input));
+            return *this;
         }
     };
 
