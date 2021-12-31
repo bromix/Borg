@@ -31,4 +31,24 @@ namespace Borg
     {
         return scheme.ToLower() == m_Scheme;
     }
+
+    String Uri::OriginalString() const
+    {
+        return m_OriginalString;
+    }
+
+    String Uri::ToString() const
+    {
+        // FIXME: We should use a StringBuilder
+
+        String result = m_Scheme + "://" + m_Host;
+
+        if (m_Path)
+            result = result + m_Path;
+
+        if (m_Query)
+            result = result + m_Query;
+
+        return result;
+    }
 }

@@ -60,8 +60,8 @@ namespace Borg
 
     Ref<IString> Utf16String::Insert(int startIndex, const Ref<IString> &value) const
     {
-        Ref<Utf16String> copy = CreateRef<Utf16String>(m_StringBuffer);
-        return Insert(startIndex, copy->m_StringBuffer);
+        auto utf16String = RefCast<Utf16String>(value);
+        return Insert(startIndex, utf16String->m_StringBuffer);
     }
 
     Ref<IString> Utf16String::Insert(int startIndex, std::string_view value) const

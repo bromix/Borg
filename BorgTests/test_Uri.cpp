@@ -26,3 +26,18 @@ TEST(URI, query)
     auto url = Uri("https://some.host.com/andApath/?agent=john&arch=x86&darkmode=1&lang=de-DE");
     ASSERT_EQ("?agent=john&arch=x86&darkmode=1&lang=de-DE", url.Query());
 }
+
+TEST(URI, OriginalString)
+{
+    Uri url("HTTP://www.ConToso.com:80//thick%20and%20thin.htm");
+
+    ASSERT_EQ("HTTP://www.ConToso.com:80//thick%20and%20thin.htm", url.OriginalString());
+}
+
+TEST(URI, ToString)
+{
+    Uri url("HTTP://www.ConToso.com:80//thick%20and%20thin.htm");
+
+    //ASSERT_EQ("http://www.contoso.com//thick and thin.htm", url.ToString());
+    ASSERT_EQ("http://www.contoso.com:80//thick%20and%20thin.htm", url.ToString());
+}

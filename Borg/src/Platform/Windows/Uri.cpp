@@ -10,6 +10,8 @@ namespace Borg
         if (!uri)
             throw ArgumentNullException("uri");
 
+        m_OriginalString = uri;
+
         // TODO: UriFormatException
         // See: https://docs.microsoft.com/en-us/dotnet/api/system.uri.-ctor?view=net-6.0#System_Uri__ctor_System_String_
 
@@ -30,11 +32,11 @@ namespace Borg
 
         if (url_components.lpszScheme)
             m_Scheme = String(url_components.lpszScheme, url_components.dwSchemeLength).ToLower();
-        
-        if (url_components.lpszHostName)
-            m_Host = String(url_components.lpszHostName, url_components.dwHostNameLength);
 
-        m_Port = url_components.nPort;
+        if (url_components.lpszHostName)
+            m_Host = String(url_components.lpszHostName, url_components.dwHostNameLength).ToLower();
+
+        m_Port = url_components.nPort >= 0 ? url_components.nPort : 0;
 
         if (url_components.lpszUrlPath)
             m_Path = String(url_components.lpszUrlPath, url_components.dwUrlPathLength);

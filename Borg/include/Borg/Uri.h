@@ -44,26 +44,36 @@ namespace Borg
 
         /**
          * @brief Gets any query information included in the specified URI.
-         * 
-         * @return String 
+         *
+         * @return String
          */
         String Query() const;
 
         /**
          * @brief Determines whether this URI has a particular scheme.
          * @remark The compare is case-insensitive.
-         * 
-         * @param scheme 
-         * @return true 
-         * @return false 
+         *
+         * @param scheme
+         * @return true
+         * @return false
          */
         bool IsScheme(const String &scheme) const;
+
+        /**
+         * @brief Gets the original URI string that was passed to the Uri constructor.
+         *
+         * @return String
+         */
+        String OriginalString() const;
+
+        String ToString() const;
 
     private:
         String m_Scheme;
         String m_Host;
-        int m_Port;
+        int m_Port = 0;
         String m_Path;
         String m_Query;
+        String m_OriginalString;
     };
 }
