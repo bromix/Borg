@@ -9,7 +9,7 @@ TEST(Buffer, SizeTest)
 {
     auto count = 10;
     auto size = sizeof(wchar_t) * count;
-    Buffer<wchar_t> mb(count);
+    Buffer<wchar_t> mb = Buffer<wchar_t>::FromCount(count);
     ASSERT_EQ(size, mb.Size());
     ASSERT_EQ(count, mb.Count());
 }
@@ -33,7 +33,7 @@ TEST(CharBuffer, Size)
 {
     auto count = 10;
     auto size = sizeof(char) * (count + 1); // +1 because of null-termination
-    CharBuffer cb(count);
+    CharBuffer cb = CharBuffer::FromCount(count);
     ASSERT_EQ(count, cb.Count());
     ASSERT_EQ(size, cb.Size());
 }
@@ -42,7 +42,7 @@ TEST(Char16Buffer, Size)
 {
     auto count = 10;
     auto size = sizeof(char16_t) * (count + 1); // +1 because of null-termination
-    Char16Buffer cb(count);
+    Char16Buffer cb = Char16Buffer::FromCount(count);
     ASSERT_EQ(count, cb.Count());
     ASSERT_EQ(size, cb.Size());
 }
@@ -51,7 +51,7 @@ TEST(Char32Buffer, Size)
 {
     auto count = 10;
     auto size = sizeof(char32_t) * (count + 1); // +1 because of null-termination
-    Char32Buffer cb(count);
+    Char32Buffer cb = Char32Buffer::FromCount(count);
     ASSERT_EQ(count, cb.Count());
     ASSERT_EQ(size, cb.Size());
 }

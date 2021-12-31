@@ -17,7 +17,7 @@ namespace Borg
 
     Utf16String::Utf16String(std::string_view input)
     {
-        m_StringBuffer = ToUtf16(input);
+        m_StringBuffer = ToUtf16(CharBuffer::From(input));
     }
 
     Utf16String::Utf16String(std::wstring_view input)
@@ -177,6 +177,6 @@ namespace Borg
 
     void Utf16String::prepare(std::size_t count)
     {
-        m_StringBuffer = WideCharBuffer(count);
+        m_StringBuffer = WideCharBuffer::FromCount(count);
     }
 }

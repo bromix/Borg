@@ -8,6 +8,8 @@ namespace Borg
     class Buffer
     {
     public:
+        Buffer() {}
+
         /**
          * @brief Constructor for assigning nullptr.
          */
@@ -32,7 +34,7 @@ namespace Borg
          *
          * @param count
          */
-        Buffer(std::size_t count);
+        // Buffer(std::size_t count);
         ~Buffer();
 
         /**
@@ -110,7 +112,46 @@ namespace Borg
 
         virtual Buffer<T> &Detach();
 
+        static Buffer<T> FromSize(std::size_t size)
+        {
+            Buffer<T> buffer;
+            buffer.initViaSize(size);
+            return buffer;
+        }
+
+        static Buffer<T> FromCount(std::size_t count)
+        {
+            Buffer<T> buffer;
+            buffer.initViaCount(count);
+            return buffer;
+        }
+
+        static Buffer<T> FromLength(std::size_t length)
+        {
+            return FromCount(length);
+        }
+
     protected:
+        void initViaSize(std::size_t size, bool isDetached = false)
+        {
+            m_Size = size;
+            m_Count = size / sizeof(T);
+            m_IsDetached = isDetached;
+
+            if (!isDetached)
+                m_Data = new T[size];
+        }
+
+        void initViaCount(std::size_t count, bool isDetached = false)
+        {
+            m_Count = count;
+            m_Size = count * sizeof(T);
+            m_IsDetached = isDetached;
+
+            if (!isDetached)
+                m_Data = new T[m_Size];
+        }
+
         /**
          * @brief Deletes the internal data pointer.
          */
@@ -118,7 +159,7 @@ namespace Borg
 
         std::size_t m_Size = 0;
         std::size_t m_Count = 0;
-        bool m_Detached = false;
+        bool m_IsDetached = false;
 
         T *m_Data = nullptr;
     };
@@ -142,17 +183,17 @@ namespace Borg
         *this = std::move(input);
     }
 
-    template <typename T>
-    Buffer<T>::Buffer(std::size_t count)
-        : m_Count(count), m_Size(count * sizeof(T))
-    {
-        m_Data = new T[m_Size];
-    }
+    // template <typename T>
+    // Buffer<T>::Buffer(std::size_t count)
+    //     : m_Count(count), m_Size(count * sizeof(T))
+    // {
+    //     m_Data = new T[m_Size];
+    // }
 
     template <typename T>
     Buffer<T>::~Buffer()
     {
-        if (!m_Detached)
+        if (!m_IsDetached)
             reset();
     }
 
@@ -235,7 +276,7 @@ namespace Borg
         std::memcpy(m_Data, input.Data(), input.Size());
     }
 
-    template<typename T>
+    template <typename T>
     void Buffer<T>::CopyFrom(const T *input, std::size_t size)
     {
         if (size > m_Size)
@@ -252,7 +293,7 @@ namespace Borg
         m_Size = input.m_Size;
         m_Data = new T[m_Size];
         m_Count = input.m_Count;
-        m_Detached = input.m_Detached;
+        m_IsDetached = input.m_IsDetached;
         CopyFrom(input);
         return *this;
     }
@@ -265,7 +306,7 @@ namespace Borg
         std::swap(m_Data, input.m_Data);
         std::swap(m_Count, input.m_Count);
         std::swap(m_Size, input.m_Size);
-        std::swap(m_Detached, input.m_Detached);
+        std::swap(m_IsDetached, input.m_IsDetached);
 
         return *this;
     }
@@ -278,7 +319,7 @@ namespace Borg
 
         delete[] m_Data;
         m_Data = nullptr;
-        m_Detached = false;
+        m_IsDetached = false;
         m_Count = 0;
         m_Size = 0;
     }
@@ -286,7 +327,7 @@ namespace Borg
     template <typename T>
     Buffer<T> &Buffer<T>::Detach()
     {
-        m_Detached = true;
+        m_IsDetached = true;
         return *this;
     }
 

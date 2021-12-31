@@ -9,6 +9,8 @@ namespace Borg
     class StringBuffer : public Buffer<T>, public IStringBuffer
     {
     public:
+        StringBuffer() : Buffer<T>(){};
+
         /**
          * @brief Construct for a nullptr.
          */
@@ -44,26 +46,6 @@ namespace Borg
         {
             Buffer<T>::operator=(std::move(input));
             return *this;
-        }
-
-        /**
-         * @brief Move assignment operator.
-         *
-         * @param input
-         */
-        StringBuffer(std::basic_string_view<T> input) : StringBuffer(input.length())
-        {
-            CopyFrom(input);
-        }
-
-        /**
-         * @brief Creates a new StringBuffer with null-termination.
-         *
-         * @param count
-         */
-        StringBuffer(std::size_t count) : Buffer<T>(count + 1)
-        {
-            m_Data[count] = '\0';
         }
 
         /**
@@ -107,6 +89,27 @@ namespace Borg
         {
             Buffer<T>::Detach();
             return *this;
+        }
+
+        static StringBuffer<T> From(std::basic_string_view<T> input)
+        {
+            StringBuffer<T> buffer;
+            buffer.initViaCount(input.length() + 1, true);
+            buffer.m_Data = const_cast<T *>(input.data());
+            return buffer;
+        }
+
+        static StringBuffer<T> FromLength(std::size_t length)
+        {
+            return FromCount(length);
+        }
+
+        static StringBuffer<T> FromCount(std::size_t count)
+        {
+            StringBuffer<T> buffer;
+            buffer.initViaCount(count + 1);
+            buffer.m_Data[count] = '\0';
+            return buffer;
         }
     };
 

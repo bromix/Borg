@@ -38,7 +38,7 @@ namespace Borg
             //     error);
         }
 
-        WideCharBuffer utf16(utf16Length);
+        WideCharBuffer utf16 = WideCharBuffer::FromLength(utf16Length);
 
         int result = ::MultiByteToWideChar(
             CP_UTF8,     // Source string is in UTF-8
@@ -95,7 +95,7 @@ namespace Borg
             //     error);
         }
 
-        CharBuffer utf8(utf8Length);
+        CharBuffer utf8 = CharBuffer::FromLength(utf8Length);
 
         int result = ::WideCharToMultiByte(
             CP_UTF8,      // Source string is in UTF-8
