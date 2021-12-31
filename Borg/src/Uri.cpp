@@ -45,7 +45,10 @@ namespace Borg
     {
         // FIXME: We should use a StringBuilder
 
-        String result = m_Scheme + "://" + m_Host;
+        String result = m_Scheme + "://";
+
+        if(m_Host)
+            result = result + m_Host;
 
         if (m_Path)
             result = result + m_Path;

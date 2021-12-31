@@ -21,20 +21,27 @@ TEST(Uri, IsScheme)
     ASSERT_FALSE(url.IsScheme("file"));
 }
 
-TEST(URI, query)
+TEST(Uri, FileUriToString)
+{
+    auto url = Uri("file://C:\\Program Files (x86)\\Company\\Product\\skins\\index.html");
+    auto result = url.ToString();
+    ASSERT_TRUE(result);
+}
+
+TEST(Uri, query)
 {
     auto url = Uri("https://some.host.com/andApath/?agent=john&arch=x86&darkmode=1&lang=de-DE");
     ASSERT_EQ("?agent=john&arch=x86&darkmode=1&lang=de-DE", url.Query());
 }
 
-TEST(URI, OriginalString)
+TEST(Uri, OriginalString)
 {
     Uri url("HTTP://www.ConToso.com:80//thick%20and%20thin.htm");
 
     ASSERT_EQ("HTTP://www.ConToso.com:80//thick%20and%20thin.htm", url.OriginalString());
 }
 
-TEST(URI, ToString)
+TEST(Uri, ToString)
 {
     Uri url("HTTP://www.ConToso.com:80//thick%20and%20thin.htm");
 

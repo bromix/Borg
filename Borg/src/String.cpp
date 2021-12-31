@@ -43,102 +43,102 @@ namespace Borg
         return *this;
     }
 
-    bool String::operator==(const String &rhs) const noexcept
+    bool String::operator==(const String &rhs) const
     {
         return m_Impl->CompareTo(rhs.m_Impl) == 0;
     }
 
-    bool String::operator==(const char *rhs) const noexcept
+    bool String::operator==(const char *rhs) const
     {
         return m_Impl->CompareTo(rhs) == 0;
     }
 
-    bool String::operator==(const wchar_t *rhs) const noexcept
+    bool String::operator==(const wchar_t *rhs) const
     {
         return m_Impl->CompareTo(rhs) == 0;
     }
 
-    bool String::operator==(const std::string &rhs) const noexcept
+    bool String::operator==(const std::string &rhs) const
     {
         return m_Impl->CompareTo(rhs) == 0;
     }
 
-    bool String::operator==(const std::wstring &rhs) const noexcept
+    bool String::operator==(const std::wstring &rhs) const
     {
         return m_Impl->CompareTo(rhs) == 0;
     }
 
-    bool String::operator!=(const String &rhs) const noexcept
+    bool String::operator!=(const String &rhs) const
     {
         return !(*this == rhs);
     }
 
-    bool String::operator!=(const char *rhs) const noexcept
+    bool String::operator!=(const char *rhs) const
     {
         return !(*this == rhs);
     }
 
-    bool String::operator!=(const wchar_t *rhs) const noexcept
+    bool String::operator!=(const wchar_t *rhs) const
     {
         return !(*this == rhs);
     }
 
-    bool String::operator!=(const std::string &rhs) const noexcept
+    bool String::operator!=(const std::string &rhs) const
     {
         return !(*this == rhs);
     }
 
-    bool String::operator!=(const std::wstring &rhs) const noexcept
+    bool String::operator!=(const std::wstring &rhs) const
     {
         return !(*this == rhs);
     }
 
-    bool String::operator<(const String &rhs) const noexcept
+    bool String::operator<(const String &rhs) const
     {
         return m_Impl->CompareTo(rhs.m_Impl) < 0;
     }
 
-    bool String::operator<(const char *rhs) const noexcept
+    bool String::operator<(const char *rhs) const
     {
         return m_Impl->CompareTo(rhs) < 0;
     }
 
-    bool String::operator<(const wchar_t *rhs) const noexcept
+    bool String::operator<(const wchar_t *rhs) const
     {
         return m_Impl->CompareTo(rhs) < 0;
     }
 
-    bool String::operator<(const std::string &rhs) const noexcept
+    bool String::operator<(const std::string &rhs) const
     {
         return m_Impl->CompareTo(rhs) < 0;
     }
 
-    bool String::operator<(const std::wstring &rhs) const noexcept
+    bool String::operator<(const std::wstring &rhs) const
     {
         return m_Impl->CompareTo(rhs) < 0;
     }
 
-    bool String::operator>(const String &rhs) const noexcept
+    bool String::operator>(const String &rhs) const
     {
         return m_Impl->CompareTo(rhs.m_Impl) > 0;
     }
 
-    bool String::operator>(const char *rhs) const noexcept
+    bool String::operator>(const char *rhs) const
     {
         return m_Impl->CompareTo(rhs) < 0;
     }
 
-    bool String::operator>(const wchar_t *rhs) const noexcept
+    bool String::operator>(const wchar_t *rhs) const
     {
         return m_Impl->CompareTo(rhs) < 0;
     }
 
-    bool String::operator>(const std::string &rhs) const noexcept
+    bool String::operator>(const std::string &rhs) const
     {
         return m_Impl->CompareTo(rhs) < 0;
     }
 
-    bool String::operator>(const std::wstring &rhs) const noexcept
+    bool String::operator>(const std::wstring &rhs) const
     {
         return m_Impl->CompareTo(rhs) < 0;
     }
@@ -182,16 +182,25 @@ namespace Borg
 
     String String::Insert(int startIndex, const String &value) const
     {
+        if(value.IsNull())
+            throw ArgumentNullException("value");
+
         return m_Impl->Insert(startIndex, value.m_Impl);
     }
 
     String String::Insert(int startIndex, const char *value) const
     {
+        if(value == nullptr)
+            throw ArgumentNullException("value");
+
         return m_Impl->Insert(startIndex, value);
     }
 
-    String String::Insert(int startIndex, const wchar_t *&value) const
+    String String::Insert(int startIndex, const wchar_t *value) const
     {
+        if(value == nullptr)
+            throw ArgumentNullException("value");
+
         return m_Impl->Insert(startIndex, value);
     }
 
@@ -207,16 +216,25 @@ namespace Borg
 
     String String::Append(const String &value) const
     {
+        if(value.IsNull())
+            throw ArgumentNullException("value");
+
         return Insert(Length(), value);
     }
 
     String String::Append(const char *value) const
     {
+        if(value == nullptr)
+            throw ArgumentNullException("value");
+
         return Insert(Length(), value);
     }
 
-    String String::Append(const wchar_t *&value) const
+    String String::Append(const wchar_t *value) const
     {
+        if(value == nullptr)
+            throw ArgumentNullException("value");
+
         return Insert(Length(), value);
     }
 
@@ -232,16 +250,25 @@ namespace Borg
 
     String String::Prepend(const String &value) const
     {
+        if(value.IsNull())
+            throw ArgumentNullException("value");
+
         return Insert(0, value);
     }
 
     String String::Prepend(const char *value) const
     {
+        if(value == nullptr)
+            throw ArgumentNullException("value");
+
         return Insert(0, value);
     }
 
-    String String::Prepend(const wchar_t *&value) const
+    String String::Prepend(const wchar_t *value) const
     {
+        if(value == nullptr)
+            throw ArgumentNullException("value");
+
         return Insert(0, value);
     }
 
@@ -255,52 +282,69 @@ namespace Borg
         return Insert(0, value);
     }
 
-    bool String::StartsWith(const String &text) const noexcept
+    bool String::StartsWith(const String &text) const
     {
+        if(text.IsNull())
+            throw ArgumentNullException("text");
+
         return m_Impl->StartsWith(text.m_Impl);
     }
 
-    bool String::StartsWith(const char *text) const noexcept
+    bool String::StartsWith(const char *text) const
+    {
+        if(text == nullptr)
+            throw ArgumentNullException("text");
+        
+        return m_Impl->StartsWith(text);
+    }
+
+    bool String::StartsWith(const wchar_t *text) const
+    {
+        if(text == nullptr)
+            throw ArgumentNullException("text");
+
+        return m_Impl->StartsWith(text);
+    }
+
+    bool String::StartsWith(const std::string &text) const
     {
         return m_Impl->StartsWith(text);
     }
 
-    bool String::StartsWith(const wchar_t *&text) const noexcept
+    bool String::StartsWith(const std::wstring &text) const
     {
         return m_Impl->StartsWith(text);
     }
 
-    bool String::StartsWith(const std::string &text) const noexcept
+    bool String::EndsWith(const String &text) const
     {
-        return m_Impl->StartsWith(text);
-    }
+        if(text.IsNull())
+            throw ArgumentNullException("text");
 
-    bool String::StartsWith(const std::wstring &text) const noexcept
-    {
-        return m_Impl->StartsWith(text);
-    }
-
-    bool String::EndsWith(const String &text) const noexcept
-    {
         return m_Impl->EndsWith(text.m_Impl);
     }
 
-    bool String::EndsWith(const char *text) const noexcept
+    bool String::EndsWith(const char *text) const
+    {
+        if(text == nullptr)
+            throw ArgumentNullException("text");
+
+        return m_Impl->EndsWith(text);
+    }
+
+    bool String::EndsWith(const wchar_t *text) const
+    {
+        if(text == nullptr)
+            throw ArgumentNullException("text");
+        return m_Impl->EndsWith(text);
+    }
+
+    bool String::EndsWith(const std::string &text) const
     {
         return m_Impl->EndsWith(text);
     }
 
-    bool String::EndsWith(const wchar_t *&text) const noexcept
-    {
-        return m_Impl->EndsWith(text);
-    }
-
-    bool String::EndsWith(const std::string &text) const noexcept
-    {
-        return m_Impl->EndsWith(text);
-    }
-
-    bool String::EndsWith(const std::wstring &text) const noexcept
+    bool String::EndsWith(const std::wstring &text) const
     {
         return m_Impl->EndsWith(text);
     }
@@ -322,27 +366,27 @@ namespace Borg
         return IsNull() || IsEmpty();
     }
 
-    String String::operator+(const String &rhs) const noexcept
+    String String::operator+(const String &rhs) const
     {
         return Append(rhs);
     }
 
-    String String::operator+(const char *rhs) const noexcept
+    String String::operator+(const char *rhs) const
     {
         return Append(rhs);
     }
 
-    String String::operator+(const wchar_t *rhs) const noexcept
+    String String::operator+(const wchar_t *rhs) const
     {
         return Append(rhs);
     }
 
-    String String::operator+(const std::string &rhs) const noexcept
+    String String::operator+(const std::string &rhs) const
     {
         return Append(rhs);
     }
 
-    String String::operator+(const std::wstring &rhs) const noexcept
+    String String::operator+(const std::wstring &rhs) const
     {
         return Append(rhs);
     }
