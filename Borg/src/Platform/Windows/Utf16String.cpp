@@ -1,6 +1,7 @@
 #include "Borg/RefCast.h"
 #include "Utf16String.h"
-#include "StringConversion.h"
+#include "Borg/Encoding.h"
+#include "Borg/StringBuffer.h"
 #include "Windows.h"
 
 namespace Borg
@@ -17,7 +18,7 @@ namespace Borg
 
     Utf16String::Utf16String(std::string_view input)
     {
-        m_StringBuffer = ToUtf16(CharBuffer::From(input));
+        m_StringBuffer = Encoding::ToWideCharBuffer(CharBuffer::From(input));
     }
 
     Utf16String::Utf16String(std::wstring_view input)
@@ -156,7 +157,7 @@ namespace Borg
 
     Utf16String::operator std::string() const
     {
-        return ToUtf8(m_StringBuffer);
+        return Encoding::ToCharBuffer(m_StringBuffer);
     }
 
     Utf16String::operator std::wstring() const
