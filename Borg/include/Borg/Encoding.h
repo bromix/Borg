@@ -3,6 +3,7 @@
 
 namespace Borg
 {
+    class String;
     class Encoding final
     {
     public:

@@ -1,61 +1,60 @@
 #pragma once
-#include "Buffer.h"
+#include "ArrayBuffer.h"
 #include "IStringBuffer.h"
 #include <string_view>
 
 namespace Borg
 {
     template <typename T>
-    class StringBuffer : public Buffer<T>, public IStringBuffer
+    class StringBuffer : public ArrayBuffer<T>, public IStringBuffer
     {
     public:
-        StringBuffer() : Buffer<T>(){};
-
         /**
-         * @brief Construct for a nullptr.
+         * @brief Empty default constructor.
          */
-        StringBuffer(nullptr_t) : Buffer<T>(nullptr){};
+        StringBuffer() : ArrayBuffer<T>() {}
+
+        StringBuffer(const StringBuffer<T> &input) : ArrayBuffer<T>(input) {}
+
+        StringBuffer(StringBuffer<T> &&input) : ArrayBuffer<T>(std::move(input)) {}
 
         /**
-         * @brief Copy constructor.
+         * @brief Creates a StringBuffer with the given length of "characters".
+         * @remark The length will be calculated into ByteLength for the internal buffer.
          *
-         * @param input
+         * @param length
          */
-        StringBuffer(const StringBuffer<T> &input) : Buffer<T>(input) {}
+        StringBuffer(std::size_t length) : ArrayBuffer<T>((length + 1) * sizeof(T)) {}
 
-        /**
-         * @brief Copy assignment operator.
-         *
-         * @param input
-         * @return StringBuffer<T>&
-         */
-        StringBuffer<T> &operator=(const StringBuffer<T> &input)
+        StringBuffer(std::basic_string_view<T> input, bool createCopy = false)
+            : ArrayBuffer<T>()
         {
-            Buffer<T>::operator=(input);
-            return *this;
+            // we add +1 because of the null-termination.
+            m_ByteLength = (input.length() + 1) * sizeof(T);
+
+            if (createCopy)
+            {
+                m_IsDetached = false;
+                m_Ptr = new T[m_ByteLength];
+                m_Ptr[input.length()] = '\0'; // we must add the null-termination while copying.
+                memcpy_s(m_Ptr, m_ByteLength, input.data(), input.length() * sizeof(T));
+            }
+            else
+            {
+                m_IsDetached = true;
+                m_Ptr = const_cast<T *>(input.data());
+            }
         }
 
         /**
-         * @brief Move constructor.
-         *
-         * @param input
-         */
-        StringBuffer(StringBuffer<T> &&input) : Buffer<T>(std::move(input)) {}
-
-        StringBuffer<T> &operator=(StringBuffer<T> &&input)
-        {
-            Buffer<T>::operator=(std::move(input));
-            return *this;
-        }
-
-        /**
-         * @brief Returns the count without the null-termination.
+         * @brief Returns the length of the StringBuffer without the null-termination.
          *
          * @return std::size_t
          */
-        std::size_t Count() const override
+        std::size_t Length() const
         {
-            return m_Count > 0 ? m_Count - 1 : 0;
+            auto length = ArrayBuffer<T>::Length();
+            return length > 0 ? length - 1 : 0;
         }
 
         /**
@@ -65,58 +64,35 @@ namespace Borg
          */
         operator std::basic_string_view<T>() const
         {
-            return m_Data;
+            return m_Ptr;
         }
 
         operator std::basic_string<T>() const
         {
-            return std::basic_string<T>(m_Data);
+            return std::basic_string<T>(m_Ptr);
         }
 
         /**
-         * @brief Detach the buffer from the internal buffer.
-         *
-         * @remark The caller has to release the buffer.
+         * @brief Detaches the StringBuffer from the underlying Buffer.
+         * @remark This will not free resources after the ArrayBuffer is out of scope or deleted.
+         * @remark The caller must free the resource.
          *
          * @return StringBuffer<T>&
          */
-        StringBuffer<T> &Detach() override
+        StringBuffer<T> &Detach()
         {
-            Buffer<T>::Detach();
+            ArrayBuffer<T>::Detach();
             return *this;
         }
 
-        void CopyFrom(const T* input, std::size_t size)
+        StringBuffer<T> operator=(const StringBuffer<T> &input)
         {
-            Buffer<T>::CopyFrom(input, size);
+            throw NotImplementedException();
         }
 
-        static StringBuffer<T> ViewFrom(std::basic_string_view<T> input)
+        StringBuffer<T> operator=(StringBuffer<T> &&input)
         {
-            StringBuffer<T> buffer;
-            buffer.initViaCount(input.length() + 1, true);
-            buffer.m_Data = const_cast<T *>(input.data());
-            return buffer;
-        }
-
-        static StringBuffer<T> CopyFrom(std::basic_string_view<T> input)
-        {
-            StringBuffer<T> buffer = FromLength(input.length());
-            buffer.CopyFrom(input.data(), buffer.Count() * sizeof(T));
-            return buffer;
-        }
-
-        static StringBuffer<T> FromLength(std::size_t length)
-        {
-            return FromCount(length);
-        }
-
-        static StringBuffer<T> FromCount(std::size_t count)
-        {
-            StringBuffer<T> buffer;
-            buffer.initViaCount(count + 1);
-            buffer.m_Data[count] = '\0';
-            return buffer;
+            throw NotImplementedException();
         }
     };
 

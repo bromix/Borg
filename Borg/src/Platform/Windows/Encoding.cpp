@@ -7,17 +7,17 @@ namespace Borg
 {
     CharBuffer Encoding::ToCharBuffer(const WideCharBuffer &input)
     {
-        if (input.IsNullOrEmpty())
+        if (input.IsEmpty())
             return nullptr;
 
-        if (input.Count() > static_cast<size_t>((std::numeric_limits<int>::max)()))
+        if (input.Length() > static_cast<size_t>((std::numeric_limits<int>::max)()))
         {
             throw std::overflow_error(
                 "Input string too long: size_t-length doesn't fit into int.");
         }
 
         // constexpr DWORD kFlags = MB_ERR_INVALID_CHARS;
-        const int utf16Length = static_cast<int>(input.Count());
+        const int utf16Length = static_cast<int>(input.Length());
         const int utf8Length = ::WideCharToMultiByte(
             CP_UTF8,
             0,
@@ -38,7 +38,7 @@ namespace Borg
             //     error);
         }
 
-        CharBuffer utf8 = CharBuffer::FromLength(utf8Length);
+        CharBuffer utf8(utf8Length);
 
         int result = ::WideCharToMultiByte(
             CP_UTF8,     // Source string is in UTF-8
@@ -65,10 +65,10 @@ namespace Borg
 
     WideCharBuffer Encoding::ToWideCharBuffer(const CharBuffer &input)
     {
-        if (input.IsNullOrEmpty())
+        if (input.IsEmpty())
             return nullptr;
 
-        if (input.Count() > static_cast<size_t>((std::numeric_limits<int>::max)()))
+        if (input.Length() > static_cast<size_t>((std::numeric_limits<int>::max)()))
         {
             // FIXME: use proper Exception.
             throw std::overflow_error(
@@ -76,7 +76,7 @@ namespace Borg
         }
 
         constexpr DWORD kFlags = MB_ERR_INVALID_CHARS;
-        const int utf8Length = static_cast<int>(input.Count());
+        const int utf8Length = static_cast<int>(input.Length());
         const int utf16Length = ::MultiByteToWideChar(
             CP_UTF8,     // Source string is in UTF-8
             kFlags,      // Conversion flags
@@ -96,7 +96,7 @@ namespace Borg
             //     error);
         }
 
-        WideCharBuffer utf16 = WideCharBuffer::FromLength(utf16Length);
+        WideCharBuffer utf16(utf16Length);
 
         int result = ::MultiByteToWideChar(
             CP_UTF8,     // Source string is in UTF-8

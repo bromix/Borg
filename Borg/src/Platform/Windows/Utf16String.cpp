@@ -18,12 +18,12 @@ namespace Borg
 
     Utf16String::Utf16String(std::string_view input)
     {
-        m_StringBuffer = Encoding::ToWideCharBuffer(CharBuffer::ViewFrom(input));
+        m_StringBuffer = Encoding::ToWideCharBuffer(input);
     }
 
     Utf16String::Utf16String(std::wstring_view input)
     {
-        m_StringBuffer = WideCharBuffer::CopyFrom(input);
+        m_StringBuffer = WideCharBuffer(input, true);
     }
 
     Utf16String::Utf16String(const WideCharBuffer &buffer) : m_StringBuffer(buffer)
@@ -41,7 +41,7 @@ namespace Borg
 
     std::size_t Utf16String::Length() const
     {
-        return m_StringBuffer.Count();
+        return m_StringBuffer.Length();
     }
 
     Ref<IString> Utf16String::ToLower() const
@@ -71,10 +71,10 @@ namespace Borg
 
     Ref<IString> Utf16String::Insert(int startIndex, std::wstring_view value) const
     {
-        if (startIndex < 0 || startIndex > m_StringBuffer.Count())
+        if (startIndex < 0 || startIndex > m_StringBuffer.Length())
             throw ArgumentOutOfRangeException("startIndex");
 
-        Ref<Utf16String> newString = CreateRef<Utf16String>(m_StringBuffer.Count() + value.length());
+        Ref<Utf16String> newString = CreateRef<Utf16String>(m_StringBuffer.Length() + value.length());
 
         wchar_t *targetData = newString->m_StringBuffer;
         wchar_t *sourceData = m_StringBuffer;
@@ -87,7 +87,7 @@ namespace Borg
 
         targetData += value.length();
         sourceData += startIndex;
-        std::wmemcpy(targetData, sourceData, m_StringBuffer.Count() - startIndex);
+        std::wmemcpy(targetData, sourceData, m_StringBuffer.Length() - startIndex);
 
         return newString;
     }
@@ -105,7 +105,7 @@ namespace Borg
 
     bool Utf16String::StartsWith(std::wstring_view text) const
     {
-        if(text.length() > m_StringBuffer.Count())
+        if(text.length() > m_StringBuffer.Length())
             return false;
         auto result = wcsncmp(m_StringBuffer, text.data(), text.length());
         return result == 0;
@@ -124,18 +124,18 @@ namespace Borg
 
     bool Utf16String::EndsWith(std::wstring_view text) const
     {
-        if (text.length() > m_StringBuffer.Count())
+        if (text.length() > m_StringBuffer.Length())
             return false;
 
         // We must subtract the null-termination '\0'
-        auto ptr = &m_StringBuffer[m_StringBuffer.Count() - text.length()];
+        auto ptr = &m_StringBuffer[m_StringBuffer.Length() - text.length()];
         auto result = wcsncmp(ptr, text.data(), text.length());
         return result == 0;
     }
 
     bool Utf16String::IsEmpty() const
     {
-        return m_StringBuffer.Count() == 0;
+        return m_StringBuffer.Length() == 0;
     }
 
     int Utf16String::CompareTo(const Ref<IString> &rhs) const
@@ -177,6 +177,6 @@ namespace Borg
 
     void Utf16String::prepare(std::size_t count)
     {
-        m_StringBuffer = WideCharBuffer::FromCount(count);
+        m_StringBuffer = WideCharBuffer(count);
     }
 }

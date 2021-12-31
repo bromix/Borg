@@ -50,6 +50,6 @@ namespace Borg
     private:
         void prepare(std::size_t length);
 
-        WideCharBuffer m_StringBuffer = nullptr;
+        WideCharBuffer m_StringBuffer;
     };
 }
