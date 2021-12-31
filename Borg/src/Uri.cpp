@@ -2,6 +2,10 @@
 
 namespace Borg
 {
+    Uri::Uri()
+    {
+    }
+
     String Uri::Scheme() const
     {
         return m_Scheme;

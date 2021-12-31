@@ -7,6 +7,11 @@ namespace Borg
     {
     public:
         /**
+         * @brief Default empty constructor.
+         */
+        Uri();
+
+        /**
          * @brief Initializes a new instance of the Uri class with the specified URI.
          *
          * @param uri
