@@ -6,9 +6,23 @@
 
 namespace Borg
 {
+    Ref<IString> IString::Create(const char* input)
+    {
+        if(input == nullptr)
+            return nullptr;
+        return Create(std::string_view(input));
+    }
+
     Ref<IString> IString::Create(std::string_view input)
     {
         return CreateRef<Utf16String>(input);
+    }
+
+    Ref<IString> IString::Create(const wchar_t* input)
+    {
+        if(input == nullptr)
+            return nullptr;
+        return Create(std::wstring_view(input));
     }
 
     Ref<IString> IString::Create(std::wstring_view input)

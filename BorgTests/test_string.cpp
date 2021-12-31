@@ -22,6 +22,15 @@ TEST(String, NullConstructor)
     ASSERT_TRUE(text.IsNullOrEmpty());
 }
 
+TEST(String, AssignNullptr)
+{
+    const char *input = nullptr;
+    String text = input;
+    ASSERT_TRUE(text.IsNull());
+    ASSERT_TRUE(text.IsEmpty());
+    ASSERT_TRUE(text.IsNullOrEmpty());
+}
+
 TEST(String, EmptyString)
 {
     String text = "";

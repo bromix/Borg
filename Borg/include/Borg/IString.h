@@ -7,7 +7,10 @@ namespace Borg
     class IString
     {
     public:
+        static Ref<IString> Create(const char* input);
         static Ref<IString> Create(std::string_view input);
+
+        static Ref<IString> Create(const wchar_t* input);
         static Ref<IString> Create(std::wstring_view input);
 
         virtual ~IString() = default;
