@@ -105,8 +105,8 @@ namespace Borg
         Buffer<T> &operator=(const Buffer<T> &input);
         Buffer<T> &operator=(Buffer<T> &&input);
 
-        void CopyFrom(const std::basic_string_view<T> &input);
         void CopyFrom(const Buffer<T> &input);
+        void CopyFrom(const T *input, std::size_t size);
 
         virtual Buffer<T> &Detach();
 
@@ -227,21 +227,21 @@ namespace Borg
     }
 
     template <typename T>
-    void Buffer<T>::CopyFrom(const std::basic_string_view<T> &input)
-    {
-        if (input.length() > m_Count)
-            throw ArgumentOutOfRangeException("input.length()");
-
-        std::memcpy(m_Data, input.data(), input.length() * sizeof(T));
-    }
-
-    template <typename T>
     void Buffer<T>::CopyFrom(const Buffer<T> &input)
     {
         if (input.Count() > m_Count)
             throw ArgumentOutOfRangeException("input.Count()");
 
         std::memcpy(m_Data, input.Data(), input.Size());
+    }
+
+    template<typename T>
+    void Buffer<T>::CopyFrom(const T *input, std::size_t size)
+    {
+        if (size > m_Size)
+            throw ArgumentOutOfRangeException("input.Count()");
+
+        std::memcpy(m_Data, input, size);
     }
 
     template <typename T>

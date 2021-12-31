@@ -48,8 +48,8 @@ namespace Borg
 
         /**
          * @brief Move assignment operator.
-         * 
-         * @param input 
+         *
+         * @param input
          */
         StringBuffer(std::basic_string_view<T> input) : StringBuffer(input.length())
         {
@@ -91,12 +91,17 @@ namespace Borg
             return std::basic_string<T>(m_Data);
         }
 
+        void CopyFrom(std::basic_string_view<T> input)
+        {
+            Buffer<T>::CopyFrom(input.data(), input.length() * sizeof(T));
+        }
+
         /**
          * @brief Detach the buffer from the internal buffer.
          *
          * @remark The caller has to release the buffer.
-         * 
-         * @return StringBuffer<T>& 
+         *
+         * @return StringBuffer<T>&
          */
         StringBuffer<T> &Detach() override
         {
@@ -109,8 +114,6 @@ namespace Borg
     using WideCharBuffer = StringBuffer<wchar_t>;
 #ifdef __cpp_lib_char8_t
     using Char8Buffer = StringBuffer<char8_t>;
-#else
-    using Char8Buffer = StringBuffer<char>;
 #endif // __cpp_lib_char8_t
     using Char16Buffer = StringBuffer<char16_t>;
     using Char32Buffer = StringBuffer<char32_t>;
