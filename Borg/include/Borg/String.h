@@ -1,6 +1,6 @@
 #pragma once
 #include "Ref.h"
-#include "IString.h"
+#include "IStringBuffer.h"
 #include <string>
 
 namespace Borg
@@ -173,12 +173,12 @@ namespace Borg
         Ref<IStringBuffer> GetBuffer() const;
 
     private:
-        String(const Ref<IString> &input) = delete;
-        String operator=(const Ref<IString> &input) = delete;
-        String(Ref<IString> &&input);
-        String operator=(Ref<IString> &&input) = delete;
+        String(const Ref<IStringBuffer> &input) = delete;
+        String operator=(const Ref<IStringBuffer> &input) = delete;
+        String(Ref<IStringBuffer> &&input);
+        String operator=(Ref<IStringBuffer> &&input) = delete;
 
-        Ref<IString> m_Impl;
+        Ref<IStringBuffer> m_Impl;
     };
 
     String operator+(const char *lhs, const String &rhs);

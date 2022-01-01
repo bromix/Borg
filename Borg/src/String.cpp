@@ -7,25 +7,25 @@ namespace Borg
 
     String::String(std::nullptr_t) {}
 
-    String::String(const char *input) : m_Impl(IString::Create(input)) {}
+    String::String(const char *input) : m_Impl(IStringBuffer::Create(input)) {}
 
-    String::String(const wchar_t *input) : m_Impl(IString::Create(input)) {}
+    String::String(const wchar_t *input) : m_Impl(IStringBuffer::Create(input)) {}
 
-    String::String(const std::string &input) : m_Impl(IString::Create(input)) {}
+    String::String(const std::string &input) : m_Impl(IStringBuffer::Create(input)) {}
 
-    String::String(const std::wstring &input) : m_Impl(IString::Create(input)) {}
+    String::String(const std::wstring &input) : m_Impl(IStringBuffer::Create(input)) {}
 
-    String::String(const String &input) : m_Impl(input.m_Impl ? input.m_Impl->CreateCopy() : nullptr) {}
+    String::String(const String &input) : m_Impl(input.m_Impl ? input.m_Impl->Clone() : nullptr) {}
 
-    String::String(Ref<IString> &&input) : m_Impl(std::move(input)) {}
+    String::String(Ref<IStringBuffer> &&input) : m_Impl(std::move(input)) {}
 
-    String::String(const char *input, std::size_t length) : m_Impl(IString::Create(std::string_view(input, length))) {}
+    String::String(const char *input, std::size_t length) : m_Impl(IStringBuffer::Create(std::string_view(input, length))) {}
 
-    String::String(const wchar_t *input, std::size_t length) : m_Impl(IString::Create(std::wstring_view(input, length))) {}
+    String::String(const wchar_t *input, std::size_t length) : m_Impl(IStringBuffer::Create(std::wstring_view(input, length))) {}
 
     String String::operator=(const String &input)
     {
-        m_Impl = input ? input.m_Impl->CreateCopy() : nullptr;
+        m_Impl = input ? input.m_Impl->Clone() : nullptr;
         return *this;
     }
 
@@ -160,7 +160,7 @@ namespace Borg
 
     Ref<IStringBuffer> String::GetBuffer() const
     {
-        return m_Impl->GetBuffer();
+        return m_Impl->Clone();
     }
 
     std::size_t String::Length() const

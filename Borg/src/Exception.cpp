@@ -20,34 +20,6 @@ namespace Borg
         return m_Message;
     }
 
-    // =====================================
-    // ===== InvalidOperationException =====
-    // =====================================
-
-    InvalidOperationException::InvalidOperationException():Exception(){}
-    InvalidOperationException::InvalidOperationException(const String& message): Exception(message){}
-
-    // =================================
-    // ===== InvalidCastException =====
-    // =================================
-
-    InvalidCastException::InvalidCastException() : Exception() {}
-    InvalidCastException::InvalidCastException(const String &message) : Exception(message) {}
-
-    // ==================================
-    // ===== NullReferenceException =====
-    // ==================================
-
-    NullReferenceException::NullReferenceException() : Exception() {}
-    NullReferenceException::NullReferenceException(const String &message) : Exception(message) {}
-
-    // ===================================
-    // ===== NotImplementedException =====
-    // ===================================
-
-    NotImplementedException::NotImplementedException() : Exception("NotImplementedException") {}
-    NotImplementedException::NotImplementedException(const String &message) : Exception(message) {}
-
     // =============================
     // ===== ArgumentException =====
     // =============================

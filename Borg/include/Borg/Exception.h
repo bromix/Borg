@@ -34,70 +34,11 @@ namespace Borg
         std::string m_What;
     };
 
-    class InvalidOperationException : public Exception
-    {
-    public:
-        /**
-         * @brief Initializes a new instance of the InvalidOperationException class.
-         */
-        InvalidOperationException();
-
-        /**
-         * @brief Initializes a new instance of the InvalidOperationException class with a specified error message.
-         *
-         * @param message
-         */
-        InvalidOperationException(const String &message);
-    };
-
-    class InvalidCastException : public Exception
-    {
-    public:
-        /**
-         * @brief Initializes a new instance of the InvalidCastException class.
-         */
-        InvalidCastException();
-
-        /**
-         * @brief Initializes a new instance of the InvalidCastException class with a specified error message.
-         *
-         * @param message
-         */
-        InvalidCastException(const String &message);
-    };
-
-    class NullReferenceException : public Exception
-    {
-    public:
-        /**
-         * @brief Initializes a new instance of the NullReferenceException class.
-         */
-        NullReferenceException();
-
-        /**
-         * @brief Initializes a new instance of the NullReferenceException class with a specified error message.
-         *
-         * @param message
-         */
-        NullReferenceException(const String &message);
-    };
-
-    class NotImplementedException : public Exception
-    {
-    public:
-        /**
-         * @brief Initializes a new instance of the NotImplementedException class with default properties.
-         */
-        NotImplementedException();
-        ~NotImplementedException() = default;
-
-        /**
-         * @brief Initializes a new instance of the NotImplementedException class with a specified error message.
-         *
-         * @param message
-         */
-        NotImplementedException(const String &message);
-    };
+    using NotSupportException = Exception;
+    using InvalidOperationException = Exception;
+    using InvalidCastException = Exception;
+    using NullReferenceException = Exception;
+    using NotImplementedException = Exception;
 
     class ArgumentException : public Exception
     {

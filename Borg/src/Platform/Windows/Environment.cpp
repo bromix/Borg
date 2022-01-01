@@ -1,6 +1,6 @@
 #include "Borg/Environment.h"
 #include "Borg/Exception.h"
-#include "Borg/StringBuffer.h"
+#include "Borg/WideCharBuffer.h"
 #include "Windows.h"
 #include <map>
 #include <array>

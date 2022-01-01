@@ -66,7 +66,7 @@ namespace Borg
     WideCharBuffer Encoding::ToWideCharBuffer(const CharBuffer &input)
     {
         if (input.IsEmpty())
-            return nullptr;
+            return L"";
 
         if (input.Length() > static_cast<size_t>((std::numeric_limits<int>::max)()))
         {

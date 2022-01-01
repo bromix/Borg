@@ -1,10 +1,9 @@
 #include "Borg/String.h"
-#include "Borg/StringBuffer.h"
 #include "Borg/Encoding.h"
+#include "Borg/RefCast.h"
 #include <gtest/gtest.h>
 
 using namespace Borg;
-
 TEST(String, DefaultConstructor)
 {
     String text;

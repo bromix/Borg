@@ -1,5 +1,6 @@
 #pragma once
-#include "StringBuffer.h"
+#include "CharBuffer.h"
+#include "WideCharBuffer.h"
 
 namespace Borg
 {
