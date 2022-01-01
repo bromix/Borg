@@ -184,7 +184,7 @@ namespace Borg
             throw NotSupportException();
         }
 
-        virtual Ref<IStringBuffer> Clone() const  override
+        virtual Ref<IStringBuffer> Clone() const override
         {
             throw NotSupportException();
         }
