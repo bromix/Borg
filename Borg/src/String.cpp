@@ -1,5 +1,7 @@
 #include "Borg/String.h"
 #include "Borg/Exception.h"
+#include "Borg/Encoding.h"
+#include "Borg/CharBuffer.h"
 
 namespace Borg
 {
@@ -7,65 +9,63 @@ namespace Borg
 
     String::String(std::nullptr_t) {}
 
-    String::String(const char *input) : m_Impl(IStringBuffer::Create(input)) {}
+    String::String(const char *input) : m_Buffer(Encoding::Convert<Encoding::Default, CharBuffer>(input)) {}
 
-    String::String(const wchar_t *input) : m_Impl(IStringBuffer::Create(input)) {}
+    String::String(const wchar_t *input) : m_Buffer(Encoding::Convert<Encoding::Default, WideCharBuffer>(input)) {}
 
-    String::String(const std::string &input) : m_Impl(IStringBuffer::Create(input)) {}
+    String::String(const std::string &input) : m_Buffer(Encoding::Convert<Encoding::Default, CharBuffer>(input)) {}
 
-    String::String(const std::wstring &input) : m_Impl(IStringBuffer::Create(input)) {}
+    String::String(const std::wstring &input) : m_Buffer(Encoding::Convert<Encoding::Default, WideCharBuffer>(input)) {}
 
-    String::String(const String &input) : m_Impl(input.m_Impl ? input.m_Impl->Clone() : nullptr) {}
+    String::String(const String &input) : m_Buffer(Encoding::Convert<Encoding::Default, String>(input)) {}
 
-    String::String(Ref<IStringBuffer> &&input) : m_Impl(std::move(input)) {}
+    String::String(const char *input, std::size_t length) : m_Buffer(Encoding::Convert<Encoding::Default, CharBuffer>(std::string_view(input, length))) {}
 
-    String::String(const char *input, std::size_t length) : m_Impl(IStringBuffer::Create(std::string_view(input, length))) {}
-
-    String::String(const wchar_t *input, std::size_t length) : m_Impl(IStringBuffer::Create(std::wstring_view(input, length))) {}
+    String::String(const wchar_t *input, std::size_t length) : m_Buffer(Encoding::Convert<Encoding::Default, WideCharBuffer>(std::wstring_view(input, length))) {}
 
     String String::operator=(const String &input)
     {
-        m_Impl = input ? input.m_Impl->Clone() : nullptr;
+        m_Buffer = input ? Encoding::Convert<Encoding::Default, String>(input) : nullptr;
         return *this;
     }
 
     // Move constructor and assignment operator.
     String::String(String &&input)
     {
-        m_Impl = nullptr;
-        std::swap(m_Impl, input.m_Impl);
+        m_Buffer = nullptr;
+        std::swap(m_Buffer, input.m_Buffer);
     }
 
     String String::operator=(String &&input)
     {
-        m_Impl = nullptr;
-        std::swap(m_Impl, input.m_Impl);
+        m_Buffer = nullptr;
+        std::swap(m_Buffer, input.m_Buffer);
         return *this;
     }
 
     bool String::operator==(const String &rhs) const
     {
-        return m_Impl->CompareTo(rhs.m_Impl) == 0;
+        return m_Buffer.CompareTo(rhs.m_Buffer) == 0;
     }
 
     bool String::operator==(const char *rhs) const
     {
-        return m_Impl->CompareTo(rhs) == 0;
+        return m_Buffer.CompareTo(Encoding::Convert<Encoding::Default, CharBuffer>(rhs)) == 0;
     }
 
     bool String::operator==(const wchar_t *rhs) const
     {
-        return m_Impl->CompareTo(rhs) == 0;
+        return m_Buffer.CompareTo(Encoding::Convert<Encoding::Default, WideCharBuffer>(rhs)) == 0;
     }
 
     bool String::operator==(const std::string &rhs) const
     {
-        return m_Impl->CompareTo(rhs) == 0;
+        return m_Buffer.CompareTo(Encoding::Convert<Encoding::Default, CharBuffer>(rhs)) == 0;
     }
 
     bool String::operator==(const std::wstring &rhs) const
     {
-        return m_Impl->CompareTo(rhs) == 0;
+        return m_Buffer.CompareTo(Encoding::Convert<Encoding::Default, WideCharBuffer>(rhs)) == 0;
     }
 
     bool String::operator!=(const String &rhs) const
@@ -95,52 +95,52 @@ namespace Borg
 
     bool String::operator<(const String &rhs) const
     {
-        return m_Impl->CompareTo(rhs.m_Impl) < 0;
+        return m_Buffer.CompareTo(rhs.m_Buffer) < 0;
     }
 
     bool String::operator<(const char *rhs) const
     {
-        return m_Impl->CompareTo(rhs) < 0;
+        return m_Buffer.CompareTo(Encoding::Convert<Encoding::Default, CharBuffer>(rhs)) < 0;
     }
 
     bool String::operator<(const wchar_t *rhs) const
     {
-        return m_Impl->CompareTo(rhs) < 0;
+        return m_Buffer.CompareTo(Encoding::Convert<Encoding::Default, WideCharBuffer>(rhs)) < 0;
     }
 
     bool String::operator<(const std::string &rhs) const
     {
-        return m_Impl->CompareTo(rhs) < 0;
+        return m_Buffer.CompareTo(Encoding::Convert<Encoding::Default, CharBuffer>(rhs)) < 0;
     }
 
     bool String::operator<(const std::wstring &rhs) const
     {
-        return m_Impl->CompareTo(rhs) < 0;
+        return m_Buffer.CompareTo(Encoding::Convert<Encoding::Default, WideCharBuffer>(rhs)) < 0;
     }
 
     bool String::operator>(const String &rhs) const
     {
-        return m_Impl->CompareTo(rhs.m_Impl) > 0;
+        return m_Buffer.CompareTo(rhs.m_Buffer) > 0;
     }
 
     bool String::operator>(const char *rhs) const
     {
-        return m_Impl->CompareTo(rhs) < 0;
+        return m_Buffer.CompareTo(Encoding::Convert<Encoding::Default, CharBuffer>(rhs)) > 0;
     }
 
     bool String::operator>(const wchar_t *rhs) const
     {
-        return m_Impl->CompareTo(rhs) < 0;
+        return m_Buffer.CompareTo(Encoding::Convert<Encoding::Default, WideCharBuffer>(rhs)) > 0;
     }
 
     bool String::operator>(const std::string &rhs) const
     {
-        return m_Impl->CompareTo(rhs) < 0;
+        return m_Buffer.CompareTo(Encoding::Convert<Encoding::Default, CharBuffer>(rhs)) > 0;
     }
 
     bool String::operator>(const std::wstring &rhs) const
     {
-        return m_Impl->CompareTo(rhs) < 0;
+        return m_Buffer.CompareTo(Encoding::Convert<Encoding::Default, WideCharBuffer>(rhs)) > 0;
     }
 
     String::operator bool() const
@@ -150,73 +150,71 @@ namespace Borg
 
     String::operator std::string() const
     {
-        return *m_Impl;
+        return "";
     }
 
     String::operator std::wstring() const
     {
-        return *m_Impl;
+        return L"";
     }
 
-    Ref<IStringBuffer> String::GetBuffer() const
+    Encoding::Default String::GetBuffer() const
     {
-        return m_Impl->Clone();
+        return m_Buffer;
     }
 
     std::size_t String::Length() const
     {
-        if (m_Impl == nullptr)
-            throw NullReferenceException("Can not get the length of the string.");
-        return m_Impl->Length();
+        return m_Buffer.Length();
     }
 
     String String::ToLower() const noexcept
     {
-        return m_Impl->ToLower();
+        return m_Buffer.ToLower();
     }
 
     String String::ToUpper() const noexcept
     {
-        return m_Impl->ToUpper();
+        return m_Buffer.ToUpper();
     }
 
     String String::Insert(int startIndex, const String &value) const
     {
-        if(value.IsNull())
+        if (value.IsNull())
             throw ArgumentNullException("value");
 
-        return m_Impl->Insert(startIndex, value.m_Impl);
+        return m_Buffer.Insert(startIndex, Encoding::Convert<Encoding::Default, String>(value));
     }
 
     String String::Insert(int startIndex, const char *value) const
     {
-        if(value == nullptr)
+        if (value == nullptr)
             throw ArgumentNullException("value");
 
-        return m_Impl->Insert(startIndex, value);
+        return m_Buffer.Insert(startIndex, Encoding::Convert<Encoding::Default, CharBuffer>(value));
     }
 
     String String::Insert(int startIndex, const wchar_t *value) const
     {
-        if(value == nullptr)
+        if (value == nullptr)
             throw ArgumentNullException("value");
 
-        return m_Impl->Insert(startIndex, value);
+        return m_Buffer.Insert(startIndex, Encoding::Convert<Encoding::Default, WideCharBuffer>(value));
     }
 
     String String::Insert(int startIndex, const std::string &value) const
     {
-        return m_Impl->Insert(startIndex, value);
+        return m_Buffer.Insert(startIndex, Encoding::Convert<Encoding::Default, CharBuffer>(value));
     }
 
     String String::Insert(int startIndex, const std::wstring &value) const
     {
-        return m_Impl->Insert(startIndex, value);
+        return m_Buffer.Insert(startIndex, Encoding::Convert<Encoding::Default, WideCharBuffer>(value));
     }
 
     String String::Append(const String &value) const
     {
-        if(value.IsNull())
+        if (value.IsNull())
             throw ArgumentNullException("value");
 
         return Insert(Length(), value);
@@ -224,7 +222,7 @@ namespace Borg
 
     String String::Append(const char *value) const
     {
-        if(value == nullptr)
+        if (value == nullptr)
             throw ArgumentNullException("value");
 
         return Insert(Length(), value);
@@ -232,7 +230,7 @@ namespace Borg
 
     String String::Append(const wchar_t *value) const
     {
-        if(value == nullptr)
+        if (value == nullptr)
             throw ArgumentNullException("value");
 
         return Insert(Length(), value);
@@ -250,7 +248,7 @@ namespace Borg
 
     String String::Prepend(const String &value) const
     {
-        if(value.IsNull())
+        if (value.IsNull())
             throw ArgumentNullException("value");
 
         return Insert(0, value);
@@ -258,7 +256,7 @@ namespace Borg
 
     String String::Prepend(const char *value) const
     {
-        if(value == nullptr)
+        if (value == nullptr)
             throw ArgumentNullException("value");
 
         return Insert(0, value);
@@ -266,7 +264,7 @@ namespace Borg
 
     String String::Prepend(const wchar_t *value) const
     {
-        if(value == nullptr)
+        if (value == nullptr)
             throw ArgumentNullException("value");
 
         return Insert(0, value);
@@ -284,81 +282,80 @@ namespace Borg
 
     bool String::StartsWith(const String &text) const
     {
-        if(text.IsNull())
+        if (text.IsNull())
             throw ArgumentNullException("text");
 
-        return m_Impl->StartsWith(text.m_Impl);
+        return m_Buffer.StartsWith(Encoding::Convert<Encoding::Default>(text));
     }
 
     bool String::StartsWith(const char *text) const
     {
-        if(text == nullptr)
+        if (text == nullptr)
             throw ArgumentNullException("text");
-        
-        return m_Impl->StartsWith(text);
+
+        return m_Buffer.StartsWith(Encoding::Convert<Encoding::Default, CharBuffer>(text));
     }
 
     bool String::StartsWith(const wchar_t *text) const
     {
-        if(text == nullptr)
+        if (text == nullptr)
             throw ArgumentNullException("text");
 
-        return m_Impl->StartsWith(text);
+        return m_Buffer.StartsWith(Encoding::Convert<Encoding::Default, WideCharBuffer>(text));
     }
 
     bool String::StartsWith(const std::string &text) const
     {
-        return m_Impl->StartsWith(text);
+        return m_Buffer.StartsWith(Encoding::Convert<Encoding::Default, CharBuffer>(text));
     }
 
     bool String::StartsWith(const std::wstring &text) const
     {
-        return m_Impl->StartsWith(text);
+        return m_Buffer.StartsWith(Encoding::Convert<Encoding::Default, WideCharBuffer>(text));
     }
 
     bool String::EndsWith(const String &text) const
     {
-        if(text.IsNull())
+        if (text.IsNull())
             throw ArgumentNullException("text");
 
-        return m_Impl->EndsWith(text.m_Impl);
+        return m_Buffer.EndsWith(Encoding::Convert<Encoding::Default>(text));
     }
 
     bool String::EndsWith(const char *text) const
     {
-        if(text == nullptr)
+        if (text == nullptr)
             throw ArgumentNullException("text");
 
-        return m_Impl->EndsWith(text);
+        return m_Buffer.EndsWith(Encoding::Convert<Encoding::Default, CharBuffer>(text));
     }
 
     bool String::EndsWith(const wchar_t *text) const
     {
-        if(text == nullptr)
+        if (text == nullptr)
             throw ArgumentNullException("text");
-        return m_Impl->EndsWith(text);
+
+        return m_Buffer.EndsWith(Encoding::Convert<Encoding::Default, WideCharBuffer>(text));
     }
 
     bool String::EndsWith(const std::string &text) const
     {
-        return m_Impl->EndsWith(text);
+        return m_Buffer.EndsWith(Encoding::Convert<Encoding::Default, CharBuffer>(text));
     }
 
     bool String::EndsWith(const std::wstring &text) const
     {
-        return m_Impl->EndsWith(text);
+        return m_Buffer.EndsWith(Encoding::Convert<Encoding::Default, WideCharBuffer>(text));
     }
 
     bool String::IsNull() const noexcept
     {
-        return m_Impl == nullptr;
+        return m_Buffer.IsNull();
     }
 
     bool String::IsEmpty() const noexcept
     {
-        if (m_Impl)
-            return m_Impl->IsEmpty();
-        return true;
+        return m_Buffer.IsEmpty();
     }
 
     bool String::IsNullOrEmpty() const noexcept

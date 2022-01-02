@@ -1,19 +1,16 @@
 #pragma once
-#include "CharBuffer.h"
 #include "WideCharBuffer.h"
 
 namespace Borg
 {
-    class String;
     class Encoding final
     {
     public:
         Encoding() = delete;
 
-        static CharBuffer ToCharBuffer(const WideCharBuffer &input);
-        static CharBuffer ToCharBuffer(const String &input);
+        using Default = WideCharBuffer;
 
-        static WideCharBuffer ToWideCharBuffer(const CharBuffer &input);
-        static WideCharBuffer ToWideCharBuffer(const String &input);
+        template <typename TTo, typename TFrom>
+        static TTo Convert(const TFrom &input);
     };
 }

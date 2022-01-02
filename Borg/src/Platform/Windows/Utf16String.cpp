@@ -1,35 +1,33 @@
-// #include "Borg/RefCast.h"
-// #include "Utf16String.h"
-#include "Borg/Encoding.h"
-#include "Borg/WideCharBuffer.h"
-// #include "Windows.h"
+// #include "Borg/Encoding.h"
+// #include "Borg/WideCharBuffer.h"
+// #include "Borg/CharBuffer.h"
 
-namespace Borg
-{
-    Ref<IStringBuffer> IStringBuffer::Create(const char* input)
-    {
-        if(input == nullptr)
-            return nullptr;
-        return Create(std::string_view(input));
-    }
+// namespace Borg
+// {
+//     Ref<IStringBuffer> IStringBuffer::Create(const char* input)
+//     {
+//         if(input == nullptr)
+//             return nullptr;
+//         return Create(std::string_view(input));
+//     }
 
-    Ref<IStringBuffer> IStringBuffer::Create(std::string_view input)
-    {
-        return CreateRef<WideCharBuffer>(Encoding::ToWideCharBuffer(input));
-    }
+//     Ref<IStringBuffer> IStringBuffer::Create(std::string_view input)
+//     {
+//         return CreateRef<WideCharBuffer>(Encoding::Convert<WideCharBuffer, CharBuffer>(input));
+//     }
 
-    Ref<IStringBuffer> IStringBuffer::Create(const wchar_t* input)
-    {
-        if(input == nullptr)
-            return nullptr;
-        return Create(std::wstring_view(input));
-    }
+//     Ref<IStringBuffer> IStringBuffer::Create(const wchar_t* input)
+//     {
+//         if(input == nullptr)
+//             return nullptr;
+//         return Create(std::wstring_view(input));
+//     }
 
-    Ref<IStringBuffer> IStringBuffer::Create(std::wstring_view input)
-    {
-        return CreateRef<WideCharBuffer>(input);
-    }
-}
+//     Ref<IStringBuffer> IStringBuffer::Create(std::wstring_view input)
+//     {
+//         return CreateRef<WideCharBuffer>(input);
+//     }
+// }
 
 //     Utf16String::Utf16String(std::string_view input)
 //     {

@@ -6,12 +6,9 @@
 namespace Borg
 {
     template <typename T>
-    class AbstractStringBuffer : public IStringBuffer, protected ArrayBuffer<T>
+    class AbstractStringBuffer : protected ArrayBuffer<T>
     {
     public:
-        /**
-         * @brief Empty default constructor.
-         */
         AbstractStringBuffer() : ArrayBuffer<T>() {}
 
         AbstractStringBuffer(const AbstractStringBuffer<T> &input) : ArrayBuffer<T>(input) {}
@@ -49,9 +46,14 @@ namespace Borg
             }
         }
 
-        bool IsEmpty() const override
+        bool IsEmpty() const
         {
             return Length() == 0;
+        }
+
+        bool IsNull() const
+        {
+            return ArrayBuffer<T>::IsNull();
         }
 
         /**
@@ -59,20 +61,15 @@ namespace Borg
          *
          * @return std::size_t
          */
-        std::size_t Length() const override
+        std::size_t Length() const
         {
             auto length = ArrayBuffer<T>::Length();
             return length > 0 ? length - 1 : 0;
         }
 
-        std::size_t ByteLength() const override
+        std::size_t ByteLength() const
         {
             return ArrayBuffer<T>::ByteLength();
-        }
-
-        operator std::basic_string_view<T>() const
-        {
-            return m_Ptr;
         }
 
         operator T *() const
@@ -104,91 +101,6 @@ namespace Borg
             return m_Ptr[index];
         }
 
-        virtual Ref<IStringBuffer> ToLower() const override
-        {
-            throw NotSupportException();
-        }
-
-        virtual Ref<IStringBuffer> ToUpper() const override
-        {
-            throw NotSupportException();
-        }
-
-        virtual Ref<IStringBuffer> Insert(int startIndex, const Ref<IStringBuffer> &value) const  override
-        {
-            throw NotSupportException();
-        }
-
-        virtual Ref<IStringBuffer> Insert(int startIndex, std::string_view value) const  override
-        {
-            throw NotSupportException();
-        }
-
-        virtual Ref<IStringBuffer> Insert(int startIndex, std::wstring_view value) const  override
-        {
-            throw NotSupportException();
-        }
-
-        virtual bool StartsWith(const Ref<IStringBuffer> &text) const  override
-        {
-            throw NotSupportException();
-        }
-
-        virtual bool StartsWith(std::string_view text) const  override
-        {
-            throw NotSupportException();
-        }
-
-        virtual bool StartsWith(std::wstring_view text) const  override
-        {
-            throw NotSupportException();
-        }
-        
-        virtual bool EndsWith(const Ref<IStringBuffer> &text) const  override
-        {
-            throw NotSupportException();
-        }
-
-        virtual bool EndsWith(std::string_view text) const  override
-        {
-            throw NotSupportException();
-        }
-
-        virtual bool EndsWith(std::wstring_view text) const  override
-        {
-            throw NotSupportException();
-        }
-
-        virtual int CompareTo(const Ref<IStringBuffer> &rhs) const  override
-        {
-            throw NotSupportException();
-        }
-
-        virtual int CompareTo(std::string_view rhs) const  override
-        {
-            throw NotSupportException();
-        }
-
-        virtual int CompareTo(std::wstring_view rhs) const  override
-        {
-            throw NotSupportException();
-        }
-
-        virtual operator std::string() const  override
-        {
-            throw NotSupportException();
-        }
-
-        virtual operator std::wstring() const  override
-        {
-            throw NotSupportException();
-        }
-
-        virtual Ref<IStringBuffer> Clone() const override
-        {
-            throw NotSupportException();
-        }
-        
         AbstractStringBuffer<T> &operator=(const AbstractStringBuffer<T> &input)
         {
             ArrayBuffer<T>::operator=(input);

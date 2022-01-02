@@ -1,10 +1,11 @@
 #pragma once
 #include "Ref.h"
-#include "IStringBuffer.h"
+#include "Encoding.h"
 #include <string>
 
 namespace Borg
 {
+    class IStringBuffer;
     class String final
     {
     public:
@@ -170,7 +171,7 @@ namespace Borg
          */
         operator std::wstring() const;
 
-        Ref<IStringBuffer> GetBuffer() const;
+        Encoding::Default GetBuffer() const;
 
     private:
         String(const Ref<IStringBuffer> &input) = delete;
@@ -178,7 +179,7 @@ namespace Borg
         String(Ref<IStringBuffer> &&input);
         String operator=(Ref<IStringBuffer> &&input) = delete;
 
-        Ref<IStringBuffer> m_Impl;
+        Encoding::Default m_Buffer;
     };
 
     String operator+(const char *lhs, const String &rhs);

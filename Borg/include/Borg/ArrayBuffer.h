@@ -1,5 +1,4 @@
 #pragma once
-#include "Borg/Exception.h"
 
 namespace Borg
 {
@@ -81,6 +80,11 @@ namespace Borg
         bool IsEmpty() const
         {
             return m_ByteLength == 0;
+        }
+
+        bool IsNull() const
+        {
+            return m_Ptr == nullptr;
         }
 
         /**

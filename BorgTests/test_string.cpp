@@ -1,5 +1,6 @@
 #include "Borg/String.h"
 #include "Borg/Encoding.h"
+#include "Borg/CharBuffer.h"
 #include "Borg/RefCast.h"
 #include <gtest/gtest.h>
 
@@ -159,7 +160,7 @@ TEST(String, toString)
 TEST(String, ToWideCharBuffer)
 {
     String hello = "Hello";
-    auto cb = Encoding::ToWideCharBuffer(hello).Detach();
+    auto cb = Encoding::Convert<WideCharBuffer>(hello).Detach();
 
     auto test = cb.Data();
 }
@@ -167,7 +168,7 @@ TEST(String, ToWideCharBuffer)
 TEST(String, ToCharBuffer)
 {
     String hello = "Hello";
-    auto cb = Encoding::ToCharBuffer(hello).Detach();
+    auto cb = Encoding::Convert<CharBuffer>(hello).Detach();
 
     auto test = cb.Data();
 }

@@ -1,11 +1,12 @@
 #include "Windows.h"
-
 #include "Borg/Encoding.h"
 #include "Borg/RefCast.h"
+#include "Borg/CharBuffer.h"
 
 namespace Borg
 {
-    CharBuffer Encoding::ToCharBuffer(const WideCharBuffer &input)
+    template <>
+    static CharBuffer Encoding::Convert(const WideCharBuffer &input)
     {
         if (input.IsEmpty())
             return nullptr;
@@ -63,7 +64,8 @@ namespace Borg
         return utf8;
     }
 
-    WideCharBuffer Encoding::ToWideCharBuffer(const CharBuffer &input)
+    template <>
+    static WideCharBuffer Encoding::Convert(const CharBuffer &input)
     {
         if (input.IsEmpty())
             return L"";
@@ -78,12 +80,12 @@ namespace Borg
         constexpr DWORD kFlags = MB_ERR_INVALID_CHARS;
         const int utf8Length = static_cast<int>(input.Length());
         const int utf16Length = ::MultiByteToWideChar(
-            CP_UTF8,     // Source string is in UTF-8
-            kFlags,      // Conversion flags
-            input, // Source UTF-8 string pointer
-            utf8Length,  // Length of the source UTF-8 string, in chars
-            nullptr,     // Unused - no conversion done in this step
-            0            // Request size of destination buffer, in wchar_ts
+            CP_UTF8,    // Source string is in UTF-8
+            kFlags,     // Conversion flags
+            input,      // Source UTF-8 string pointer
+            utf8Length, // Length of the source UTF-8 string, in chars
+            nullptr,    // Unused - no conversion done in this step
+            0           // Request size of destination buffer, in wchar_ts
         );
 
         if (utf16Length == 0)
@@ -99,12 +101,12 @@ namespace Borg
         WideCharBuffer utf16(utf16Length);
 
         int result = ::MultiByteToWideChar(
-            CP_UTF8,     // Source string is in UTF-8
-            kFlags,      // Conversion flags
-            input, // Source UTF-8 string pointer
-            utf8Length,  // Length of source UTF-8 string, in chars
-            utf16,       // Pointer to destination buffer
-            utf16Length  // Size of destination buffer, in wchar_ts
+            CP_UTF8,    // Source string is in UTF-8
+            kFlags,     // Conversion flags
+            input,      // Source UTF-8 string pointer
+            utf8Length, // Length of source UTF-8 string, in chars
+            utf16,      // Pointer to destination buffer
+            utf16Length // Size of destination buffer, in wchar_ts
         );
 
         if (result == 0)
