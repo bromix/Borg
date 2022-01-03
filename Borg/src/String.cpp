@@ -23,6 +23,10 @@ namespace Borg
 
     String::String(const wchar_t *input, std::size_t length) : m_Buffer(Encoding::ConvertTo<Encoding::Default, WideCharBuffer>(std::wstring_view(input, length))) {}
 
+    String::String(const WideCharBuffer &input):m_Buffer(Encoding::ConvertTo<Encoding::Default>(input)) {}
+    
+    String::String(WideCharBuffer &&input):m_Buffer(Encoding::ConvertTo<Encoding::Default>(std::move(input))) {}
+
     String String::operator=(const String &input)
     {
         m_Buffer = input ? Encoding::ConvertTo<Encoding::Default>(input) : nullptr;
@@ -170,7 +174,7 @@ namespace Borg
 
     String String::ToLower() const noexcept
     {
-        return String(m_Buffer.ToLower());
+        return String(std::move(m_Buffer.ToLower()));
     }
 
     String String::ToUpper() const noexcept

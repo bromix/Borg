@@ -14,6 +14,8 @@ namespace Borg
         String(std::nullptr_t);
         String(const char *input);
         String(const wchar_t *input);
+        String(const WideCharBuffer &input);
+        String(WideCharBuffer &&input);
         String(const std::string &input);
         String(const std::wstring &input);
 
