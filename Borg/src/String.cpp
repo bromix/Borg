@@ -154,12 +154,12 @@ namespace Borg
 
     String::operator std::string() const
     {
-        return "";
+        return std::string(Encoding::ConvertTo<CharBuffer>(m_Buffer));
     }
 
     String::operator std::wstring() const
     {
-        return L"";
+        return std::wstring(Encoding::ConvertTo<WideCharBuffer>(m_Buffer));
     }
 
     Encoding::Default String::GetBuffer() const
