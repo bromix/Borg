@@ -1,4 +1,5 @@
 #pragma once
+#include "CharBuffer.h"
 #include "WideCharBuffer.h"
 
 namespace Borg
