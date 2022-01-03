@@ -12,7 +12,7 @@ namespace Borg
             return nullptr;
 
         if (input.IsEmpty())
-            return L"";
+            return "";
 
         if (input.Length() > static_cast<size_t>((std::numeric_limits<int>::max)()))
         {
