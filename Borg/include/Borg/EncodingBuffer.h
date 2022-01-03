@@ -101,6 +101,12 @@ namespace Borg
             return m_Ptr[index];
         }
 
+        const T &operator[](std::size_t index) const
+        {
+            // TODO: check index
+            return m_Ptr[index];
+        }
+
         EncodingBuffer<T> &operator=(const EncodingBuffer<T> &input)
         {
             ArrayBuffer<T>::operator=(input);

@@ -1,5 +1,6 @@
 #pragma once
 #include "EncodingBuffer.h"
+#include <cwctype>
 
 namespace Borg
 {
@@ -30,12 +31,20 @@ namespace Borg
 
         WideCharBuffer ToLower() const
         {
-            return L"";
+            WideCharBuffer copy(*this);
+            for (std::size_t i = 0; i < copy.Length(); i++)
+                copy[i] = std::towlower(copy[i]);
+
+            return copy;
         }
 
         WideCharBuffer ToUpper() const
         {
-            return L"";
+            WideCharBuffer copy(*this);
+            for (std::size_t i = 0; i < copy.Length(); i++)
+                copy[i] = std::towupper(copy[i]);
+
+            return copy;
         }
 
         bool StartsWith(const WideCharBuffer &input) const
@@ -48,10 +57,11 @@ namespace Borg
             return false;
         }
 
-        WideCharBuffer Insert(int startIndex, const WideCharBuffer& input) const
+        WideCharBuffer Insert(int startIndex, const WideCharBuffer &input) const
         {
             return L"";
         }
+
     private:
         wchar_t *m_Data;
     };

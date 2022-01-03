@@ -11,7 +11,7 @@ namespace Borg
 
         using Default = WideCharBuffer;
 
-        template <typename TTo, typename TFrom>
+        template <typename TTo, typename TFrom, typename std::enable_if_t<!std::is_same<TTo, TFrom>::value>* = nullptr>
         static TTo ConvertTo(const TFrom &input);
 
         template <typename TTo>
@@ -22,8 +22,8 @@ namespace Borg
             return ConvertTo<TTo, Encoding::Default>(input.GetBuffer());
         }
 
-        template<>
-        static WideCharBuffer ConvertTo<WideCharBuffer, WideCharBuffer>(const WideCharBuffer& input)
+        template<typename TTo, typename TFrom, typename std::enable_if_t<std::is_same<TTo, TFrom>::value>* = nullptr>
+        static TTo ConvertTo(const TFrom& input)
         {
             return input;
         }
