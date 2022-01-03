@@ -2,27 +2,22 @@
 #include "Borg/RefCast.h"
 #include "Borg/String.h"
 #include "Borg/CharBuffer.h"
+#include "Borg/WideCharBuffer.h"
 
 namespace Borg
 {
-    template<>
-    static WideCharBuffer Encoding::Convert(const WideCharBuffer &input)
-    {
-        return input;
-    }
+    // template<>
+    // static CharBuffer Encoding::ConvertTo<CharBuffer, String>(const String &input)
+    // {
+    //     if (input.IsNull())
+    //         return nullptr;
 
-    template<>
-    static CharBuffer Encoding::Convert(const String &input)
-    {
-        if (input.IsNull())
-            return nullptr;
+    //     return Encoding::ConvertTo<CharBuffer, Encoding::Default>(input.GetBuffer());
+    // }
 
-        return Encoding::Convert<CharBuffer>(input.GetBuffer());
-    }
-
-    template<>
-    static WideCharBuffer Encoding::Convert(const String &input)
-    {
-        return Encoding::Convert<WideCharBuffer>(input.GetBuffer());
-    }
+    // template<>
+    // static WideCharBuffer Encoding::ConvertTo<WideCharBuffer, String>(const String &input)
+    // {
+    //     return Encoding::ConvertTo<WideCharBuffer, Encoding::Default>(input.GetBuffer());
+    // }
 }
