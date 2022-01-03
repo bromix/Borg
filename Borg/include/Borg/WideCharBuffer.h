@@ -8,10 +8,29 @@ namespace Borg
     {
     public:
         WideCharBuffer() : EncodingBuffer<wchar_t>() {}
+
+        WideCharBuffer(WideCharBuffer &&input) : EncodingBuffer<wchar_t>(std::move(input))
+        {
+            m_Data = m_Ptr;
+        }
+
+        WideCharBuffer& operator=(WideCharBuffer&& input)
+        {
+            EncodingBuffer<wchar_t>::operator=(std::move(input));
+            return *this;
+        }
+
         WideCharBuffer(const WideCharBuffer &input) : EncodingBuffer<wchar_t>(input)
         {
             m_Data = m_Ptr;
         }
+
+        WideCharBuffer& operator=(const WideCharBuffer& input)
+        {
+            EncodingBuffer<wchar_t>::operator=(input);
+            return *this;
+        }
+
         WideCharBuffer(std::size_t length) : EncodingBuffer<wchar_t>(length)
         {
             m_Data = m_Ptr;
