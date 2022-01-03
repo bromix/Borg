@@ -26,24 +26,16 @@ namespace Borg
             m_Ptr[length] = '\0';
         }
 
+        EncodingBuffer(const T *input, bool createCopy = false) : ArrayBuffer<T>()
+        {
+            if(input != nullptr)
+                prepareBuffer(input, createCopy);
+        }
+
         EncodingBuffer(std::basic_string_view<T> input, bool createCopy = false)
             : ArrayBuffer<T>()
         {
-            // we add +1 because of the null-termination.
-            m_ByteLength = (input.length() + 1) * sizeof(T);
-
-            if (createCopy)
-            {
-                m_IsDetached = false;
-                m_Ptr = new T[m_ByteLength];
-                m_Ptr[input.length()] = '\0'; // we must add the null-termination while copying.
-                memcpy_s(m_Ptr, m_ByteLength, input.data(), input.length() * sizeof(T));
-            }
-            else
-            {
-                m_IsDetached = true;
-                m_Ptr = const_cast<T *>(input.data());
-            }
+            prepareBuffer(input, createCopy);
         }
 
         bool IsEmpty() const
@@ -117,6 +109,26 @@ namespace Borg
         {
             ArrayBuffer<T>::operator=(std::move(input));
             return *this;
+        }
+
+    private:
+        void prepareBuffer(std::basic_string_view<T> input, bool createCopy = false)
+        {
+            // we add +1 because of the null-termination.
+            m_ByteLength = (input.length() + 1) * sizeof(T);
+
+            if (createCopy)
+            {
+                m_IsDetached = false;
+                m_Ptr = new T[m_ByteLength];
+                m_Ptr[input.length()] = '\0'; // we must add the null-termination while copying.
+                memcpy_s(m_Ptr, m_ByteLength, input.data(), input.length() * sizeof(T));
+            }
+            else
+            {
+                m_IsDetached = true;
+                m_Ptr = const_cast<T *>(input.data());
+            }
         }
     };
 }

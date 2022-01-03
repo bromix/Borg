@@ -36,7 +36,7 @@ namespace Borg
             m_Data = m_Ptr;
         }
 
-        WideCharBuffer(const wchar_t *input) : WideCharBuffer(std::wstring_view(input)) {}
+        WideCharBuffer(const wchar_t *input) : EncodingBuffer<wchar_t>(input) {}
         WideCharBuffer(const std::wstring &input) : WideCharBuffer(std::wstring_view(input)) {}
         WideCharBuffer(std::wstring_view input) : EncodingBuffer<wchar_t>(input)
         {

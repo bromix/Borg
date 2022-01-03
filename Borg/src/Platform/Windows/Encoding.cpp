@@ -67,6 +67,9 @@ namespace Borg
     template <>
     static WideCharBuffer Encoding::ConvertTo(const CharBuffer &input)
     {
+        if (input.IsNull())
+            return nullptr;
+
         if (input.IsEmpty())
             return L"";
 
