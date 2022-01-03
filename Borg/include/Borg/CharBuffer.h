@@ -10,16 +10,37 @@ namespace Borg
         {
             m_Data = m_Ptr;
         }
+
+        CharBuffer(CharBuffer &&input) : EncodingBuffer<char>(std::move(input))
+        {
+            m_Data = m_Ptr;
+        }
+
         CharBuffer(std::size_t length) : EncodingBuffer<char>(length)
         {
             m_Data = m_Ptr;
         }
-        CharBuffer(const char *input) : CharBuffer(std::string_view(input)) {}
-        CharBuffer(const std::string& input) : CharBuffer(std::string_view(input)){}
+        CharBuffer(const char *input) : CharBuffer(input != nullptr ? std::string_view(input) : nullptr) {}
+        CharBuffer(const std::string &input) : CharBuffer(std::string_view(input)) {}
         CharBuffer(std::string_view input) : EncodingBuffer<char>(input)
         {
             m_Data = m_Ptr;
         }
+
+        CharBuffer &operator=(const CharBuffer &input)
+        {
+            EncodingBuffer<char>::operator=(input);
+            m_Data = m_Ptr;
+            return *this;
+        }
+
+        CharBuffer &operator=(CharBuffer &&input)
+        {
+            EncodingBuffer<char>::operator=(std::move(input));
+            m_Data = m_Ptr;
+            return *this;
+        }
+
     private:
         char *m_Data;
     };
