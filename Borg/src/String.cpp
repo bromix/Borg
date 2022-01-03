@@ -170,12 +170,12 @@ namespace Borg
 
     String String::ToLower() const noexcept
     {
-        return m_Buffer.ToLower();
+        return String(m_Buffer.ToLower());
     }
 
     String String::ToUpper() const noexcept
     {
-        return m_Buffer.ToUpper();
+        return String(m_Buffer.ToUpper());
     }
 
     String String::Insert(int startIndex, const String &value) const
@@ -183,7 +183,7 @@ namespace Borg
         if (value.IsNull())
             throw ArgumentNullException("value");
 
-        return m_Buffer.Insert(startIndex, Encoding::Convert<Encoding::Default, String>(value));
+        return String(m_Buffer.Insert(startIndex, Encoding::Convert<Encoding::Default, String>(value)));
     }
 
     String String::Insert(int startIndex, const char *value) const
@@ -191,7 +191,7 @@ namespace Borg
         if (value == nullptr)
             throw ArgumentNullException("value");
 
-        return m_Buffer.Insert(startIndex, Encoding::Convert<Encoding::Default, CharBuffer>(value));
+        return String(m_Buffer.Insert(startIndex, Encoding::Convert<Encoding::Default, CharBuffer>(value)));
     }
 
     String String::Insert(int startIndex, const wchar_t *value) const
@@ -199,17 +199,17 @@ namespace Borg
         if (value == nullptr)
             throw ArgumentNullException("value");
 
-        return m_Buffer.Insert(startIndex, Encoding::Convert<Encoding::Default, WideCharBuffer>(value));
+        return String(m_Buffer.Insert(startIndex, Encoding::Convert<Encoding::Default, WideCharBuffer>(value)));
     }
 
     String String::Insert(int startIndex, const std::string &value) const
     {
-        return m_Buffer.Insert(startIndex, Encoding::Convert<Encoding::Default, CharBuffer>(value));
+        return String(m_Buffer.Insert(startIndex, Encoding::Convert<Encoding::Default, CharBuffer>(value)));
     }
 
     String String::Insert(int startIndex, const std::wstring &value) const
     {
-        return m_Buffer.Insert(startIndex, Encoding::Convert<Encoding::Default, WideCharBuffer>(value));
+        return String(m_Buffer.Insert(startIndex, Encoding::Convert<Encoding::Default, WideCharBuffer>(value)));
     }
 
     String String::Append(const String &value) const
