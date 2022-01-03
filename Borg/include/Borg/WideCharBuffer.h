@@ -38,7 +38,7 @@ namespace Borg
             m_Data = m_Ptr;
         }
 
-        WideCharBuffer(const wchar_t *input, bool createCopy = true) : EncodingBuffer<wchar_t>(input)
+        WideCharBuffer(const wchar_t *input, bool createCopy = true) : EncodingBuffer<wchar_t>(input, createCopy)
         {
             m_Data = m_Ptr;
         }
