@@ -34,7 +34,7 @@ namespace Borg
             */
             if (input.m_IsDetached)
                 m_Ptr = input.m_Ptr;
-            else
+            else if(input.m_ByteLength > 0 && input.m_Ptr != nullptr)
             {
                 m_Ptr = new T[m_ByteLength];
                 copy(input);

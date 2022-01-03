@@ -17,6 +17,7 @@ namespace Borg
         WideCharBuffer &operator=(WideCharBuffer &&input)
         {
             EncodingBuffer<wchar_t>::operator=(std::move(input));
+            m_Data = m_Ptr;
             return *this;
         }
 
@@ -28,6 +29,7 @@ namespace Borg
         WideCharBuffer &operator=(const WideCharBuffer &input)
         {
             EncodingBuffer<wchar_t>::operator=(input);
+            m_Data = m_Ptr;
             return *this;
         }
 
@@ -36,9 +38,17 @@ namespace Borg
             m_Data = m_Ptr;
         }
 
-        WideCharBuffer(const wchar_t *input) : EncodingBuffer<wchar_t>(input) {}
-        WideCharBuffer(const std::wstring &input) : WideCharBuffer(std::wstring_view(input)) {}
-        WideCharBuffer(std::wstring_view input) : EncodingBuffer<wchar_t>(input)
+        WideCharBuffer(const wchar_t *input, bool createCopy = true) : EncodingBuffer<wchar_t>(input)
+        {
+            m_Data = m_Ptr;
+        }
+
+        WideCharBuffer(const std::wstring &input, bool createCopy = true) : WideCharBuffer(std::wstring_view(input), createCopy)
+        {
+            m_Data = m_Ptr;
+        }
+
+        WideCharBuffer(std::wstring_view input, bool createCopy = true) : EncodingBuffer<wchar_t>(input, createCopy)
         {
             m_Data = m_Ptr;
         }

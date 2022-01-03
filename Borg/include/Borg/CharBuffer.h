@@ -20,9 +20,15 @@ namespace Borg
         {
             m_Data = m_Ptr;
         }
-        CharBuffer(const char *input) : EncodingBuffer<char>(input) {}
-        CharBuffer(const std::string &input) : CharBuffer(std::string_view(input)) {}
-        CharBuffer(std::string_view input) : EncodingBuffer<char>(input)
+
+        CharBuffer(const char *input, bool createCopy = true) : EncodingBuffer<char>(input, createCopy)
+        {
+            m_Data = m_Ptr;
+        }
+
+        CharBuffer(const std::string &input, bool createCopy = true) : CharBuffer(std::string_view(input), createCopy) {}
+
+        CharBuffer(std::string_view input, bool createCopy = true) : EncodingBuffer<char>(input, createCopy)
         {
             m_Data = m_Ptr;
         }

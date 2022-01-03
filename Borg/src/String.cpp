@@ -13,26 +13,25 @@ namespace Borg
 
     String::String(const wchar_t *input) : String(WideCharBuffer(input)) {}
 
-    String::String(const std::string &input) : m_Buffer(Encoding::ConvertTo<Encoding::Default, CharBuffer>(input)) {}
+    String::String(const std::string &input) : String(CharBuffer(input)) {}
 
-    String::String(const std::wstring &input) : m_Buffer(Encoding::ConvertTo<Encoding::Default, WideCharBuffer>(input)) {}
+    String::String(const std::wstring &input) : String(WideCharBuffer(input)) {}
 
     String::String(const String &input) : m_Buffer(input.m_Buffer) {}
 
-    String::String(const char *input, std::size_t length) : m_Buffer(Encoding::ConvertTo<Encoding::Default, CharBuffer>(std::string_view(input, length))) {}
+    String::String(const char *input, std::size_t length) : String(CharBuffer(std::string_view(input, length))) {}
 
-    String::String(const wchar_t *input, std::size_t length) : m_Buffer(Encoding::ConvertTo<Encoding::Default, WideCharBuffer>(std::wstring_view(input, length))) {}
+    String::String(const wchar_t *input, std::size_t length) : String(WideCharBuffer(std::wstring_view(input, length))) {}
 
     String::String(const CharBuffer &input) : m_Buffer(Encoding::ConvertTo<Encoding::Default>(input)) {}
     String::String(CharBuffer &&input) : m_Buffer(Encoding::ConvertTo<Encoding::Default>(std::move(input))) {}
 
     String::String(const WideCharBuffer &input) : m_Buffer(Encoding::ConvertTo<Encoding::Default>(input)) {}
-
     String::String(WideCharBuffer &&input) : m_Buffer(Encoding::ConvertTo<Encoding::Default>(std::move(input))) {}
 
     String String::operator=(const String &input)
     {
-        m_Buffer = input ? Encoding::ConvertTo<Encoding::Default>(input) : nullptr;
+        m_Buffer = Encoding::Default(input.GetBuffer());
         return *this;
     }
 
@@ -167,7 +166,8 @@ namespace Borg
 
     Encoding::Default String::GetBuffer() const
     {
-        return m_Buffer;
+        // Always return a copy of the buffer.
+        return Encoding::Default(m_Buffer);
     }
 
     std::size_t String::Length() const

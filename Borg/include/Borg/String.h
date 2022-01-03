@@ -184,7 +184,7 @@ namespace Borg
         String(Ref<IStringBuffer> &&input);
         String operator=(Ref<IStringBuffer> &&input) = delete;
 
-        Encoding::Default m_Buffer;
+        Encoding::Default m_Buffer = nullptr;
     };
 
     String operator+(const char *lhs, const String &rhs);
