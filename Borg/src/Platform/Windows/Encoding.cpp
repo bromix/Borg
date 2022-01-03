@@ -8,8 +8,11 @@ namespace Borg
     template <>
     static CharBuffer Encoding::ConvertTo(const WideCharBuffer &input)
     {
-        if (input.IsEmpty())
+        if (input.IsNull())
             return nullptr;
+
+        if (input.IsEmpty())
+            return L"";
 
         if (input.Length() > static_cast<size_t>((std::numeric_limits<int>::max)()))
         {
