@@ -14,7 +14,7 @@ namespace Borg
             m_Data = m_Ptr;
         }
 
-        WideCharBuffer& operator=(WideCharBuffer&& input)
+        WideCharBuffer &operator=(WideCharBuffer &&input)
         {
             EncodingBuffer<wchar_t>::operator=(std::move(input));
             return *this;
@@ -25,7 +25,7 @@ namespace Borg
             m_Data = m_Ptr;
         }
 
-        WideCharBuffer& operator=(const WideCharBuffer& input)
+        WideCharBuffer &operator=(const WideCharBuffer &input)
         {
             EncodingBuffer<wchar_t>::operator=(input);
             return *this;
@@ -68,18 +68,24 @@ namespace Borg
 
         bool StartsWith(const WideCharBuffer &input) const
         {
-            return false;
+            if (input.Length() > Length())
+                return false;
+            auto result = wcsncmp(m_Ptr, input.m_Ptr, input.Length());
+            return result == 0;
         }
 
         bool EndsWith(const WideCharBuffer &input) const
         {
-            return false;
+            if (input.Length() > Length())
+                return false;
+
+            // We must subtract the null-termination '\0'
+            auto ptr = &m_Ptr[Length() - input.Length()];
+            auto result = wcsncmp(ptr, input.m_Ptr, input.Length());
+            return result == 0;
         }
 
-        WideCharBuffer Insert(int startIndex, const WideCharBuffer &input) const
-        {
-            return L"";
-        }
+        WideCharBuffer Insert(int startIndex, const WideCharBuffer &input) const;
 
     private:
         wchar_t *m_Data;
