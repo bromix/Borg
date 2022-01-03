@@ -6,14 +6,14 @@
 namespace Borg
 {
     template <typename T>
-    class AbstractStringBuffer : protected ArrayBuffer<T>
+    class EncodingBuffer : protected ArrayBuffer<T>
     {
     public:
-        AbstractStringBuffer() : ArrayBuffer<T>() {}
+        EncodingBuffer() : ArrayBuffer<T>() {}
 
-        AbstractStringBuffer(const AbstractStringBuffer<T> &input) : ArrayBuffer<T>(input) {}
+        EncodingBuffer(const EncodingBuffer<T> &input) : ArrayBuffer<T>(input) {}
 
-        AbstractStringBuffer(AbstractStringBuffer<T> &&input) : ArrayBuffer<T>(std::move(input)) {}
+        EncodingBuffer(EncodingBuffer<T> &&input) : ArrayBuffer<T>(std::move(input)) {}
 
         /**
          * @brief Creates a StringBuffer with the given length of "characters".
@@ -21,12 +21,12 @@ namespace Borg
          *
          * @param length
          */
-        AbstractStringBuffer(std::size_t length) : ArrayBuffer<T>((length + 1) * sizeof(T))
+        EncodingBuffer(std::size_t length) : ArrayBuffer<T>((length + 1) * sizeof(T))
         {
             m_Ptr[length] = '\0';
         }
 
-        AbstractStringBuffer(std::basic_string_view<T> input, bool createCopy = false)
+        EncodingBuffer(std::basic_string_view<T> input, bool createCopy = false)
             : ArrayBuffer<T>()
         {
             // we add +1 because of the null-termination.
@@ -89,7 +89,7 @@ namespace Borg
          *
          * @return StringBuffer<T>&
          */
-        AbstractStringBuffer<T> &Detach()
+        EncodingBuffer<T> &Detach()
         {
             ArrayBuffer<T>::Detach();
             return *this;
@@ -101,13 +101,13 @@ namespace Borg
             return m_Ptr[index];
         }
 
-        AbstractStringBuffer<T> &operator=(const AbstractStringBuffer<T> &input)
+        EncodingBuffer<T> &operator=(const EncodingBuffer<T> &input)
         {
             ArrayBuffer<T>::operator=(input);
             return *this;
         }
 
-        AbstractStringBuffer<T> &operator=(AbstractStringBuffer<T> &&input)
+        EncodingBuffer<T> &operator=(EncodingBuffer<T> &&input)
         {
             ArrayBuffer<T>::operator=(std::move(input));
             return *this;
