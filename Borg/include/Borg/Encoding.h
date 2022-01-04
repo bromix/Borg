@@ -5,7 +5,6 @@
 namespace Borg
 {
     class String;
-    class WideCharBuffer;
     class Encoding final
     {
     public:
