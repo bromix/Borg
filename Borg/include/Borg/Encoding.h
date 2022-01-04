@@ -5,6 +5,7 @@
 namespace Borg
 {
     class String;
+    class WideCharBuffer;
     class Encoding final
     {
     public:
@@ -32,7 +33,7 @@ namespace Borg
         template<typename TTo, typename TFrom, typename std::enable_if_t<std::is_same<TTo, TFrom>::value>* = nullptr>
         static TTo ConvertTo(TFrom&& input)
         {
-            return input;
+            return std::move(input);
         }
     };
 }
