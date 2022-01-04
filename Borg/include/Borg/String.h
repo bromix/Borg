@@ -178,7 +178,7 @@ namespace Borg
         Encoding::Default GetBuffer() const;
 
     private:
-        Encoding::DefaultChar *m_Data;
+        Encoding::DefaultChar *m_Data = nullptr;
         Encoding::Default m_Buffer = nullptr;
     };
 
