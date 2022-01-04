@@ -5,7 +5,6 @@
 
 namespace Borg
 {
-    class IStringBuffer;
     class String final
     {
     public:
@@ -179,11 +178,6 @@ namespace Borg
         Encoding::Default GetBuffer() const;
 
     private:
-        String(const Ref<IStringBuffer> &input) = delete;
-        String operator=(const Ref<IStringBuffer> &input) = delete;
-        String(Ref<IStringBuffer> &&input);
-        String operator=(Ref<IStringBuffer> &&input) = delete;
-
         Encoding::Default m_Buffer = nullptr;
     };
 

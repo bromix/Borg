@@ -1,6 +1,5 @@
 #pragma once
 #include "ArrayBuffer.h"
-#include "IStringBuffer.h"
 #include <string_view>
 
 namespace Borg
