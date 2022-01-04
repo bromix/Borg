@@ -10,7 +10,7 @@ namespace Borg
     public:
         Encoding() = delete;
 
-        using Default = CharBuffer;
+        using Default = WideCharBuffer;
 
         template <typename TTo, typename TFrom, typename std::enable_if_t<!std::is_same<TTo, TFrom>::value>* = nullptr>
         static TTo ConvertTo(const TFrom &input);
