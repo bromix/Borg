@@ -9,29 +9,65 @@ namespace Borg
 
     String::String(std::nullptr_t) {}
 
-    String::String(const char *input) : String(CharBuffer(input)) {}
+    String::String(const char *input) : String(CharBuffer(input))
+    {
+        m_Data = m_Buffer.Data();
+    }
 
-    String::String(const wchar_t *input) : String(WideCharBuffer(input)) {}
+    String::String(const wchar_t *input) : String(WideCharBuffer(input))
+    {
+        m_Data = m_Buffer.Data();
+    }
 
-    String::String(const std::string &input) : String(CharBuffer(input)) {}
+    String::String(const std::string &input) : String(CharBuffer(input))
+    {
+        m_Data = m_Buffer.Data();
+    }
 
-    String::String(const std::wstring &input) : String(WideCharBuffer(input)) {}
+    String::String(const std::wstring &input) : String(WideCharBuffer(input))
+    {
+        m_Data = m_Buffer.Data();
+    }
 
-    String::String(const String &input) : m_Buffer(input.m_Buffer) {}
+    String::String(const String &input) : m_Buffer(input.m_Buffer)
+    {
+        m_Data = m_Buffer.Data();
+    }
 
-    String::String(const char *input, std::size_t length) : String(CharBuffer(std::string_view(input, length))) {}
+    String::String(const char *input, std::size_t length) : String(CharBuffer(std::string_view(input, length)))
+    {
+        m_Data = m_Buffer.Data();
+    }
 
-    String::String(const wchar_t *input, std::size_t length) : String(WideCharBuffer(std::wstring_view(input, length))) {}
+    String::String(const wchar_t *input, std::size_t length) : String(WideCharBuffer(std::wstring_view(input, length)))
+    {
+        m_Data = m_Buffer.Data();
+    }
 
-    String::String(const CharBuffer &input) : m_Buffer(Encoding::ConvertTo<Encoding::Default>(input)) {}
-    String::String(CharBuffer &&input) : m_Buffer(Encoding::ConvertTo<Encoding::Default>(std::move(input))) {}
+    String::String(const CharBuffer &input) : m_Buffer(Encoding::ConvertTo<Encoding::Default>(input))
+    {
+        m_Data = m_Buffer.Data();
+    }
 
-    String::String(const WideCharBuffer &input) : m_Buffer(Encoding::ConvertTo<Encoding::Default>(input)) {}
-    String::String(WideCharBuffer &&input) : m_Buffer(Encoding::ConvertTo<Encoding::Default>(std::move(input))) {}
+    String::String(CharBuffer &&input) : m_Buffer(Encoding::ConvertTo<Encoding::Default>(std::move(input)))
+    {
+        m_Data = m_Buffer.Data();
+    }
+
+    String::String(const WideCharBuffer &input) : m_Buffer(Encoding::ConvertTo<Encoding::Default>(input))
+    {
+        m_Data = m_Buffer.Data();
+    }
+
+    String::String(WideCharBuffer &&input) : m_Buffer(Encoding::ConvertTo<Encoding::Default>(std::move(input)))
+    {
+        m_Data = m_Buffer.Data();
+    }
 
     String String::operator=(const String &input)
     {
         m_Buffer = Encoding::Default(input.GetBuffer());
+        m_Data = m_Buffer.Data();
         return *this;
     }
 
@@ -40,12 +76,14 @@ namespace Borg
     {
         m_Buffer = nullptr;
         std::swap(m_Buffer, input.m_Buffer);
+        m_Data = m_Buffer.Data();
     }
 
     String String::operator=(String &&input)
     {
         m_Buffer = nullptr;
         std::swap(m_Buffer, input.m_Buffer);
+        m_Data = m_Buffer.Data();
         return *this;
     }
 

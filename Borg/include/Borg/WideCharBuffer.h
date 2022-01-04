@@ -9,49 +9,29 @@ namespace Borg
     public:
         WideCharBuffer() : EncodingBuffer<wchar_t>() {}
 
-        WideCharBuffer(WideCharBuffer &&input) : EncodingBuffer<wchar_t>(std::move(input))
-        {
-            m_Data = m_Ptr;
-        }
+        WideCharBuffer(WideCharBuffer &&input) : EncodingBuffer<wchar_t>(std::move(input)) {}
 
         WideCharBuffer &operator=(WideCharBuffer &&input)
         {
             EncodingBuffer<wchar_t>::operator=(std::move(input));
-            m_Data = m_Ptr;
             return *this;
         }
 
-        WideCharBuffer(const WideCharBuffer &input) : EncodingBuffer<wchar_t>(input)
-        {
-            m_Data = m_Ptr;
-        }
+        WideCharBuffer(const WideCharBuffer &input) : EncodingBuffer<wchar_t>(input) {}
 
         WideCharBuffer &operator=(const WideCharBuffer &input)
         {
             EncodingBuffer<wchar_t>::operator=(input);
-            m_Data = m_Ptr;
             return *this;
         }
 
-        WideCharBuffer(std::size_t length) : EncodingBuffer<wchar_t>(length)
-        {
-            m_Data = m_Ptr;
-        }
+        WideCharBuffer(std::size_t length) : EncodingBuffer<wchar_t>(length) {}
 
-        WideCharBuffer(const wchar_t *input, bool createCopy = true) : EncodingBuffer<wchar_t>(input, createCopy)
-        {
-            m_Data = m_Ptr;
-        }
+        WideCharBuffer(const wchar_t *input, bool createCopy = true) : EncodingBuffer<wchar_t>(input, createCopy) {}
 
-        WideCharBuffer(const std::wstring &input, bool createCopy = true) : WideCharBuffer(std::wstring_view(input), createCopy)
-        {
-            m_Data = m_Ptr;
-        }
+        WideCharBuffer(const std::wstring &input, bool createCopy = true) : WideCharBuffer(std::wstring_view(input), createCopy) {}
 
-        WideCharBuffer(std::wstring_view input, bool createCopy = true) : EncodingBuffer<wchar_t>(input, createCopy)
-        {
-            m_Data = m_Ptr;
-        }
+        WideCharBuffer(std::wstring_view input, bool createCopy = true) : EncodingBuffer<wchar_t>(input, createCopy) {}
 
         int CompareTo(const WideCharBuffer &rhs) const
         {
@@ -96,8 +76,5 @@ namespace Borg
         }
 
         WideCharBuffer Insert(int startIndex, const WideCharBuffer &input) const;
-
-    private:
-        wchar_t *m_Data;
     };
 }
