@@ -81,6 +81,20 @@ namespace Borg
         return dt;
     }
 
+    DateTime DateTime::FromNetworkTimeSeconds(uint64_t secondsSinceEpoch, DateTimeKindEnum kind)
+    {
+        return FromNetworkTimeMilliseconds(secondsSinceEpoch * 1000, kind);
+    }
+
+    DateTime DateTime::FromNetworkTimeMilliseconds(uint64_t millisecondsSinceEpoch, DateTimeKindEnum kind)
+    {
+        /*
+        Subtract 70 years from NetworkTime to get UNIX epoch.
+        https://datatracker.ietf.org/doc/html/rfc868
+        */
+        return FromUnixEpochMilliseconds(millisecondsSinceEpoch - 2208988800000, kind);
+    }
+
     uint32_t DateTime::DaysInMonth(uint32_t year, uint32_t month)
     {
         if (year < 1 || year > 9999)
@@ -312,6 +326,36 @@ namespace Borg
     DateTime DateTime::operator-(const TimeSpan &timespan)
     {
         return Subtract(timespan);
+    }
+
+    bool DateTime::operator==(const DateTime &rhs) const noexcept
+    {
+        return m_UnixEpochMilliseconds == rhs.m_UnixEpochMilliseconds;
+    }
+
+    bool DateTime::operator!=(const DateTime &rhs) const noexcept
+    {
+        return m_UnixEpochMilliseconds != rhs.m_UnixEpochMilliseconds;
+    }
+
+    bool DateTime::operator>(const DateTime &rhs) const noexcept
+    {
+        return m_UnixEpochMilliseconds > rhs.m_UnixEpochMilliseconds;
+    }
+
+    bool DateTime::operator>=(const DateTime &rhs) const noexcept
+    {
+        return m_UnixEpochMilliseconds >= rhs.m_UnixEpochMilliseconds;
+    }
+
+    bool DateTime::operator<(const DateTime &rhs) const noexcept
+    {
+        return m_UnixEpochMilliseconds < rhs.m_UnixEpochMilliseconds;
+    }
+
+    bool DateTime::operator<=(const DateTime &rhs) const noexcept
+    {
+        return m_UnixEpochMilliseconds <= rhs.m_UnixEpochMilliseconds;
     }
 
     // ================

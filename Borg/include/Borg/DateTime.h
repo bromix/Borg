@@ -55,7 +55,7 @@ namespace Borg
         static DateTime Now();
 
         /**
-         * @brief Converts the specified Unix Epoch time to an equivalent local or Coordinated Universal Time (UTC) time.
+         * @brief Converts the specified Unix Epoch (1 January 1970) time to an equivalent local or Coordinated Universal Time (UTC) time.
          *
          * @param secondsSinceEpoch
          * @param kind
@@ -64,13 +64,31 @@ namespace Borg
         static DateTime FromUnixEpochSeconds(uint64_t secondsSinceEpoch, DateTimeKindEnum kind = DateTimeKindEnum::Utc);
 
         /**
-         * @brief Converts the specified Unix Epoch time to an equivalent local or Coordinated Universal Time (UTC) time.
+         * @brief Converts the specified Unix Epoch (1 January 1970) time to an equivalent local or Coordinated Universal Time (UTC) time.
          *
          * @param millisecondsSinceEpoch
          * @param kind
          * @return DateTime
          */
         static DateTime FromUnixEpochMilliseconds(uint64_t millisecondsSinceEpoch, DateTimeKindEnum kind = DateTimeKindEnum::Utc);
+
+        /**
+         * @brief Converts the specified NetworkTime (1 January 1900) to an equivalent local or Coordinated Universal Time (UTC) time.
+         *
+         * @param secondsSinceEpoch
+         * @param kind
+         * @return DateTime
+         */
+        static DateTime FromNetworkTimeSeconds(uint64_t secondsSinceEpoch, DateTimeKindEnum kind = DateTimeKindEnum::Utc);
+
+        /**
+         * @brief Converts the specified NetworkTime (1 January 1900) to an equivalent local or Coordinated Universal Time (UTC) time.
+         *
+         * @param millisecondsSinceEpoch
+         * @param kind
+         * @return DateTime
+         */
+        static DateTime FromNetworkTimeMilliseconds(uint64_t millisecondsSinceEpoch, DateTimeKindEnum kind = DateTimeKindEnum::Utc);
 
         /**
          * @brief Returns the number of days in the specified month and year.
@@ -287,6 +305,11 @@ namespace Borg
          */
         bool IsDaylightSavingTime() const;
 
+        /**
+         * @brief The value of this constant is equivalent to 00:00:00.0000000 UTC, January 1, 1970, in the Gregorian calendar. UnixEpoch defines the point in time when Unix time is equal to 0.
+         *
+         * @return DateTime
+         */
         static DateTime UnixEpoch();
 
         /**
@@ -312,6 +335,13 @@ namespace Borg
          * @return DateTime
          */
         DateTime operator-(const TimeSpan &timespan);
+
+        bool operator==(const DateTime &rhs) const noexcept;
+        bool operator!=(const DateTime &rhs) const noexcept;
+        bool operator>(const DateTime &rhs) const noexcept;
+        bool operator>=(const DateTime &rhs) const noexcept;
+        bool operator<(const DateTime &rhs) const noexcept;
+        bool operator<=(const DateTime &rhs) const noexcept;
 
     private:
         DateTime();
