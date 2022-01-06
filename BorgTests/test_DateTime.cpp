@@ -145,3 +145,15 @@ TEST(DateTime, Subtract)
 
     // TODO: compare
 }
+
+TEST(DateTime, UnixEpoch)
+{
+    auto unixEpoch = DateTime::UnixEpoch();
+    ASSERT_EQ(1970, unixEpoch.Year());
+    ASSERT_EQ(1, unixEpoch.Month());
+    ASSERT_EQ(1, unixEpoch.Day());
+    ASSERT_EQ(0, unixEpoch.Hour());
+    ASSERT_EQ(0, unixEpoch.Minute());
+    ASSERT_EQ(0, unixEpoch.Second());
+    ASSERT_EQ(0, unixEpoch.Millisecond());
+}

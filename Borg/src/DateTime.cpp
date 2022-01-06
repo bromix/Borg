@@ -159,6 +159,9 @@ namespace Borg
         tm.tm_isdst = -1;
 
         auto time = std::mktime(&tm);
+        if (time < 0)
+            throw InvalidOperationException("std::mktime returned -1");
+
         auto timePoint = std::chrono::system_clock::from_time_t(time).time_since_epoch();
         auto chronoMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(timePoint).count();
 
@@ -288,6 +291,12 @@ namespace Borg
     bool DateTime::IsDaylightSavingTime() const
     {
         return m_IsDaylightSavingTime;
+    }
+
+    DateTime DateTime::UnixEpoch()
+    {
+        static DateTime unixEpoch = DateTime::FromUnixEpochMilliseconds(0, DateTimeKindEnum::Utc);
+        return unixEpoch;
     }
 
     DateTime DateTime::operator+(const TimeSpan &timespan)

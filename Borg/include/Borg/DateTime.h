@@ -287,6 +287,8 @@ namespace Borg
          */
         bool IsDaylightSavingTime() const;
 
+        static DateTime UnixEpoch();
+
         /**
          * @brief Adds a specified time interval to a specified date and time, yielding a new date and time.
          *
@@ -410,9 +412,9 @@ namespace Borg
 
         /**
          * @brief Returns a new TimeSpan object whose value is the difference between the specified TimeSpan object and this instance.
-         * 
-         * @param timespan 
-         * @return TimeSpan 
+         *
+         * @param timespan
+         * @return TimeSpan
          */
         TimeSpan Subtract(const TimeSpan &timespan) const;
 
@@ -496,11 +498,11 @@ namespace Borg
 
         /**
          * @brief Subtracts a specified TimeSpan from another specified TimeSpan.
-         * 
-         * @param timespan 
-         * @return TimeSpan 
+         *
+         * @param timespan
+         * @return TimeSpan
          */
-        TimeSpan operator-(const TimeSpan& timespan);
+        TimeSpan operator-(const TimeSpan &timespan);
 
     private:
         int32_t m_Days;
