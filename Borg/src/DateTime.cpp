@@ -95,6 +95,20 @@ namespace Borg
         return FromUnixEpochMilliseconds(millisecondsSinceEpoch - 2208988800000, kind);
     }
 
+    uint64_t DateTime::ToNetworkTimeSeconds() const
+    {
+        return ToNetworkTimeMilliseconds() / 1000.0;
+    }
+
+    uint64_t DateTime::ToNetworkTimeMilliseconds() const
+    {
+        /*
+        Add 70 years to UNIX epoch to get NetworkTime.
+        https://datatracker.ietf.org/doc/html/rfc868
+        */
+        return m_UnixEpochMilliseconds + 2208988800000;
+    }
+
     uint32_t DateTime::DaysInMonth(uint32_t year, uint32_t month)
     {
         if (year < 1 || year > 9999)

@@ -212,6 +212,7 @@ TEST(DateTime, NetworkEpoch)
     ASSERT_EQ(9, date_time.Day());
     ASSERT_EQ(11, date_time.Month());
     ASSERT_EQ(2021, date_time.Year());
+    ASSERT_EQ(3845454182000, date_time.ToNetworkTimeMilliseconds());
 
     auto date_time2 = DateTime::FromNetworkTimeSeconds(3845454182, DateTimeKindEnum::Utc);
     ASSERT_EQ(13, date_time2.Hour());
@@ -220,6 +221,7 @@ TEST(DateTime, NetworkEpoch)
     ASSERT_EQ(9, date_time2.Day());
     ASSERT_EQ(11, date_time2.Month());
     ASSERT_EQ(2021, date_time2.Year());
+    ASSERT_EQ(3845454182, date_time2.ToNetworkTimeSeconds());
 }
 
 TEST(DateTime, Parse)

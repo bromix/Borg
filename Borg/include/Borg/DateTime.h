@@ -91,6 +91,9 @@ namespace Borg
          */
         static DateTime FromNetworkTimeMilliseconds(uint64_t millisecondsSinceEpoch, DateTimeKindEnum kind = DateTimeKindEnum::Utc);
 
+        uint64_t ToNetworkTimeSeconds() const;
+        uint64_t ToNetworkTimeMilliseconds() const;
+
         /**
          * @brief Returns the number of days in the specified month and year.
          *
