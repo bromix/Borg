@@ -7,7 +7,7 @@ namespace Borg
     /**
      * @brief Specifies whether a DateTime object represents a local time or a Coordinated Universal Time (UTC).
      */
-    enum class DateTimeKind
+    enum class DateTimeKindEnum
     {
         /**
          * @brief The time represented is local time.
@@ -62,7 +62,7 @@ namespace Borg
          * @param kind
          * @return DateTime
          */
-        static DateTime FromUnixEpochSeconds(uint64_t secondsSinceEpoch, DateTimeKind kind = DateTimeKind::Utc);
+        static DateTime FromUnixEpochSeconds(uint64_t secondsSinceEpoch, DateTimeKindEnum kind = DateTimeKindEnum::Utc);
 
         /**
          * @brief Converts the specified Unix Epoch (1 January 1970) time to an equivalent local or Coordinated Universal Time (UTC) time.
@@ -71,7 +71,7 @@ namespace Borg
          * @param kind
          * @return DateTime
          */
-        static DateTime FromUnixEpochMilliseconds(uint64_t millisecondsSinceEpoch, DateTimeKind kind = DateTimeKind::Utc);
+        static DateTime FromUnixEpochMilliseconds(uint64_t millisecondsSinceEpoch, DateTimeKindEnum kind = DateTimeKindEnum::Utc);
 
         /**
          * @brief Converts the specified NetworkTime (1 January 1900) to an equivalent local or Coordinated Universal Time (UTC) time.
@@ -80,7 +80,7 @@ namespace Borg
          * @param kind
          * @return DateTime
          */
-        static DateTime FromNetworkTimeSeconds(uint64_t secondsSinceEpoch, DateTimeKind kind = DateTimeKind::Utc);
+        static DateTime FromNetworkTimeSeconds(uint64_t secondsSinceEpoch, DateTimeKindEnum kind = DateTimeKindEnum::Utc);
 
         /**
          * @brief Converts the specified NetworkTime (1 January 1900) to an equivalent local or Coordinated Universal Time (UTC) time.
@@ -89,7 +89,7 @@ namespace Borg
          * @param kind
          * @return DateTime
          */
-        static DateTime FromNetworkTimeMilliseconds(uint64_t millisecondsSinceEpoch, DateTimeKind kind = DateTimeKind::Utc);
+        static DateTime FromNetworkTimeMilliseconds(uint64_t millisecondsSinceEpoch, DateTimeKindEnum kind = DateTimeKindEnum::Utc);
 
         uint64_t ToNetworkTimeSeconds() const;
         uint64_t ToNetworkTimeMilliseconds() const;
@@ -120,7 +120,7 @@ namespace Borg
          * @param day
          * @param kind
          */
-        DateTime(uint32_t year, uint32_t month, uint32_t day, DateTimeKind kind = DateTimeKind::Local);
+        DateTime(uint32_t year, uint32_t month, uint32_t day, DateTimeKindEnum kind = DateTimeKindEnum::Local);
 
         /**
          * @brief Initializes a new instance of the DateTime structure to the specified year, month, day, hour, minute, second and Coordinated Universal Time (UTC) or local time.
@@ -133,7 +133,7 @@ namespace Borg
          * @param second
          * @param kind
          */
-        DateTime(uint32_t year, uint32_t month, uint32_t day, uint32_t hour, uint32_t minute, uint32_t second, DateTimeKind kind = DateTimeKind::Local);
+        DateTime(uint32_t year, uint32_t month, uint32_t day, uint32_t hour, uint32_t minute, uint32_t second, DateTimeKindEnum kind = DateTimeKindEnum::Local);
 
         /**
          * @brief Initializes a new instance of the DateTime structure to the specified year, month, day, hour, minute, second, millisecond, and Coordinated Universal Time (UTC) or local time.
@@ -147,7 +147,7 @@ namespace Borg
          * @param millisecond
          * @param kind
          */
-        DateTime(uint32_t year, uint32_t month, uint32_t day, uint32_t hour, uint32_t minute, uint32_t second, uint32_t millisecond, DateTimeKind kind = DateTimeKind::Local);
+        DateTime(uint32_t year, uint32_t month, uint32_t day, uint32_t hour, uint32_t minute, uint32_t second, uint32_t millisecond, DateTimeKindEnum kind = DateTimeKindEnum::Local);
 
         /**
          * @brief Converts the value of the current DateTime object to local time.
@@ -299,7 +299,7 @@ namespace Borg
          *
          * @return DateTimeKindEnum
          */
-        DateTimeKind Kind() const;
+        DateTimeKindEnum Kind() const;
 
         /**
          * @brief Indicates whether this instance of DateTime is within the daylight saving time range for the current time zone.
@@ -361,7 +361,7 @@ namespace Borg
         uint32_t m_DayOfYear = 0;
         DayOfWeekEnum m_DayOfWeek = DayOfWeekEnum::Sunday;
         uint64_t m_UnixEpochMilliseconds = 0;
-        DateTimeKind m_Kind = DateTimeKind::Utc;
+        DateTimeKindEnum m_Kind = DateTimeKindEnum::Utc;
         bool m_IsDaylightSavingTime = false;
     };
 
