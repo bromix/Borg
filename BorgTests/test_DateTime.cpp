@@ -7,37 +7,37 @@ using namespace Borg;
 TEST(DateTime, UtcNow)
 {
     auto now = DateTime::UtcNow();
-    ASSERT_EQ(now.Kind(), DateTimeKindEnum::Utc);
+    ASSERT_EQ(now.Kind(), DateTimeKind::Utc);
 }
 
 TEST(DateTime, Now)
 {
     auto now = DateTime::Now();
-    ASSERT_EQ(now.Kind(), DateTimeKindEnum::Local);
+    ASSERT_EQ(now.Kind(), DateTimeKind::Local);
 }
 
 TEST(DateTime, ToLocalTime)
 {
     auto utcNow = DateTime::UtcNow();
-    ASSERT_EQ(utcNow.Kind(), DateTimeKindEnum::Utc);
+    ASSERT_EQ(utcNow.Kind(), DateTimeKind::Utc);
 
     auto localNow = utcNow.ToLocalTime();
-    ASSERT_EQ(localNow.Kind(), DateTimeKindEnum::Local);
+    ASSERT_EQ(localNow.Kind(), DateTimeKind::Local);
 }
 
 TEST(DateTime, ToUniversalTime)
 {
     auto now = DateTime::Now();
-    ASSERT_EQ(now.Kind(), DateTimeKindEnum::Local);
+    ASSERT_EQ(now.Kind(), DateTimeKind::Local);
 
     auto utcNow = now.ToUniversalTime();
-    ASSERT_EQ(utcNow.Kind(), DateTimeKindEnum::Utc);
+    ASSERT_EQ(utcNow.Kind(), DateTimeKind::Utc);
 }
 
 TEST(DateTime, Constructor_1982_03_09_)
 {
     auto localDate = DateTime(1982, 3, 9);
-    ASSERT_EQ(DateTimeKindEnum::Local, localDate.Kind());
+    ASSERT_EQ(DateTimeKind::Local, localDate.Kind());
     ASSERT_EQ(1982, localDate.Year());
     ASSERT_EQ(3, localDate.Month());
     ASSERT_EQ(9, localDate.Day());
@@ -52,7 +52,7 @@ TEST(DateTime, Constructor_1982_03_09_)
 TEST(DateTime, Constructor_1982_03_09_20_15_35)
 {
     auto localDate = DateTime(1982, 3, 9, 20, 15, 35);
-    ASSERT_EQ(DateTimeKindEnum::Local, localDate.Kind());
+    ASSERT_EQ(DateTimeKind::Local, localDate.Kind());
     ASSERT_EQ(1982, localDate.Year());
     ASSERT_EQ(3, localDate.Month());
     ASSERT_EQ(9, localDate.Day());
@@ -67,7 +67,7 @@ TEST(DateTime, Constructor_1982_03_09_20_15_35)
 TEST(DateTime, Constructor_1982_03_09_20_15_35_500)
 {
     auto localDate = DateTime(1982, 3, 9, 20, 15, 35, 500);
-    ASSERT_EQ(DateTimeKindEnum::Local, localDate.Kind());
+    ASSERT_EQ(DateTimeKind::Local, localDate.Kind());
     ASSERT_EQ(1982, localDate.Year());
     ASSERT_EQ(3, localDate.Month());
     ASSERT_EQ(9, localDate.Day());
@@ -205,7 +205,7 @@ TEST(DateTime, UnixEpoch)
 
 TEST(DateTime, NetworkEpoch)
 {
-    auto date_time = DateTime::FromNetworkTimeMilliseconds(3845454182000, DateTimeKindEnum::Utc);
+    auto date_time = DateTime::FromNetworkTimeMilliseconds(3845454182000, DateTimeKind::Utc);
     ASSERT_EQ(13, date_time.Hour());
     ASSERT_EQ(43, date_time.Minute());
     ASSERT_EQ(2, date_time.Second());
@@ -214,7 +214,7 @@ TEST(DateTime, NetworkEpoch)
     ASSERT_EQ(2021, date_time.Year());
     ASSERT_EQ(3845454182000, date_time.ToNetworkTimeMilliseconds());
 
-    auto date_time2 = DateTime::FromNetworkTimeSeconds(3845454182, DateTimeKindEnum::Utc);
+    auto date_time2 = DateTime::FromNetworkTimeSeconds(3845454182, DateTimeKind::Utc);
     ASSERT_EQ(13, date_time2.Hour());
     ASSERT_EQ(43, date_time2.Minute());
     ASSERT_EQ(2, date_time2.Second());

@@ -33,7 +33,7 @@ namespace Borg
         auto now = system_clock::now().time_since_epoch();
         auto millisecondsSinceEpoch = duration_cast<milliseconds>(now).count();
 
-        return FromUnixEpochMilliseconds(millisecondsSinceEpoch, DateTimeKindEnum::Utc);
+        return FromUnixEpochMilliseconds(millisecondsSinceEpoch, DateTimeKind::Utc);
     }
 
     DateTime DateTime::Now()
@@ -42,15 +42,15 @@ namespace Borg
         auto now = system_clock::now().time_since_epoch();
         auto millisecondsSinceEpoch = duration_cast<milliseconds>(now).count();
 
-        return FromUnixEpochMilliseconds(millisecondsSinceEpoch, DateTimeKindEnum::Local);
+        return FromUnixEpochMilliseconds(millisecondsSinceEpoch, DateTimeKind::Local);
     }
 
-    DateTime DateTime::FromUnixEpochSeconds(uint64_t secondsSinceEpoch, DateTimeKindEnum kind)
+    DateTime DateTime::FromUnixEpochSeconds(uint64_t secondsSinceEpoch, DateTimeKind kind)
     {
         return FromUnixEpochMilliseconds(secondsSinceEpoch * 1000, kind);
     }
 
-    DateTime DateTime::FromUnixEpochMilliseconds(uint64_t millisecondsSinceEpoch, DateTimeKindEnum kind)
+    DateTime DateTime::FromUnixEpochMilliseconds(uint64_t millisecondsSinceEpoch, DateTimeKind kind)
     {
         if (millisecondsSinceEpoch < 0)
             throw ArgumentOutOfRangeException("millisecondsSinceEpoch", "value is less than 0 or represents a time greater than MaxValue.");
@@ -59,7 +59,7 @@ namespace Borg
         int64_t secondsSinceEpoch = millisecondsSinceEpoch / 1000;
 
         std::tm tm = {};
-        if (kind == DateTimeKindEnum::Local)
+        if (kind == DateTimeKind::Local)
             localtime_s(&tm, &secondsSinceEpoch);
         else
             gmtime_s(&tm, &secondsSinceEpoch);
@@ -76,17 +76,17 @@ namespace Borg
         dt.m_DayOfWeek = static_cast<DayOfWeekEnum>(tm.tm_wday);
         dt.m_UnixEpochMilliseconds = millisecondsSinceEpoch;
         dt.m_Kind = kind;
-        dt.m_IsDaylightSavingTime = kind == DateTimeKindEnum::Local && tm.tm_isdst != 0;
+        dt.m_IsDaylightSavingTime = kind == DateTimeKind::Local && tm.tm_isdst != 0;
 
         return dt;
     }
 
-    DateTime DateTime::FromNetworkTimeSeconds(uint64_t secondsSinceEpoch, DateTimeKindEnum kind)
+    DateTime DateTime::FromNetworkTimeSeconds(uint64_t secondsSinceEpoch, DateTimeKind kind)
     {
         return FromNetworkTimeMilliseconds(secondsSinceEpoch * 1000, kind);
     }
 
-    DateTime DateTime::FromNetworkTimeMilliseconds(uint64_t millisecondsSinceEpoch, DateTimeKindEnum kind)
+    DateTime DateTime::FromNetworkTimeMilliseconds(uint64_t millisecondsSinceEpoch, DateTimeKind kind)
     {
         /*
         Subtract 70 years from NetworkTime to get UNIX epoch.
@@ -144,17 +144,17 @@ namespace Borg
         return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
     }
 
-    DateTime::DateTime(uint32_t year, uint32_t month, uint32_t day, DateTimeKindEnum kind)
+    DateTime::DateTime(uint32_t year, uint32_t month, uint32_t day, DateTimeKind kind)
         : DateTime(year, month, day, 0, 0, 0, 0, kind)
     {
     }
 
-    DateTime::DateTime(uint32_t year, uint32_t month, uint32_t day, uint32_t hour, uint32_t minute, uint32_t second, DateTimeKindEnum kind)
+    DateTime::DateTime(uint32_t year, uint32_t month, uint32_t day, uint32_t hour, uint32_t minute, uint32_t second, DateTimeKind kind)
         : DateTime(year, month, day, hour, minute, second, 0, kind)
     {
     }
 
-    DateTime::DateTime(uint32_t year, uint32_t month, uint32_t day, uint32_t hour, uint32_t minute, uint32_t second, uint32_t millisecond, DateTimeKindEnum kind)
+    DateTime::DateTime(uint32_t year, uint32_t month, uint32_t day, uint32_t hour, uint32_t minute, uint32_t second, uint32_t millisecond, DateTimeKind kind)
     {
         if (year < 1 || year > 9999)
             throw YearArgumentOutOfRangeException();
@@ -202,18 +202,18 @@ namespace Borg
 
     DateTime DateTime::ToLocalTime() const
     {
-        if (m_Kind == DateTimeKindEnum::Local)
+        if (m_Kind == DateTimeKind::Local)
             return *this;
 
-        return FromUnixEpochMilliseconds(m_UnixEpochMilliseconds, DateTimeKindEnum::Local);
+        return FromUnixEpochMilliseconds(m_UnixEpochMilliseconds, DateTimeKind::Local);
     }
 
     DateTime DateTime::ToUniversalTime() const
     {
-        if (m_Kind == DateTimeKindEnum::Utc)
+        if (m_Kind == DateTimeKind::Utc)
             return *this;
 
-        return FromUnixEpochMilliseconds(m_UnixEpochMilliseconds, DateTimeKindEnum::Utc);
+        return FromUnixEpochMilliseconds(m_UnixEpochMilliseconds, DateTimeKind::Utc);
     }
 
     DateTime DateTime::Add(const TimeSpan &timespan) const
@@ -223,7 +223,7 @@ namespace Borg
 
     TimeSpan DateTime::Subtract(const DateTime &datetime) const
     {
-        if (m_Kind == DateTimeKindEnum::Utc)
+        if (m_Kind == DateTimeKind::Utc)
         {
             auto utcDiff = m_UnixEpochMilliseconds - datetime.ToUniversalTime().m_UnixEpochMilliseconds;
             return TimeSpan::FromMilliseconds(utcDiff);
@@ -260,7 +260,7 @@ namespace Borg
 
     DateTime DateTime::AddMilliseconds(double milliseconds) const
     {
-        if (m_Kind != DateTimeKindEnum::Utc)
+        if (m_Kind != DateTimeKind::Utc)
             return ToUniversalTime().AddMilliseconds(milliseconds).ToLocalTime();
 
         return FromUnixEpochMilliseconds(m_UnixEpochMilliseconds + std::llround(milliseconds), m_Kind);
@@ -311,7 +311,7 @@ namespace Borg
         return m_DayOfWeek;
     }
 
-    DateTimeKindEnum DateTime::Kind() const
+    DateTimeKind DateTime::Kind() const
     {
         return m_Kind;
     }
@@ -323,7 +323,7 @@ namespace Borg
 
     DateTime DateTime::UnixEpoch()
     {
-        static DateTime unixEpoch = DateTime::FromUnixEpochMilliseconds(0, DateTimeKindEnum::Utc);
+        static DateTime unixEpoch = DateTime::FromUnixEpochMilliseconds(0, DateTimeKind::Utc);
         return unixEpoch;
     }
 
