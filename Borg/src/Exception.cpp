@@ -20,45 +20,13 @@ namespace Borg
         return m_Message;
     }
 
-    // ===========================
-    // ===== FormatException =====
-    // ===========================
-
-    FormatException::FormatException() : Exception("FormatException") {}
-    FormatException::FormatException(const String &message) : Exception(message) {}
-
     // =============================
     // ===== ArgumentException =====
     // =============================
-
-    ArgumentException::ArgumentException() : Exception("ArgumentException") {}
-    ArgumentException::ArgumentException(const String &message) : Exception(message) {}
-    ArgumentException::ArgumentException(const String &message, const String &paramName) : Exception(message), m_ParamName(paramName) {}
 
     String ArgumentException::ParamName() const
     {
         return m_ParamName;
     }
 
-    // =================================
-    // ===== ArgumentNullException =====
-    // =================================
-
-    ArgumentNullException::ArgumentNullException() : ArgumentException("ArgumentNullException") {}
-    ArgumentNullException::ArgumentNullException(const String &paramName) : ArgumentException(paramName) {}
-    ArgumentNullException::ArgumentNullException(const String &paramName, const String &message) : ArgumentException(paramName, message) {}
-
-    // =======================================
-    // ===== ArgumentOutOfRangeException =====
-    // =======================================
-
-    ArgumentOutOfRangeException::ArgumentOutOfRangeException() : ArgumentException("ArgumentOutOfRangeException") {}
-    ArgumentOutOfRangeException::ArgumentOutOfRangeException(const String &paramName)
-        : ArgumentOutOfRangeException(paramName, "Argument is out of range")
-    {
-    }
-    ArgumentOutOfRangeException::ArgumentOutOfRangeException(const String &paramName, const String &message)
-        : ArgumentException(message, paramName)
-    {
-    }
 }

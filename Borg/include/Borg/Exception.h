@@ -40,20 +40,49 @@ namespace Borg
         /**
          * @brief Initializes a new instance of the FormatException class.
          */
-        FormatException();
+        FormatException() : Exception("FormatException") {}
 
         /**
          * @brief Initializes a new instance of the FormatException class with a specified error message.
-         * @param message 
+         * @param message
          */
-        FormatException(const String& message);
+        FormatException(const String &message) : Exception(message) {}
     };
 
-    using NotSupportException = Exception;
-    using InvalidOperationException = Exception;
-    using InvalidCastException = Exception;
-    using NullReferenceException = Exception;
-    using NotImplementedException = Exception;
+    class NotSupportException : public Exception
+    {
+    public:
+        NotSupportException() : Exception("NotSupportException") {}
+        NotSupportException(const String &message) : Exception(message) {}
+    };
+
+    class InvalidOperationException : public Exception
+    {
+    public:
+        InvalidOperationException() : Exception("InvalidOperationException") {}
+        InvalidOperationException(const String &message) : Exception(message) {}
+    };
+
+    class InvalidCastException : public Exception
+    {
+    public:
+        InvalidCastException() : Exception("InvalidCastException") {}
+        InvalidCastException(const String &message) : Exception(message) {}
+    };
+
+    class NullReferenceException : public Exception
+    {
+    public:
+        NullReferenceException() : Exception("NullReferenceException") {}
+        NullReferenceException(const String &message) : Exception(message) {}
+    };
+
+    class NotImplementedException : public Exception
+    {
+    public:
+        NotImplementedException() : Exception("NotImplementedException") {}
+        NotImplementedException(const String &message) : Exception(message) {}
+    };
 
     class ArgumentException : public Exception
     {
@@ -61,15 +90,14 @@ namespace Borg
         /**
          * @brief Initializes a new instance of the ArgumentException class.
          */
-        ArgumentException();
-        ~ArgumentException() = default;
+        ArgumentException() : Exception("ArgumentException") {}
 
         /**
          * @brief Initializes a new instance of the ArgumentException class with a specified error message.
          *
          * @param message
          */
-        ArgumentException(const String &message);
+        ArgumentException(const String &message) : Exception(message) {}
 
         /**
          * @brief Initializes a new instance of the ArgumentException class with a specified error message and the name of the parameter that causes this exception.
@@ -77,7 +105,7 @@ namespace Borg
          * @param message
          * @param paramName
          */
-        ArgumentException(const String &message, const String &paramName);
+        ArgumentException(const String &message, const String &paramName) : Exception(message), m_ParamName(paramName) {}
 
         /**
          * @brief Gets the name of the parameter that causes this exception.
@@ -96,15 +124,14 @@ namespace Borg
         /**
          * @brief Initializes a new instance of the ArgumentNullException class.
          */
-        ArgumentNullException();
-        ~ArgumentNullException() = default;
+        ArgumentNullException() : ArgumentException("ArgumentNullException") {}
 
         /**
          * @brief Initializes a new instance of the ArgumentNullException class with the name of the parameter that causes this exception.
          *
          * @param paramName
          */
-        ArgumentNullException(const String &paramName);
+        ArgumentNullException(const String &paramName) : ArgumentException("ArgumentNullException", paramName) {}
 
         /**
          * @brief Initializes an instance of the ArgumentNullException class with a specified error message and the name of the parameter that causes this exception.
@@ -112,7 +139,7 @@ namespace Borg
          * @param paramName
          * @param message
          */
-        ArgumentNullException(const String &paramName, const String &message);
+        ArgumentNullException(const String &paramName, const String &message) : ArgumentException(message, paramName) {}
     };
 
     class ArgumentOutOfRangeException : public ArgumentException
@@ -121,15 +148,14 @@ namespace Borg
         /**
          * @brief Initializes a new instance of the ArgumentOutOfRangeException class.
          */
-        ArgumentOutOfRangeException();
-        ~ArgumentOutOfRangeException() = default;
+        ArgumentOutOfRangeException() : ArgumentException("ArgumentOutOfRangeException") {}
 
         /**
          * @brief Initializes a new instance of the ArgumentOutOfRangeException class with the name of the parameter that causes this exception.
          *
          * @param paramName
          */
-        ArgumentOutOfRangeException(const String &paramName);
+        ArgumentOutOfRangeException(const String &paramName) : ArgumentException("ArgumentOutOfRangeException", paramName) {}
 
         /**
          * @brief Initializes a new instance of the ArgumentOutOfRangeException class with the name of the parameter that causes this exception and a specified error message.
@@ -137,6 +163,6 @@ namespace Borg
          * @param paramName
          * @param message
          */
-        ArgumentOutOfRangeException(const String &paramName, const String &message);
+        ArgumentOutOfRangeException(const String &paramName, const String &message) : ArgumentException(message, paramName) {}
     };
 }
