@@ -313,6 +313,26 @@ namespace Borg
         return unixEpoch;
     }
 
+    DateTime DateTime::Parse(const String &input)
+    {
+        if(input.IsNull())
+            throw ArgumentNullException("input");
+
+        int year;
+        int month;
+        int day;
+        int hour;
+        int minute;
+        int second;
+        char zulu;
+        CharBuffer cb = Encoding::ConvertTo<CharBuffer>(input);
+        int ret = std::sscanf(cb, "%d-%d-%dT%d:%d:%d%c", &year, &month, &day, &hour, &minute, &second, &zulu);
+        if (ret != 7)
+            throw FormatException("Input does not contain a valid string representation of a date and time.");
+
+        return DateTime(year, month, day, hour, minute, second, zulu == 'Z');
+    }
+
     DateTime DateTime::operator+(const TimeSpan &timespan)
     {
         return Add(timespan);

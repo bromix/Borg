@@ -20,20 +20,20 @@ namespace Borg
         return m_Message;
     }
 
+    // ===========================
+    // ===== FormatException =====
+    // ===========================
+
+    FormatException::FormatException() : Exception("FormatException") {}
+    FormatException::FormatException(const String &message) : Exception(message) {}
+
     // =============================
     // ===== ArgumentException =====
     // =============================
 
     ArgumentException::ArgumentException() : Exception("ArgumentException") {}
-    ArgumentException::ArgumentException(const String &message)
-        : Exception(message)
-    {
-    }
-
-    ArgumentException::ArgumentException(const String &message, const String &paramName)
-        : Exception(message), m_ParamName(paramName)
-    {
-    }
+    ArgumentException::ArgumentException(const String &message) : Exception(message) {}
+    ArgumentException::ArgumentException(const String &message, const String &paramName) : Exception(message), m_ParamName(paramName) {}
 
     String ArgumentException::ParamName() const
     {

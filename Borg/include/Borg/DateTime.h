@@ -1,5 +1,6 @@
 #pragma once
 #include "Types.h"
+#include "String.h"
 
 namespace Borg
 {
@@ -311,6 +312,8 @@ namespace Borg
          * @return DateTime
          */
         static DateTime UnixEpoch();
+
+        static DateTime Parse(const String &input);
 
         /**
          * @brief Adds a specified time interval to a specified date and time, yielding a new date and time.

@@ -34,6 +34,21 @@ namespace Borg
         std::string m_What;
     };
 
+    class FormatException : public Exception
+    {
+    public:
+        /**
+         * @brief Initializes a new instance of the FormatException class.
+         */
+        FormatException();
+
+        /**
+         * @brief Initializes a new instance of the FormatException class with a specified error message.
+         * @param message 
+         */
+        FormatException(const String& message);
+    };
+
     using NotSupportException = Exception;
     using InvalidOperationException = Exception;
     using InvalidCastException = Exception;

@@ -221,3 +221,22 @@ TEST(DateTime, NetworkEpoch)
     ASSERT_EQ(11, date_time2.Month());
     ASSERT_EQ(2021, date_time2.Year());
 }
+
+TEST(DateTime, Parse)
+{
+    auto dateTime = DateTime::Parse("2021-12-12T22:59:59Z");
+    ASSERT_EQ(2021,  dateTime.Year());
+    ASSERT_EQ(12, dateTime.Month());
+    ASSERT_EQ(12, dateTime.Day());
+    ASSERT_EQ(22, dateTime.Hour());
+    ASSERT_EQ(59, dateTime.Minute());
+    ASSERT_EQ(59, dateTime.Second());
+
+    dateTime = DateTime::Parse("2021-02-01T02:09:09Z");
+    ASSERT_EQ(2021,  dateTime.Year());
+    ASSERT_EQ(2, dateTime.Month());
+    ASSERT_EQ(1, dateTime.Day());
+    ASSERT_EQ(2, dateTime.Hour());
+    ASSERT_EQ(9, dateTime.Minute());
+    ASSERT_EQ(9, dateTime.Second());
+}
