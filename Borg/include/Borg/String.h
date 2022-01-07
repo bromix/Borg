@@ -130,6 +130,12 @@ namespace Borg
         String operator+(const std::string &rhs) const;
         String operator+(const std::wstring &rhs) const;
 
+        String operator+=(const String &rhs);
+        String operator+=(const char *rhs);
+        String operator+=(const wchar_t *rhs);
+        String operator+=(const std::string &rhs);
+        String operator+=(const std::wstring &rhs);
+
         bool operator==(const String &rhs) const;
         bool operator==(const char *rhs) const;
         bool operator==(const wchar_t *rhs) const;

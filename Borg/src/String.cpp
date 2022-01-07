@@ -452,6 +452,41 @@ namespace Borg
         return rhs.Prepend(lhs);
     }
 
+    String String::operator+=(const String &rhs)
+    {
+        auto newString = Append(rhs);
+        *this = std::move(newString);
+        return *this;
+    }
+
+    String String::operator+=(const char *rhs)
+    {
+        auto newString = Append(rhs);
+        *this = std::move(newString);
+        return *this;
+    }
+
+    String String::operator+=(const wchar_t *rhs)
+    {
+        auto newString = Append(rhs);
+        *this = std::move(newString);
+        return *this;
+    }
+
+    String String::operator+=(const std::string &rhs)
+    {
+        auto newString = Append(rhs);
+        *this = std::move(newString);
+        return *this;
+    }
+
+    String String::operator+=(const std::wstring &rhs)
+    {
+        auto newString = Append(rhs);
+        *this = std::move(newString);
+        return *this;
+    }
+
     bool operator==(const char *lhs, const String &rhs)
     {
         return rhs == lhs;

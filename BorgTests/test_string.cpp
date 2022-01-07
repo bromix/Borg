@@ -119,6 +119,14 @@ TEST(String, Append)
     ASSERT_EQ(11, helloWorld.Length());
 }
 
+TEST(String, AppendWithOperator)
+{
+    String helloWorld = "Hello";
+    helloWorld += " World";
+    ASSERT_EQ("Hello World", helloWorld);
+    ASSERT_EQ(11, helloWorld.Length());
+}
+
 TEST(String, Prepend)
 {
     String world = "World";
