@@ -7,17 +7,13 @@ namespace Borg
     class CharBuffer : public EncodingBuffer<char>
     {
     public:
+        CharBuffer() : EncodingBuffer<char>() {}
+        CharBuffer(nullptr_t) : EncodingBuffer<char>() {}
         CharBuffer(const CharBuffer &input) : EncodingBuffer<char>(input) {}
 
         CharBuffer(CharBuffer &&input) : EncodingBuffer<char>(std::move(input)) {}
 
         CharBuffer(std::size_t length) : EncodingBuffer<char>(length) {}
-
-        CharBuffer(const char *input, bool createCopy = true) : EncodingBuffer<char>(input, createCopy) {}
-
-        CharBuffer(const std::string &input, bool createCopy = true) : CharBuffer(std::string_view(input), createCopy) {}
-
-        CharBuffer(std::string_view input, bool createCopy = true) : EncodingBuffer<char>(input, createCopy) {}
 
         CharBuffer &operator=(const CharBuffer &input)
         {
@@ -71,6 +67,20 @@ namespace Borg
             auto ptr = &m_Ptr[Length() - input.Length()];
             auto result = strncmp(ptr, input.m_Ptr, input.Length());
             return result == 0;
+        }
+
+        static CharBuffer CopyFrom(std::string_view input)
+        {
+            CharBuffer cb;
+            cb.prepareBuffer(input, true);
+            return cb;
+        }
+
+        static CharBuffer ViewFrom(std::string_view input)
+        {
+            CharBuffer cb;
+            cb.prepareBuffer(input, false);
+            return cb;
         }
 
         CharBuffer Insert(int startIndex, const CharBuffer &input) const;

@@ -8,7 +8,7 @@ namespace Borg
     {
     public:
         WideCharBuffer() : EncodingBuffer<wchar_t>() {}
-
+        WideCharBuffer(nullptr_t) : EncodingBuffer<wchar_t>() {}
         WideCharBuffer(WideCharBuffer &&input) : EncodingBuffer<wchar_t>(std::move(input)) {}
 
         WideCharBuffer &operator=(WideCharBuffer &&input)
@@ -26,12 +26,6 @@ namespace Borg
         }
 
         WideCharBuffer(std::size_t length) : EncodingBuffer<wchar_t>(length) {}
-
-        WideCharBuffer(const wchar_t *input, bool createCopy = true) : EncodingBuffer<wchar_t>(input, createCopy) {}
-
-        WideCharBuffer(const std::wstring &input, bool createCopy = true) : WideCharBuffer(std::wstring_view(input), createCopy) {}
-
-        WideCharBuffer(std::wstring_view input, bool createCopy = true) : EncodingBuffer<wchar_t>(input, createCopy) {}
 
         int CompareTo(const WideCharBuffer &rhs) const
         {
@@ -73,6 +67,20 @@ namespace Borg
             auto ptr = &m_Ptr[Length() - input.Length()];
             auto result = wcsncmp(ptr, input.m_Ptr, input.Length());
             return result == 0;
+        }
+
+        static WideCharBuffer CopyFrom(std::wstring_view input)
+        {
+            WideCharBuffer wcb;
+            wcb.prepareBuffer(input, true);
+            return wcb;
+        }
+
+        static WideCharBuffer ViewFrom(std::wstring_view input)
+        {
+            WideCharBuffer wcb;
+            wcb.prepareBuffer(input, false);
+            return wcb;
         }
 
         WideCharBuffer Insert(int startIndex, const WideCharBuffer &input) const;

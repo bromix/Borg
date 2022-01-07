@@ -12,7 +12,7 @@ namespace Borg
             return nullptr;
 
         if (input.IsEmpty())
-            return "";
+            return CharBuffer::CopyFrom("");
 
         if (input.Length() > static_cast<size_t>((std::numeric_limits<int>::max)()))
         {
@@ -74,7 +74,7 @@ namespace Borg
             return nullptr;
 
         if (input.IsEmpty())
-            return L"";
+            return WideCharBuffer::CopyFrom(L"");
 
         if (input.Length() > static_cast<size_t>((std::numeric_limits<int>::max)()))
         {

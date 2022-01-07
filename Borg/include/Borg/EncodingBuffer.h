@@ -25,17 +25,17 @@ namespace Borg
             m_Ptr[length] = '\0';
         }
 
-        EncodingBuffer(const T *input, bool createCopy = false) : ArrayBuffer<T>()
-        {
-            if(input != nullptr)
-                prepareBuffer(input, createCopy);
-        }
+        // EncodingBuffer(const T *input, bool createCopy = false) : ArrayBuffer<T>()
+        // {
+        //     if(input != nullptr)
+        //         prepareBuffer(input, createCopy);
+        // }
 
-        EncodingBuffer(std::basic_string_view<T> input, bool createCopy = false)
-            : ArrayBuffer<T>()
-        {
-            prepareBuffer(input, createCopy);
-        }
+        // EncodingBuffer(std::basic_string_view<T> input, bool createCopy = false)
+        //     : ArrayBuffer<T>()
+        // {
+        //     prepareBuffer(input, createCopy);
+        // }
 
         bool IsEmpty() const
         {
@@ -110,7 +110,7 @@ namespace Borg
             return *this;
         }
 
-    private:
+    protected:
         void prepareBuffer(std::basic_string_view<T> input, bool createCopy = false)
         {
             // we add +1 because of the null-termination.
