@@ -18,7 +18,7 @@ namespace Borg
         using Default = CharBuffer;
 #endif
 
-        template <typename TTo, typename TFrom, typename std::enable_if_t<!std::is_same_v<TTo, TFrom>> * = nullptr>
+        template <typename TTo, typename TFrom, typename std::enable_if_t<!std::is_same_v<TTo, TFrom>, std::nullptr_t> = nullptr>
         static TTo ConvertTo(const TFrom &input);
 
         template <typename TTo>
@@ -29,13 +29,13 @@ namespace Borg
             return ConvertTo<TTo, Encoding::Default>(input.GetBuffer());
         }
 
-        template <typename TTo, typename TFrom, typename std::enable_if_t<std::is_same_v<TTo, TFrom>> * = nullptr>
+        template <typename TTo, typename TFrom, typename std::enable_if_t<std::is_same_v<TTo, TFrom>, std::nullptr_t> = nullptr>
         static TTo ConvertTo(const TFrom &input)
         {
             return input;
         }
 
-        template <typename TTo, typename TFrom, typename std::enable_if_t<std::is_same_v<TTo, TFrom>> * = nullptr>
+        template <typename TTo, typename TFrom, typename std::enable_if_t<std::is_same_v<TTo, TFrom>, std::nullptr_t> = nullptr>
         static TTo ConvertTo(TFrom &&input)
         {
             return std::move(input);
