@@ -6,7 +6,7 @@
 namespace Borg
 {
     template <>
-    static CharBuffer Encoding::ConvertTo(const WideCharBuffer &input)
+    static CharBuffer Encoding::Convert(const WideCharBuffer &input)
     {
         if (input.IsNull())
             return nullptr;
@@ -68,7 +68,7 @@ namespace Borg
     }
 
     template <>
-    static WideCharBuffer Encoding::ConvertTo(const CharBuffer &input)
+    static WideCharBuffer Encoding::Convert(const CharBuffer &input)
     {
         if (input.IsNull())
             return nullptr;

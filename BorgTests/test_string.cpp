@@ -168,7 +168,7 @@ TEST(String, toString)
 TEST(String, ToWideCharBuffer)
 {
     String hello = "Hello";
-    auto cb = Encoding::ConvertTo<WideCharBuffer>(hello).Detach();
+    auto cb = Encoding::Convert<WideCharBuffer>(hello).Detach();
 
     auto test = cb.Data();
 }
@@ -176,7 +176,7 @@ TEST(String, ToWideCharBuffer)
 TEST(String, ToCharBuffer)
 {
     String hello = "Hello";
-    auto cb = Encoding::ConvertTo<CharBuffer>(hello).Detach();
+    auto cb = Encoding::Convert<CharBuffer>(hello).Detach();
 
     auto test = cb.Data();
 }

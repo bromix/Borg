@@ -339,7 +339,7 @@ namespace Borg
         int minute;
         int second;
         char zulu;
-        CharBuffer cb = Encoding::ConvertTo<CharBuffer>(input);
+        CharBuffer cb = Encoding::Convert<CharBuffer>(input);
         int ret = std::sscanf(cb, "%d-%d-%dT%d:%d:%d%c", &year, &month, &day, &hour, &minute, &second, &zulu);
         if (ret != 7)
             throw FormatException("Input does not contain a valid string representation of a date and time.");
