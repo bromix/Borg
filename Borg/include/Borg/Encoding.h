@@ -30,15 +30,9 @@ namespace Borg
         }
 
         template <typename TTo, typename TFrom, typename std::enable_if_t<std::is_same_v<TTo, TFrom>, std::nullptr_t> = nullptr>
-        static TTo ConvertTo(const TFrom &input)
+        static TTo ConvertTo(TFrom input)
         {
             return input;
-        }
-
-        template <typename TTo, typename TFrom, typename std::enable_if_t<std::is_same_v<TTo, TFrom>, std::nullptr_t> = nullptr>
-        static TTo ConvertTo(TFrom &&input)
-        {
-            return std::move(input);
         }
     };
 }
