@@ -1,4 +1,5 @@
 #pragma once
+#include "Borg/Ref.h"
 #include "DialogResult.h"
 #include "IControl.h"
 
@@ -15,5 +16,13 @@ namespace Borg::UI
          * @return DialogResult 
          */
         virtual DialogResult ShowDialog() = 0;
+
+        /**
+         * @brief Wraps the given Handle into a new instance of IForm.
+         * 
+         * @param handle 
+         * @return Ref<IForm> 
+         */
+        static Ref<IForm> CreateFrom(const UI::Handle& handle);
     };
 }
