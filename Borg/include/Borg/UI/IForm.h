@@ -5,7 +5,7 @@
 
 namespace Borg::UI
 {
-    class IForm : public IControl
+    class IForm : public virtual IControl
     {
     public:
         virtual ~IForm() = default;

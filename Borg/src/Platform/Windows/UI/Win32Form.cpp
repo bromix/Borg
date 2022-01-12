@@ -3,7 +3,7 @@
 
 namespace Borg::UI
 {
-    Win32Form::Win32Form(const UI::Handle &handle) : m_Handle(handle) {}
+    Win32Form::Win32Form(const UI::Handle &handle) : Win32Control(handle) {}
 
     Ref<UI::IForm> Win32Form::GetOwner() const
     {
@@ -30,33 +30,33 @@ namespace Borg::UI
         throw NotImplementedException();
     }
 
-    UI::Handle Win32Form::Handle() const
-    {
-        return m_Handle;
-    }
+    // UI::Handle Win32Form::Handle() const
+    // {
+    //     return m_Handle;
+    // }
 
-    void Win32Form::BringToFront()
-    {
-        ::BringWindowToTop(m_Handle);
-    }
+    // void Win32Form::BringToFront()
+    // {
+    //     ::BringWindowToTop(m_Handle);
+    // }
 
-    bool Win32Form::IsEnabled() const
-    {
-        return ::IsWindowEnabled(m_Handle) == TRUE;
-    }
+    // bool Win32Form::IsEnabled() const
+    // {
+    //     return ::IsWindowEnabled(m_Handle) == TRUE;
+    // }
 
-    void Win32Form::SetEnabled(bool enabled)
-    {
-        ::EnableWindow(m_Handle, enabled ? TRUE : FALSE);
-    }
+    // void Win32Form::SetEnabled(bool enabled)
+    // {
+    //     ::EnableWindow(m_Handle, enabled ? TRUE : FALSE);
+    // }
 
-    bool Win32Form::IsVisible() const
-    {
-        return ::IsWindowVisible(m_Handle) == TRUE;
-    }
+    // bool Win32Form::IsVisible() const
+    // {
+    //     return ::IsWindowVisible(m_Handle) == TRUE;
+    // }
 
-    void Win32Form::SetVisible(bool visible)
-    {
-        ::ShowWindow(m_Handle, SW_SHOWDEFAULT);
-    }
+    // void Win32Form::SetVisible(bool visible)
+    // {
+    //     ::ShowWindow(m_Handle, SW_SHOWDEFAULT);
+    // }
 }

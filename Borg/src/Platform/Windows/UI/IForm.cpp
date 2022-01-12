@@ -7,6 +7,7 @@ namespace Borg::UI
     {
         if(!handle)
             return nullptr;
+
         return CreateRef<UI::Win32Form>(handle);
     }
 }

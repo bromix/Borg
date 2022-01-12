@@ -6,14 +6,14 @@ namespace Borg::UI
     class IControl
     {
     public:
-        ~IControl() = default;
+        virtual ~IControl() = default;
 
         /**
          * @brief Gets the window handle that the control is bound to.
          * 
          * @return Handle 
          */
-        virtual Handle Handle() const = 0;
+        virtual UI::Handle Handle() const = 0;
 
         /**
          * @brief Brings the control to the front of the z-order.
