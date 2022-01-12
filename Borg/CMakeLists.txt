@@ -8,7 +8,7 @@ target_compile_features(${PROJECT_NAME}
 )
 
 file(GLOB_RECURSE BORG_HEADER_FILES "include/Borg/*.h")
-file(GLOB BORG_SOURCE_FILES "src/*.cpp" "src/*.h")
+file(GLOB_RECURSE BORG_SOURCE_FILES "src/*.cpp" "src/*.h")
 target_sources(${PROJECT_NAME}
     PRIVATE
         ${BORG_HEADER_FILES}
