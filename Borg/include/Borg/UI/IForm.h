@@ -25,6 +25,11 @@ namespace Borg::UI
         virtual void SetOwner(const Ref<IForm> &owner) = 0;
 
         /**
+         * @brief Centers the position of the form within the bounds of the parent form.
+         */
+        virtual void CenterToParent() = 0;
+
+        /**
          * @brief Shows the form as a modal dialog box.
          * 
          * @return DialogResult 

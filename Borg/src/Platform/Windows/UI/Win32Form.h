@@ -11,6 +11,7 @@ namespace Borg::UI
         // IForm
         Ref<UI::IForm> GetOwner() const override;
         void SetOwner(const Ref<UI::IForm> &owner) override;
+        void CenterToParent() override;
         UI::DialogResult ShowDialog() override;
 
         // IControl
