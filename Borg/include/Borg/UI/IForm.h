@@ -15,7 +15,7 @@ namespace Borg::UI
          * 
          * @return Ref<IForm> 
          */
-        virtual Ref<IForm> Owner() const = 0;
+        virtual Ref<IForm> GetOwner() const = 0;
 
         /**
          * @brief Sets the form that owns this form.

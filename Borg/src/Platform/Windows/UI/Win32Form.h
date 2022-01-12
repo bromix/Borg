@@ -9,7 +9,7 @@ namespace Borg::UI
         Win32Form(const UI::Handle &handle);
 
         // IForm
-        Ref<UI::IForm> Owner() const override;
+        Ref<UI::IForm> GetOwner() const override;
         void SetOwner(const Ref<UI::IForm> &owner) override;
         UI::DialogResult ShowDialog() override;
 

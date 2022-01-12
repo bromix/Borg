@@ -5,7 +5,7 @@ namespace Borg::UI
 {
     Win32Form::Win32Form(const UI::Handle &handle) : m_Handle(handle) {}
 
-    Ref<UI::IForm> Win32Form::Owner() const
+    Ref<UI::IForm> Win32Form::GetOwner() const
     {
         return nullptr;
     }
