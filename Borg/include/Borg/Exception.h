@@ -49,6 +49,20 @@ namespace Borg
         FormatException(const String &message) : Exception(message) {}
     };
 
+    class ArithmeticException : public Exception
+    {
+    public:
+        ArithmeticException() : Exception("ArithmeticException") {}
+        ArithmeticException(const String &message) : Exception(message) {}
+    };
+
+    class OverflowException : public ArithmeticException
+    {
+    public:
+        OverflowException() : ArithmeticException("OverflowException") {}
+        OverflowException(const String &message) : ArithmeticException(message) {}
+    };
+
     class NotSupportException : public Exception
     {
     public:

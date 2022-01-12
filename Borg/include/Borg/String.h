@@ -1,5 +1,4 @@
 #pragma once
-#include "Ref.h"
 #include "Encoding.h"
 #include <string>
 

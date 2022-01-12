@@ -1,6 +1,6 @@
 #include "Windows.h"
+#include "Borg/Exception.h"
 #include "Borg/Encoding.h"
-#include "Borg/RefCast.h"
 #include "Borg/CharBuffer.h"
 
 namespace Borg
@@ -15,10 +15,7 @@ namespace Borg
             return CharBuffer::CopyFrom("");
 
         if (input.Length() > static_cast<size_t>((std::numeric_limits<int>::max)()))
-        {
-            throw std::overflow_error(
-                "Input string too long: size_t-length doesn't fit into int.");
-        }
+            throw OverflowException("Input string too long: size_t-length doesn't fit into int.");
 
         // constexpr DWORD kFlags = MB_ERR_INVALID_CHARS;
         const int utf16Length = static_cast<int>(input.Length());
@@ -77,11 +74,7 @@ namespace Borg
             return WideCharBuffer::CopyFrom(L"");
 
         if (input.Length() > static_cast<size_t>((std::numeric_limits<int>::max)()))
-        {
-            // FIXME: use proper Exception.
-            throw std::overflow_error(
-                "Input string too long: size_t-length doesn't fit into int.");
-        }
+            throw OverflowException("Input string too long: size_t-length doesn't fit into int.");
 
         constexpr DWORD kFlags = MB_ERR_INVALID_CHARS;
         const int utf8Length = static_cast<int>(input.Length());

@@ -1,7 +1,6 @@
 #include "Borg/String.h"
 #include "Borg/Encoding.h"
 #include "Borg/CharBuffer.h"
-#include "Borg/RefCast.h"
 #include <gtest/gtest.h>
 
 using namespace Borg;

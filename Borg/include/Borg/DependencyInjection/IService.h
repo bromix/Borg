@@ -1,6 +1,5 @@
 #pragma once
 #include <mutex>
-#include "Borg/RefCast.h"
 #include "Service.h"
 
 namespace Borg::DependencyInjection

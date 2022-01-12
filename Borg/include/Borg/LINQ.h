@@ -1,7 +1,6 @@
 #pragma once
 #include <optional>
 #include "Types.h"
-#include "RefCast.h"
 #include "StdEnumerators.h"
 #include "IEnumerable.h"
 #include "LINQ/WhereEnumerator.h"

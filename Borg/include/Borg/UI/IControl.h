@@ -31,7 +31,8 @@ namespace Borg::UI
         /**
          * @brief Sets a value indicating whether the control can respond to user interaction.
          * 
+         * @param enabled 
          */
-        virtual void SetEnabled(bool) = 0;
+        virtual void SetEnabled(bool enabled) = 0;
     };
 }
