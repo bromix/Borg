@@ -3,6 +3,8 @@
 
 namespace Borg::UI
 {
+    Handle::Handle() : m_Handle(nullptr) {}
+
     Handle::Handle(Handle::Type nativeHandle) : m_Handle(nativeHandle) {}
 
     Handle::Handle(const Handle &handle) : m_Handle(handle.m_Handle) {}
@@ -18,13 +20,13 @@ namespace Borg::UI
         return *this;
     }
 
-    Handle &Handle::operator=(const Handle & handle)
+    Handle &Handle::operator=(const Handle &handle)
     {
         m_Handle = handle.m_Handle;
         return *this;
     }
 
-    Handle &Handle::operator=(Handle && handle)
+    Handle &Handle::operator=(Handle &&handle)
     {
         std::swap(m_Handle, handle.m_Handle);
         return *this;

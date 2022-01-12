@@ -13,13 +13,20 @@ namespace Borg::UI
 #ifdef _WIN32
         using Type = HWND;
 #endif
+
+        /**
+         * @brief Default constructor.
+         */
+        Handle();
+
+        ~Handle() = default;
         Handle(Handle::Type nativeHandle);
-        Handle(const Handle & handle);
-        Handle(Handle && handle);
+        Handle(const Handle &handle);
+        Handle(Handle &&handle);
 
         Handle &operator=(Handle::Type nativeHandle);
-        Handle &operator=(const Handle& handle);
-        Handle &operator=(Handle&& handle);
+        Handle &operator=(const Handle &handle);
+        Handle &operator=(Handle &&handle);
 
         Handle::Type Get() const;
         operator Handle::Type() const;

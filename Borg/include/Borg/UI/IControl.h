@@ -1,5 +1,6 @@
 #pragma once
 #include "Borg/Ref.h"
+#include "Handle.h"
 
 namespace Borg::UI
 {
@@ -7,6 +8,13 @@ namespace Borg::UI
     {
     public:
         ~IControl() = default;
+
+        /**
+         * @brief Gets the window handle that the control is bound to.
+         * 
+         * @return Handle 
+         */
+        virtual Handle Handle() const = 0;
 
         /**
          * @brief Gets a value indicating whether the control can respond to user interaction.
