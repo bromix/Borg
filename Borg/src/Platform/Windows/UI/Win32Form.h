@@ -15,6 +15,7 @@ namespace Borg::UI
 
         // IControl
         UI::Handle Handle() const override;
+        void BringToFront() override;
         bool IsEnabled() const override;
         void SetEnabled(bool) override;
     private:

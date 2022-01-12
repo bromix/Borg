@@ -16,6 +16,11 @@ namespace Borg::UI
         virtual Handle Handle() const = 0;
 
         /**
+         * @brief Brings the control to the front of the z-order.
+         */
+        virtual void BringToFront() = 0;
+
+        /**
          * @brief Gets a value indicating whether the control can respond to user interaction.
          * 
          * @return true 

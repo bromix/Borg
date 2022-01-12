@@ -25,13 +25,18 @@ namespace Borg::UI
         return m_Handle;
     }
 
+    void Win32Form::BringToFront()
+    {
+        ::BringWindowToTop(m_Handle);
+    }
+
     bool Win32Form::IsEnabled() const
     {
-        return IsWindowEnabled(m_Handle) == TRUE;
+        return ::IsWindowEnabled(m_Handle) == TRUE;
     }
 
     void Win32Form::SetEnabled(bool enabled)
     {
-        EnableWindow(m_Handle, enabled ? TRUE : FALSE);
+        ::EnableWindow(m_Handle, enabled ? TRUE : FALSE);
     }
 }
