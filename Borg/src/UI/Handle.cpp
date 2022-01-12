@@ -39,4 +39,9 @@ namespace Borg::UI
     {
         return m_Handle;
     }
+
+    Handle::operator bool() const
+    {
+        return m_Handle != nullptr;
+    }
 }

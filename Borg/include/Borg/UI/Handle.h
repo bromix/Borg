@@ -23,6 +23,7 @@ namespace Borg::UI
 
         Handle::Type Get() const;
         operator Handle::Type() const;
+        operator bool() const;
 
     private:
         Handle::Type m_Handle;
