@@ -7,6 +7,7 @@ namespace Borg::UI
     {
     public:
         Win32Form(const UI::Handle &handle);
+        ~Win32Form() = default;
 
         // IForm
         Ref<UI::IForm> GetOwner() const override;
