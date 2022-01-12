@@ -18,6 +18,8 @@ namespace Borg::UI
         void BringToFront() override;
         bool IsEnabled() const override;
         void SetEnabled(bool) override;
+        bool IsVisible() const override;
+        void SetVisible(bool visible) override;
     private:
         UI::Handle m_Handle;
     };

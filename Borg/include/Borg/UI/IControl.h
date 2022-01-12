@@ -34,5 +34,21 @@ namespace Borg::UI
          * @param enabled 
          */
         virtual void SetEnabled(bool enabled) = 0;
+
+        /**
+         * @brief Gets a value indicating whether the control and all its child controls are displayed.
+         * 
+         * @return true 
+         * @return false 
+         */
+        virtual bool IsVisible() const = 0;
+
+        
+        /**
+         * @brief Sets a value indicating whether the control and all its child controls are displayed.
+         * 
+         * @param visible 
+         */
+        virtual void SetVisible(bool visible) = 0;
     };
 }
