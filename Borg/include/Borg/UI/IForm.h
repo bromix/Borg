@@ -11,6 +11,20 @@ namespace Borg::UI
         virtual ~IForm() = default;
 
         /**
+         * @brief Gets the form that owns this form.
+         * 
+         * @return Ref<IForm> 
+         */
+        virtual Ref<IForm> Owner() const = 0;
+
+        /**
+         * @brief Sets the form that owns this form.
+         * 
+         * @param owner 
+         */
+        virtual void SetOwner(const Ref<IForm> &owner) = 0;
+
+        /**
          * @brief Shows the form as a modal dialog box.
          * 
          * @return DialogResult 
