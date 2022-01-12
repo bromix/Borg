@@ -20,6 +20,11 @@ namespace Borg::UI
         throw NotImplementedException();
     }
 
+    void Win32Form::CenterToScreen()
+    {
+        throw NotImplementedException();
+    }
+
     UI::DialogResult Win32Form::ShowDialog()
     {
         throw NotImplementedException();

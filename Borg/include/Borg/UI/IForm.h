@@ -30,6 +30,11 @@ namespace Borg::UI
         virtual void CenterToParent() = 0;
 
         /**
+         * @brief Centers the form on the current screen.
+         */
+        virtual void CenterToScreen() = 0;
+
+        /**
          * @brief Shows the form as a modal dialog box.
          * 
          * @return DialogResult 
