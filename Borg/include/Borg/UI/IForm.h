@@ -1,4 +1,5 @@
 #pragma once
+#include "Borg/Color.h"
 #include "Borg/Ref.h"
 #include "DialogResult.h"
 #include "IControl.h"
@@ -12,15 +13,15 @@ namespace Borg::UI
 
         /**
          * @brief Gets the form that owns this form.
-         * 
-         * @return Ref<IForm> 
+         *
+         * @return Ref<IForm>
          */
         virtual Ref<IForm> GetOwner() const = 0;
 
         /**
          * @brief Sets the form that owns this form.
-         * 
-         * @param owner 
+         *
+         * @param owner
          */
         virtual void SetOwner(const Ref<IForm> &owner) = 0;
 
@@ -36,9 +37,23 @@ namespace Borg::UI
 
         /**
          * @brief Shows the form as a modal dialog box.
-         * 
-         * @return DialogResult 
+         *
+         * @return DialogResult
          */
         virtual DialogResult ShowDialog() = 0;
+
+        /**
+         * @brief Sets the background color for the control.
+         *
+         * @param color
+         */
+        virtual void SetBackColor(const Color &color) = 0;
+
+        /**
+         * @brief Gets the background color for the control.
+         *
+         * @return Color
+         */
+        virtual Color GetBackColor() const = 0;
     };
 }
