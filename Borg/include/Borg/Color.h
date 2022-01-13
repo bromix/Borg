@@ -12,9 +12,17 @@ namespace Borg
         uint8_t B() const;
 
         uint32_t ToArgb() const;
+        uint32_t ToBgr() const;
 
+        static Color FromArgb(uint32_t argb);
         static Color FromArgb(uint8_t r, uint8_t g, uint8_t b);
+
+        static Color Red;
+        static Color Green;
+        static Color Blue;
         static Color Black;
+        static Color White;
+        static Color Lime;
 
     private:
         uint32_t m_Argb;

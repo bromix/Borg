@@ -19,12 +19,10 @@ namespace Borg::UI
         {
             auto hdc = (HDC)wParam;
             RECT rc;
-            GetClientRect(hWnd, &rc);
-            // SetMapMode(hdc, MM_ANISOTROPIC);
-            // SetWindowExtEx(hdc, 100, 100, NULL);
-            // SetViewportExtEx(hdc, rc.right, rc.bottom, NULL);
-            auto color = CreateSolidBrush(form->GetBackColor().ToArgb());
-            FillRect(hdc, &rc, color);
+            GetClientRect(form->Handle(), &rc);
+            HBRUSH brush = ::CreateSolidBrush(form->GetBackColor().ToBgr());
+            auto ret = FillRect(hdc, &rc, brush);
+            return 1L;
             break;
         }
         case WM_DESTROY:
@@ -53,7 +51,7 @@ namespace Borg::UI
                            wcex.hInstance = hInst;
                            wcex.hIcon = LoadIcon(hInst, IDI_APPLICATION);
                            wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-                           wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+                           wcex.hbrBackground = nullptr; //(HBRUSH)(COLOR_WINDOW + 1);
                            wcex.lpszMenuName = NULL;
                            wcex.lpszClassName = BORG_UI_FORM_CLASSNAME;
                            wcex.hIconSm = LoadIcon(hInst, IDI_APPLICATION);
@@ -71,9 +69,9 @@ namespace Borg::UI
         m_Handle = CreateWindowW(
             BORG_UI_FORM_CLASSNAME,
             nullptr,
-            WS_POPUP, // TODO: optional
+            WS_OVERLAPPEDWINDOW,
             CW_USEDEFAULT, CW_USEDEFAULT,
-            400, 300,
+            CW_USEDEFAULT, CW_USEDEFAULT,
             nullptr,
             nullptr,
             GetModuleHandle(0),

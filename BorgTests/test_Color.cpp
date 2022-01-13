@@ -12,6 +12,15 @@ TEST(Color, FromArgb)
     ASSERT_EQ(255, color.B());
 }
 
+TEST(Color, Blue)
+{
+    Color color = Color::FromArgb(0xFF0000FF);
+    ASSERT_EQ(255, color.A());
+    ASSERT_EQ(0, color.R());
+    ASSERT_EQ(0, color.G());
+    ASSERT_EQ(255, color.B());
+}
+
 TEST(Color, Black)
 {
     Color color = Color::Black;
