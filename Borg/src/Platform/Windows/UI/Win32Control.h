@@ -9,7 +9,8 @@ namespace Borg::UI
         Win32Control(const UI::Handle &handle);
         ~Win32Control() = default;
 
-        virtual UI::Handle Handle() const override;
+        UI::Handle Handle() const override;
+        Ref<UI::IControl> GetParent() const override;
         void BringToFront() override;
         bool IsEnabled() const override;
         void SetEnabled(bool) override;

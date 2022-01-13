@@ -1,4 +1,5 @@
 #pragma once
+#include "Borg/Ref.h"
 #include "Handle.h"
 
 namespace Borg::UI
@@ -14,6 +15,13 @@ namespace Borg::UI
          * @return Handle 
          */
         virtual UI::Handle Handle() const = 0;
+
+        /**
+         * @brief Gets the parent container of the control.
+         * 
+         * @return Ref<UI::IControl> 
+         */
+        virtual Ref<UI::IControl> GetParent() const = 0;
 
         /**
          * @brief Brings the control to the front of the z-order.
@@ -50,5 +58,7 @@ namespace Borg::UI
          * @param visible 
          */
         virtual void SetVisible(bool visible) = 0;
+
+        static Ref<IControl> CreateFrom(const UI::Handle &handle);
     };
 }
