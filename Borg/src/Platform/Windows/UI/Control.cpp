@@ -3,6 +3,11 @@
 
 namespace Borg::UI
 {
+    Control::Control()
+    {
+
+    }
+    
     Control::Control(const UI::Handle &handle) : m_Handle(handle)
     {
         if (!handle)

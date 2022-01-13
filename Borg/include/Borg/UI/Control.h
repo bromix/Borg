@@ -6,6 +6,7 @@ namespace Borg::UI
     class Control : public virtual IControl
     {
     public:
+        Control();
         Control(const UI::Handle &handle);
         UI::Handle Handle() const override;
         Ref<UI::IControl> GetParent() const override;
