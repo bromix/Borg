@@ -179,4 +179,11 @@ namespace Borg
          */
         ArgumentOutOfRangeException(const String &paramName, const String &message) : ArgumentException(message, paramName) {}
     };
+
+    class InvalidEnumArgumentException: public ArgumentException
+    {
+    public:
+        InvalidEnumArgumentException(): ArgumentException("InvalidEnumArgumentException"){}
+        InvalidEnumArgumentException(const String& message): ArgumentException(message){}
+    };
 }
