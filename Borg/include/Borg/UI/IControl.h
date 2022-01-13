@@ -58,7 +58,5 @@ namespace Borg::UI
          * @param visible 
          */
         virtual void SetVisible(bool visible) = 0;
-
-        static Ref<IControl> CreateFrom(const UI::Handle &handle);
     };
 }

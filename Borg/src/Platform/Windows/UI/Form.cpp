@@ -1,61 +1,61 @@
-#include "Win32Form.h"
+#include "Borg/UI/Form.h"
 #include "Borg/Exception.h"
 
 namespace Borg::UI
 {
-    Win32Form::Win32Form(const UI::Handle &handle) : Win32Control(handle) {}
+    Form::Form(const UI::Handle &handle) : Control(handle) {}
 
-    Ref<UI::IForm> Win32Form::GetOwner() const
+    Ref<UI::IForm> Form::GetOwner() const
     {
         return nullptr;
     }
 
-    void Win32Form::SetOwner(const Ref<UI::IForm> &owner)
+    void Form::SetOwner(const Ref<UI::IForm> &owner)
     {
         throw NotImplementedException();
     }
 
-    void Win32Form::CenterToParent()
+    void Form::CenterToParent()
     {
         throw NotImplementedException();
     }
 
-    void Win32Form::CenterToScreen()
+    void Form::CenterToScreen()
     {
         throw NotImplementedException();
     }
 
-    UI::DialogResult Win32Form::ShowDialog()
+    UI::DialogResult Form::ShowDialog()
     {
         throw NotImplementedException();
     }
 
-    // UI::Handle Win32Form::Handle() const
+    // UI::Handle Form::Handle() const
     // {
     //     return m_Handle;
     // }
 
-    // void Win32Form::BringToFront()
+    // void Form::BringToFront()
     // {
     //     ::BringWindowToTop(m_Handle);
     // }
 
-    // bool Win32Form::IsEnabled() const
+    // bool Form::IsEnabled() const
     // {
     //     return ::IsWindowEnabled(m_Handle) == TRUE;
     // }
 
-    // void Win32Form::SetEnabled(bool enabled)
+    // void Form::SetEnabled(bool enabled)
     // {
     //     ::EnableWindow(m_Handle, enabled ? TRUE : FALSE);
     // }
 
-    // bool Win32Form::IsVisible() const
+    // bool Form::IsVisible() const
     // {
     //     return ::IsWindowVisible(m_Handle) == TRUE;
     // }
 
-    // void Win32Form::SetVisible(bool visible)
+    // void Form::SetVisible(bool visible)
     // {
     //     ::ShowWindow(m_Handle, SW_SHOWDEFAULT);
     // }

@@ -1,21 +1,26 @@
 #pragma once
-#include "Borg/UI/IControl.h"
+#include "IControl.h"
 
 namespace Borg::UI
 {
-    class Win32Control : public virtual UI::IControl
+    class Control : public virtual IControl
     {
     public:
-        Win32Control(const UI::Handle &handle);
-        ~Win32Control() = default;
-
+        Control(const UI::Handle &handle);
         UI::Handle Handle() const override;
         Ref<UI::IControl> GetParent() const override;
         void BringToFront() override;
         bool IsEnabled() const override;
-        void SetEnabled(bool) override;
+        void SetEnabled(bool enabled) override;
         bool IsVisible() const override;
         void SetVisible(bool visible) override;
+
+        static Ref<IControl> CreateFrom(const UI::Handle &handle)
+        {
+            if(!handle)
+                return nullptr;
+            return CreateRef<Control>(handle);
+        }
 
     protected:
         UI::Handle m_Handle;
