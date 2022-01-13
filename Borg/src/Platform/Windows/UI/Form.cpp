@@ -74,7 +74,7 @@ namespace Borg::UI
 
     Ref<UI::IForm> Form::GetOwner() const
     {
-        return nullptr;
+        return UI::Form::CreateFrom(::GetWindow(m_Handle, GW_OWNER));
     }
 
     void Form::SetOwner(const Ref<UI::IForm> &owner)
@@ -84,6 +84,11 @@ namespace Borg::UI
 
     void Form::CenterToParent()
     {
+        auto parent = GetParent();
+        if (!parent)
+            CenterToScreen();
+
+        // FIXME: calculate new position.
         throw NotImplementedException();
     }
 
