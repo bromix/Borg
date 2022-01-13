@@ -14,6 +14,7 @@ namespace Borg::UI
         void CenterToScreen() override;
         DialogResult ShowDialog() override;
 
+        // TODO: move impl. to cpp
         static Ref<Form> CreateFrom(const UI::Handle& handle)
         {
             if(!handle)

@@ -15,6 +15,7 @@ namespace Borg::UI
         bool IsVisible() const override;
         void SetVisible(bool visible) override;
 
+        // TODO: move impl. to cpp
         static Ref<IControl> CreateFrom(const UI::Handle &handle)
         {
             if(!handle)
