@@ -29,7 +29,7 @@ namespace Borg::UI
             PostQuitMessage(0);
             break;
         default:
-            return DefWindowProc(hWnd, message, wParam, lParam);
+            return DefWindowProcW(hWnd, message, wParam, lParam);
             break;
         }
 
@@ -66,7 +66,8 @@ namespace Borg::UI
     {
         registerForm(GetModuleHandle(0));
 
-        m_Handle = CreateWindowW(
+        m_Handle = ::CreateWindowExW(
+            WS_EX_LEFT, // the default.
             BORG_UI_FORM_CLASSNAME,
             nullptr,
             WS_OVERLAPPEDWINDOW,
