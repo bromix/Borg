@@ -1,5 +1,6 @@
 #pragma once
 #include "Borg/Ref.h"
+#include "Borg/Color.h"
 #include "Handle.h"
 
 namespace Borg::UI
@@ -57,7 +58,6 @@ namespace Borg::UI
          * @return false 
          */
         virtual bool IsVisible() const = 0;
-
         
         /**
          * @brief Sets a value indicating whether the control and all its child controls are displayed.
@@ -65,5 +65,24 @@ namespace Borg::UI
          * @param visible 
          */
         virtual void SetVisible(bool visible) = 0;
+
+        /**
+         * @brief Sets the background color for the control.
+         *
+         * @param color
+         */
+        virtual void SetBackColor(const Color &color) = 0;
+
+        /**
+         * @brief Gets the background color for the control.
+         *
+         * @return Color
+         */
+        virtual Color GetBackColor() const = 0;
+
+        /**
+         * @brief Forces the control to invalidate its client area and immediately redraw itself and any child controls.
+         */
+        virtual void Refresh() = 0;
     };
 }

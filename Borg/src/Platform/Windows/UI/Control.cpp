@@ -50,4 +50,20 @@ namespace Borg::UI
     {
         ::ShowWindow(m_Handle, SW_SHOWDEFAULT);
     }
+
+    void Control::SetBackColor(const Color &color)
+    {
+        m_BackgroundColor = color;
+        Refresh();
+    }
+
+    Color Control::GetBackColor() const
+    {
+        return m_BackgroundColor;
+    }
+
+    void Control::Refresh()
+    {
+        ::RedrawWindow(m_Handle, nullptr, nullptr, RDW_ERASE | RDW_INVALIDATE);
+    }
 }

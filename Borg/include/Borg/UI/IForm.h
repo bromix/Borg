@@ -1,5 +1,4 @@
 #pragma once
-#include "Borg/Color.h"
 #include "Borg/Ref.h"
 #include "DialogResult.h"
 #include "IControl.h"
@@ -86,19 +85,5 @@ namespace Borg::UI
          * @return DialogResult
          */
         virtual DialogResult ShowDialog() = 0;
-
-        /**
-         * @brief Sets the background color for the control.
-         *
-         * @param color
-         */
-        virtual void SetBackColor(const Color &color) = 0;
-
-        /**
-         * @brief Gets the background color for the control.
-         *
-         * @return Color
-         */
-        virtual Color GetBackColor() const = 0;
     };
 }

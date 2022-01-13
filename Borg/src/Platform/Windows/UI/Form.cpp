@@ -5,11 +5,6 @@ namespace Borg::UI
 {
     constexpr const wchar_t *BORG_UI_FORM_CLASSNAME = L"Borg::UI::Form";
 
-    void redrawForm(const Form &form)
-    {
-        ::RedrawWindow(form.Handle(), nullptr, nullptr, RDW_ERASE | RDW_INVALIDATE);
-    }
-
     LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         auto form = (Form *)GetWindowLongPtr(hWnd, GWLP_USERDATA);
@@ -144,7 +139,7 @@ namespace Borg::UI
         else
             throw InvalidEnumArgumentException("The value specified is outside the range of valid values.");
 
-        redrawForm(*this);
+        Refresh();
     }
 
     void Form::CenterToParent()
@@ -175,16 +170,5 @@ namespace Borg::UI
         }
 
         return UI::DialogResult::None;
-    }
-
-    void Form::SetBackColor(const Color &color)
-    {
-        m_BackgroundColor = color;
-        redrawForm(*this);
-    }
-
-    Color Form::GetBackColor() const
-    {
-        return m_BackgroundColor;
     }
 }

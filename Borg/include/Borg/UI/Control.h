@@ -16,6 +16,9 @@ namespace Borg::UI
         void SetEnabled(bool enabled) override;
         bool IsVisible() const override;
         void SetVisible(bool visible) override;
+        void SetBackColor(const Color &color) override;
+        Color GetBackColor() const override;
+        void Refresh() override;
 
         // TODO: move impl. to cpp
         static Ref<IControl> CreateFrom(const UI::Handle &handle)
@@ -26,6 +29,7 @@ namespace Borg::UI
         }
 
     protected:
+        Color m_BackgroundColor;
         UI::Handle m_Handle;
     };
 }
