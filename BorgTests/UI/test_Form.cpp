@@ -6,6 +6,7 @@ using namespace Borg;
 TEST(UIForm, DebugTest)
 {
     Ref<UI::IForm> form = CreateRef<UI::Form>();
+    form->SetText("Form1");
     form->SetBackColor(Color::Red);
     form->ShowDialog();
 }

@@ -16,6 +16,11 @@ namespace Borg::UI
         return m_Handle;
     }
 
+    void Control::SetText(const String &text)
+    {
+        ::SetWindowTextW(m_Handle, Encoding::Convert<WideCharBuffer>(text));
+    }
+
     Ref<UI::IControl> Control::GetParent() const
     {
         return Control::CreateFrom(::GetParent(m_Handle));

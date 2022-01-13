@@ -9,6 +9,7 @@ namespace Borg::UI
         Control();
         Control(const UI::Handle &handle);
         UI::Handle Handle() const override;
+        void SetText(const String &text) override;
         Ref<UI::IControl> GetParent() const override;
         void BringToFront() override;
         bool IsEnabled() const override;

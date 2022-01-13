@@ -9,7 +9,7 @@ namespace Borg::UI
     class IForm : public virtual IControl
     {
     public:
-        virtual ~IForm() = default;
+        virtual ~IForm() = default;        
 
         /**
          * @brief Gets the form that owns this form.

@@ -17,6 +17,13 @@ namespace Borg::UI
         virtual UI::Handle Handle() const = 0;
 
         /**
+         * @brief Gets or sets the text associated with this control.
+         * 
+         * @param text 
+         */
+        virtual void SetText(const String &text) = 0;
+
+        /**
          * @brief Gets the parent container of the control.
          * 
          * @return Ref<UI::IControl> 
