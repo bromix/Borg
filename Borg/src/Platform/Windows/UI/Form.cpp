@@ -15,6 +15,18 @@ namespace Borg::UI
             // if (webview != nullptr)
             //     webview->update_size();
             break;
+        case WM_ERASEBKGND:
+        {
+            auto hdc = (HDC)wParam;
+            RECT rc;
+            GetClientRect(hWnd, &rc);
+            // SetMapMode(hdc, MM_ANISOTROPIC);
+            // SetWindowExtEx(hdc, 100, 100, NULL);
+            // SetViewportExtEx(hdc, rc.right, rc.bottom, NULL);
+            auto color = CreateSolidBrush(form->GetBackColor().ToArgb());
+            FillRect(hdc, &rc, color);
+            break;
+        }
         case WM_DESTROY:
             PostQuitMessage(0);
             break;
@@ -109,5 +121,15 @@ namespace Borg::UI
         }
 
         return UI::DialogResult::None;
+    }
+
+    void Form::SetBackColor(const Color &color)
+    {
+        m_BackgroundColor = color;
+    }
+
+    Color Form::GetBackColor() const
+    {
+        return m_BackgroundColor;
     }
 }

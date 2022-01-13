@@ -22,6 +22,12 @@ namespace Borg
         return m_B;
     }
 
+    uint32_t Color::ToArgb() const
+    {
+        static uint32_t argb = (m_A << 24) + (m_R << 16) + (m_G << 8)  + m_B;
+        return argb;
+    }
+
     Color Color::FromArgb(uint8_t r, uint8_t g, uint8_t b)
     {
         Color color;
