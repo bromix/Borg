@@ -6,10 +6,48 @@
 
 namespace Borg::UI
 {
+    enum class FormBorderStyle
+    {
+        /**
+         * @brief A fixed, three-dimensional border.
+         */
+        Fixed3D = 2,
+
+        /**
+         * @brief A thick, fixed dialog-style border.
+         */
+        FixedDialog = 3,
+
+        /**
+         * @brief A fixed, single-line border.
+         */
+        FixedSingle = 1,
+
+        /**
+         * @brief A tool window border that is not resizable. A tool window does not appear in the taskbar or in the window that appears when the user presses ALT+TAB. Although forms that specify FixedToolWindow typically are not shown in the taskbar, you must also ensure that the ShowInTaskbar property is set to false, since its default value is true.
+         */
+        FixedToolWindow = 5,
+
+        /**
+         * @brief No border.
+         */
+        None = 0,
+
+        /**
+         * @brief A resizable border.
+         */
+        Sizable = 4,
+
+        /**
+         * @brief A resizable tool window border. A tool window does not appear in the taskbar or in the window that appears when the user presses ALT+TAB.
+         */
+        SizableToolWindow = 6
+    };
+
     class IForm : public virtual IControl
     {
     public:
-        virtual ~IForm() = default;        
+        virtual ~IForm() = default;
 
         /**
          * @brief Gets the form that owns this form.
@@ -24,6 +62,13 @@ namespace Borg::UI
          * @param owner
          */
         virtual void SetOwner(const Ref<IForm> &owner) = 0;
+
+        /**
+         * @brief Sets the border style of the form.
+         *
+         * @param style
+         */
+        virtual void SetFormBorderStyle(FormBorderStyle style) = 0;
 
         /**
          * @brief Centers the position of the form within the bounds of the parent form.

@@ -5,6 +5,11 @@ namespace Borg::UI
 {
     constexpr const wchar_t *BORG_UI_FORM_CLASSNAME = L"Borg::UI::Form";
 
+    void redrawForm(const Form &form)
+    {
+        ::RedrawWindow(form.Handle(), nullptr, nullptr, RDW_ERASE | RDW_INVALIDATE);
+    }
+
     LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         auto form = (Form *)GetWindowLongPtr(hWnd, GWLP_USERDATA);
@@ -22,7 +27,7 @@ namespace Borg::UI
             GetClientRect(form->Handle(), &rc);
             HBRUSH brush = ::CreateSolidBrush(form->GetBackColor().ToBgr());
             auto ret = FillRect(hdc, &rc, brush);
-            return 1L;
+            return 1;
             break;
         }
         case WM_DESTROY:
@@ -70,7 +75,7 @@ namespace Borg::UI
             WS_EX_LEFT, // the default.
             BORG_UI_FORM_CLASSNAME,
             nullptr,
-            WS_OVERLAPPEDWINDOW,
+            WS_OVERLAPPED,
             CW_USEDEFAULT, CW_USEDEFAULT,
             CW_USEDEFAULT, CW_USEDEFAULT,
             nullptr,
@@ -82,6 +87,9 @@ namespace Borg::UI
 
         // Set the default background color.
         m_BackgroundColor = Color::FromArgb(::GetSysColor(COLOR_WINDOW));
+
+        // Set default border style
+        SetFormBorderStyle(UI::FormBorderStyle::Sizable);
     }
 
     Form::Form(const UI::Handle &handle) : Control(handle) {}
@@ -94,6 +102,22 @@ namespace Borg::UI
     void Form::SetOwner(const Ref<UI::IForm> &owner)
     {
         throw NotImplementedException();
+    }
+
+    void Form::SetFormBorderStyle(FormBorderStyle style)
+    {
+        if (style == FormBorderStyle::None)
+        {
+            ::SetWindowLong(m_Handle, GWL_STYLE, WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_OVERLAPPED | WS_MAXIMIZEBOX);
+            ::SetWindowLong(m_Handle, GWL_EXSTYLE, WS_EX_LEFT | WS_EX_LTRREADING | WS_EX_RIGHTSCROLLBAR | WS_EX_CONTROLPARENT | WS_EX_APPWINDOW);
+        }
+        else if (style == FormBorderStyle::Sizable)
+        {
+            ::SetWindowLong(m_Handle, GWL_STYLE, WS_CAPTION | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_SYSMENU | WS_THICKFRAME | WS_OVERLAPPED | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
+            ::SetWindowLong(m_Handle, GWL_EXSTYLE, WS_EX_LEFT | WS_EX_LTRREADING | WS_EX_RIGHTSCROLLBAR | WS_EX_WINDOWEDGE | WS_EX_CONTROLPARENT | WS_EX_APPWINDOW);
+        }
+
+        redrawForm(*this);
     }
 
     void Form::CenterToParent()
@@ -114,6 +138,7 @@ namespace Borg::UI
     UI::DialogResult Form::ShowDialog()
     {
         ::ShowWindow(m_Handle, SW_SHOWDEFAULT);
+        ::SetWindowPos(m_Handle, nullptr, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER);
 
         MSG msg;
         while (::GetMessage(&msg, nullptr, 0, 0))
@@ -128,6 +153,7 @@ namespace Borg::UI
     void Form::SetBackColor(const Color &color)
     {
         m_BackgroundColor = color;
+        redrawForm(*this);
     }
 
     Color Form::GetBackColor() const
