@@ -24,7 +24,7 @@ namespace Borg::UI
         void SetSize(const Drawing::Size &size) override;
         Drawing::Point GetLocation() const override;
         void SetLocation(const Drawing::Point& point) override;
-        void Refresh() override;
+        void Invalidate() override;
 
         // TODO: move impl. to cpp
         static Ref<IControl> CreateFrom(const UI::Handle &handle)

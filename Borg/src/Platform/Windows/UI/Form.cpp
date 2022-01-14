@@ -143,7 +143,7 @@ namespace Borg::UI
             ::SetWindowLongW(m_Handle, GWL_EXSTYLE, currentStyle);
         }
 
-        Refresh();
+        Invalidate();
     }
 
     double Form::GetOpacity() const
@@ -219,7 +219,7 @@ namespace Borg::UI
         else
             throw InvalidEnumArgumentException("The value specified is outside the range of valid values.");
 
-        Refresh();
+        Invalidate();
     }
 
     void Form::CenterToParent()

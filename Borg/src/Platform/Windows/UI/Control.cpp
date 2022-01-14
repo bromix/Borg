@@ -68,7 +68,7 @@ namespace Borg::UI
     void Control::SetBackColor(const Drawing::Color &color)
     {
         m_BackgroundColor = color;
-        Refresh();
+        Invalidate();
     }
 
     Drawing::Color Control::GetBackColor() const
@@ -105,7 +105,7 @@ namespace Borg::UI
         ::SetWindowPos(m_Handle, nullptr, point.X, point.Y, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
     }
 
-    void Control::Refresh()
+    void Control::Invalidate()
     {
         if(IsVisible())
             ::RedrawWindow(m_Handle, nullptr, nullptr, RDW_ERASE | RDW_INVALIDATE);

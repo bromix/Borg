@@ -124,8 +124,8 @@ namespace Borg::UI
         virtual void SetLocation(const Drawing::Point& point) = 0;
 
         /**
-         * @brief Forces the control to invalidate its client area and immediately redraw itself and any child controls.
+         * @brief Invalidates the entire surface of the control and causes the control to be redrawn.
          */
-        virtual void Refresh() = 0;
+        virtual void Invalidate() = 0;
     };
 }
