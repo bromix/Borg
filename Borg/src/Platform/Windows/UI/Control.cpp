@@ -76,22 +76,23 @@ namespace Borg::UI
         return m_BackgroundColor;
     }
 
-    Drawing::Size Control::GetSize() const
+    Drawing::Rectangle Control::GetBounds() const
     {
         RECT rc{0};
         if(::GetWindowRect(m_Handle, &rc) != TRUE)
             throw InvalidOperationException("::GetWindowRect did not return TRUE.");
 
-        return Drawing::Size(rc.right - rc.left, rc.bottom - rc.top);
+        return Drawing::Rectangle(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top);
+    }
+
+    Drawing::Size Control::GetSize() const
+    {
+        return GetBounds();
     }
 
     Drawing::Point Control::GetLocation() const
     {
-        RECT rc{0};
-        if(::GetWindowRect(m_Handle, &rc) != TRUE)
-            throw InvalidOperationException("::GetWindowRect did not return TRUE.");
-
-        return Drawing::Point(rc.left, rc.top);
+        return GetBounds();
     }
 
     void Control::Refresh()

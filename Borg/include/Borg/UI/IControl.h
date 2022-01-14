@@ -1,8 +1,7 @@
 #pragma once
 #include "Borg/Ref.h"
 #include "Borg/Drawing/Color.h"
-#include "Borg/Drawing/Size.h"
-#include "Borg/Drawing/Point.h"
+#include "Borg/Drawing/Rectangle.h"
 #include "Handle.h"
 
 namespace Borg::UI
@@ -88,6 +87,13 @@ namespace Borg::UI
          * @return Color
          */
         virtual Drawing::Color GetBackColor() const = 0;
+
+        /**
+         * @brief Gets the size and location of the control including its nonclient elements, in pixels, relative to the parent control.
+         * 
+         * @return Drawing::Rectangle 
+         */
+        virtual Drawing::Rectangle GetBounds() const = 0;
 
         /**
          * @brief Gets the height and width of the control.

@@ -19,6 +19,7 @@ namespace Borg::UI
         void SetVisible(bool visible) override;
         void SetBackColor(const Drawing::Color &color) override;
         Drawing::Color GetBackColor() const override;
+        Drawing::Rectangle GetBounds() const override;
         Drawing::Size GetSize() const override;
         Drawing::Point GetLocation() const override;
         void Refresh() override;
