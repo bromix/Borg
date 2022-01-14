@@ -16,6 +16,8 @@ namespace Borg::UI
         void SetFormBorderStyle(FormBorderStyle style) override;
         void CenterToParent() override;
         void CenterToScreen() override;
+        void SetShowInTaskbar(bool show) override;
+        bool GetShowInTaskbar() const override;
         DialogResult ShowDialog() override;
 
         // TODO: move impl. to cpp

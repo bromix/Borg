@@ -57,14 +57,14 @@ namespace Borg::UI
 
         /**
          * @brief Sets the opacity level of the form.
-         * 
+         *
          * @param opacity The level of opacity for the form. The default is 1.00.
          */
         virtual void SetOpacity(double opacity) = 0;
 
         /**
          * @brief Gets the opacity level of the form.
-         * 
+         *
          * @return double The level of opacity for the form. The default is 1.00.
          */
         virtual double GetOpacity() const = 0;
@@ -85,6 +85,21 @@ namespace Borg::UI
          * @brief Centers the form on the current screen.
          */
         virtual void CenterToScreen() = 0;
+
+        /**
+         * @brief Sets a value indicating whether the form is displayed in the Windows taskbar.
+         * 
+         * @param show 
+         */
+        virtual void SetShowInTaskbar(bool show) = 0;
+
+        /**
+         * @brief Gets a value indicating whether the form is displayed in the Windows taskbar.
+         * 
+         * @return true 
+         * @return false 
+         */
+        virtual bool GetShowInTaskbar() const = 0;
 
         /**
          * @brief Shows the form as a modal dialog box.

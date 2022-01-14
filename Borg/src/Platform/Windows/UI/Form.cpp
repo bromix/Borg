@@ -85,6 +85,8 @@ namespace Borg::UI
 
         // Set default border style
         SetFormBorderStyle(UI::FormBorderStyle::Sizable);
+
+        SetShowInTaskbar(true);
     }
 
     Form::Form(const Ref<UI::IForm> &owner)
@@ -110,6 +112,8 @@ namespace Borg::UI
 
         // Set default border style
         SetFormBorderStyle(UI::FormBorderStyle::Sizable);
+
+        SetShowInTaskbar(true);
     }
 
     Form::Form(const UI::Handle &handle) : Control(handle) {}
@@ -164,12 +168,15 @@ namespace Borg::UI
 
     void Form::SetFormBorderStyle(FormBorderStyle style)
     {
-        auto defaultExStyles = WS_EX_CONTROLPARENT | WS_EX_APPWINDOW;
+        auto defaultExStyles = WS_EX_CONTROLPARENT;
 
         // Some styles we need to keep if they are already set.
         auto currentExStyle = ::GetWindowLongW(m_Handle, GWL_EXSTYLE);
         if ((currentExStyle & WS_EX_LAYERED) == WS_EX_LAYERED)
             defaultExStyles |= WS_EX_LAYERED;
+
+        if ((currentExStyle & WS_EX_APPWINDOW) == WS_EX_APPWINDOW)
+            defaultExStyles |= WS_EX_APPWINDOW;
 
         // add LTR orientation styles
         defaultExStyles |= WS_EX_LEFT | WS_EX_LTRREADING | WS_EX_RIGHTSCROLLBAR;
@@ -228,6 +235,25 @@ namespace Borg::UI
     void Form::CenterToScreen()
     {
         throw NotImplementedException();
+    }
+
+    void Form::SetShowInTaskbar(bool show)
+    {
+        auto exStyle = ::GetWindowLongW(m_Handle, GWL_EXSTYLE);
+
+        if (show)
+            exStyle |= WS_EX_APPWINDOW;
+        else
+            exStyle &= ~WS_EX_APPWINDOW;
+
+        ::SetWindowLongW(m_Handle, GWL_EXSTYLE, exStyle);
+        ::SetWindowPos(m_Handle, nullptr, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER);
+    }
+
+    bool Form::GetShowInTaskbar() const
+    {
+        auto exStyle = ::GetWindowLongW(m_Handle, GWL_EXSTYLE);
+        return (exStyle & WS_EX_APPWINDOW) == WS_EX_APPWINDOW;
     }
 
     UI::DialogResult Form::ShowDialog()
