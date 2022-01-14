@@ -1,6 +1,7 @@
 #pragma once
 #include "Borg/Ref.h"
 #include "Borg/Drawing/Color.h"
+#include "Borg/Drawing/Rectangle.h"
 #include "Handle.h"
 
 namespace Borg::UI

@@ -1,0 +1,16 @@
+#include "Borg/Drawing/Size.h"
+
+namespace Borg::Drawing
+{
+    Size::Size(uint32_t width, uint32_t height) : Height(height), Width(width) {}
+
+    bool Size::operator==(const Size &rhs) const
+    {
+        return Width == rhs.Width && Height == rhs.Height;
+    }
+    
+    bool Size::operator!=(const Size &rhs) const
+    {
+        return !(*this == rhs);
+    }
+}
