@@ -110,6 +110,13 @@ namespace Borg::UI
         virtual Drawing::Point GetLocation() const = 0;
 
         /**
+         * @brief Sets the coordinates of the upper-left corner of the control relative to the upper-left corner of its container.
+         * 
+         * @param point 
+         */
+        virtual void SetLocation(const Drawing::Point& point) = 0;
+
+        /**
          * @brief Forces the control to invalidate its client area and immediately redraw itself and any child controls.
          */
         virtual void Refresh() = 0;

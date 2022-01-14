@@ -79,7 +79,7 @@ namespace Borg::UI
     Drawing::Rectangle Control::GetBounds() const
     {
         RECT rc{0};
-        if(::GetWindowRect(m_Handle, &rc) != TRUE)
+        if (::GetWindowRect(m_Handle, &rc) != TRUE)
             throw InvalidOperationException("::GetWindowRect did not return TRUE.");
 
         return Drawing::Rectangle(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top);
@@ -93,6 +93,11 @@ namespace Borg::UI
     Drawing::Point Control::GetLocation() const
     {
         return GetBounds();
+    }
+
+    void Control::SetLocation(const Drawing::Point &point)
+    {
+        ::SetWindowPos(m_Handle, nullptr, point.X, point.Y, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
     }
 
     void Control::Refresh()
