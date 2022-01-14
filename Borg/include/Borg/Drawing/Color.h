@@ -23,6 +23,7 @@ namespace Borg::Drawing
         static Color Black;
         static Color White;
         static Color Lime;
+        static Color Fuchsia;
 
     private:
         uint32_t m_Argb;

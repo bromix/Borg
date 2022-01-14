@@ -59,4 +59,5 @@ namespace Borg::Drawing
     Color Color::Black = Color::FromArgb(0xFF000000);
     Color Color::White = Color::FromArgb(0xFFFFFFFF);
     Color Color::Lime = Color::FromArgb(0xFF00FF00);
+    Color Color::Fuchsia = Color::FromArgb(0xFFFF00FF);
 }
