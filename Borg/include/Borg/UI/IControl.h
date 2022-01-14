@@ -2,6 +2,7 @@
 #include "Borg/Ref.h"
 #include "Borg/Drawing/Color.h"
 #include "Borg/Drawing/Size.h"
+#include "Borg/Drawing/Point.h"
 #include "Handle.h"
 
 namespace Borg::UI
@@ -94,6 +95,13 @@ namespace Borg::UI
          * @return Drawing::Size 
          */
         virtual Drawing::Size GetSize() const = 0;
+
+        /**
+         * @brief Gets the coordinates of the upper-left corner of the control relative to the upper-left corner of its container.
+         * 
+         * @return Drawing::Point 
+         */
+        virtual Drawing::Point GetLocation() const = 0;
 
         /**
          * @brief Forces the control to invalidate its client area and immediately redraw itself and any child controls.

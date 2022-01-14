@@ -85,6 +85,15 @@ namespace Borg::UI
         return Drawing::Size(rc.right - rc.left, rc.bottom - rc.top);
     }
 
+    Drawing::Point Control::GetLocation() const
+    {
+        RECT rc{0};
+        if(::GetWindowRect(m_Handle, &rc) != TRUE)
+            throw InvalidOperationException("::GetWindowRect did not return TRUE.");
+
+        return Drawing::Point(rc.left, rc.top);
+    }
+
     void Control::Refresh()
     {
         ::RedrawWindow(m_Handle, nullptr, nullptr, RDW_ERASE | RDW_INVALIDATE);
