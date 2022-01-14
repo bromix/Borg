@@ -4,13 +4,13 @@
 
 namespace Borg::UI
 {
-    class Form: public Control, public virtual IForm
+    class Form : public Control, public virtual IForm
     {
     public:
         Form();
+        Form(const Ref<UI::IForm> &owner);
         Form(const UI::Handle &handle);
         Ref<IForm> GetOwner() const override;
-        void SetOwner(const Ref<IForm> &owner) override;
         void SetOpacity(double opacity) override;
         double GetOpacity() const override;
         void SetFormBorderStyle(FormBorderStyle style) override;
@@ -19,9 +19,9 @@ namespace Borg::UI
         DialogResult ShowDialog() override;
 
         // TODO: move impl. to cpp
-        static Ref<Form> CreateFrom(const UI::Handle& handle)
+        static Ref<Form> CreateFrom(const UI::Handle &handle)
         {
-            if(!handle)
+            if (!handle)
                 return nullptr;
             return CreateRef<Form>(handle);
         }

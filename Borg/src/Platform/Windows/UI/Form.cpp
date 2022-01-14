@@ -87,16 +87,36 @@ namespace Borg::UI
         SetFormBorderStyle(UI::FormBorderStyle::Sizable);
     }
 
+    Form::Form(const Ref<UI::IForm> &owner)
+    {
+        registerForm(GetModuleHandle(0));
+
+        m_Handle = ::CreateWindowExW(
+            WS_EX_LEFT, // the default.
+            BORG_UI_FORM_CLASSNAME,
+            nullptr,
+            WS_OVERLAPPED,
+            CW_USEDEFAULT, CW_USEDEFAULT,
+            CW_USEDEFAULT, CW_USEDEFAULT,
+            owner->Handle(),
+            nullptr,
+            GetModuleHandle(0),
+            nullptr);
+
+        SetWindowLongPtr(m_Handle, GWLP_USERDATA, (LONG_PTR)this);
+
+        // Set the default background color.
+        m_BackgroundColor = Drawing::Color::FromArgb(::GetSysColor(COLOR_WINDOW));
+
+        // Set default border style
+        SetFormBorderStyle(UI::FormBorderStyle::Sizable);
+    }
+
     Form::Form(const UI::Handle &handle) : Control(handle) {}
 
     Ref<UI::IForm> Form::GetOwner() const
     {
         return UI::Form::CreateFrom(::GetWindow(m_Handle, GW_OWNER));
-    }
-
-    void Form::SetOwner(const Ref<UI::IForm> &owner)
-    {
-        throw NotImplementedException();
     }
 
     void Form::SetOpacity(double opacity)
