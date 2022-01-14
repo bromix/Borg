@@ -63,6 +63,20 @@ namespace Borg::UI
         virtual void SetOwner(const Ref<IForm> &owner) = 0;
 
         /**
+         * @brief Sets the opacity level of the form.
+         * 
+         * @param opacity The level of opacity for the form. The default is 1.00.
+         */
+        virtual void SetOpacity(double opacity) = 0;
+
+        /**
+         * @brief Gets the opacity level of the form.
+         * 
+         * @return double The level of opacity for the form. The default is 1.00.
+         */
+        virtual double GetOpacity() const = 0;
+
+        /**
          * @brief Sets the border style of the form.
          *
          * @param style

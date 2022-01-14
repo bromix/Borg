@@ -6,6 +6,7 @@ using namespace Borg;
 TEST(UIForm, DebugTest)
 {
     Ref<UI::IForm> form = CreateRef<UI::Form>();
+    form->SetOpacity(0.5);
     form->SetText("Form1");
     //form->SetFormBorderStyle(UI::FormBorderStyle::None);
     form->SetBackColor(Drawing::Color::Lime);

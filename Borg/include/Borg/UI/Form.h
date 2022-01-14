@@ -11,6 +11,8 @@ namespace Borg::UI
         Form(const UI::Handle &handle);
         Ref<IForm> GetOwner() const override;
         void SetOwner(const Ref<IForm> &owner) override;
+        void SetOpacity(double opacity) override;
+        double GetOpacity() const override;
         void SetFormBorderStyle(FormBorderStyle style) override;
         void CenterToParent() override;
         void CenterToScreen() override;

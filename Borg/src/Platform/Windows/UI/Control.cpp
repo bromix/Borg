@@ -107,6 +107,7 @@ namespace Borg::UI
 
     void Control::Refresh()
     {
-        ::RedrawWindow(m_Handle, nullptr, nullptr, RDW_ERASE | RDW_INVALIDATE);
+        if(IsVisible())
+            ::RedrawWindow(m_Handle, nullptr, nullptr, RDW_ERASE | RDW_INVALIDATE);
     }
 }

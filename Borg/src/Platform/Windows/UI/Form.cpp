@@ -99,6 +99,49 @@ namespace Borg::UI
         throw NotImplementedException();
     }
 
+    void Form::SetOpacity(double opacity)
+    {
+        auto currentStyle = ::GetWindowLongW(m_Handle, GWL_EXSTYLE);
+
+        if (opacity < 1.0)
+        {
+            // Add style.
+            currentStyle |= WS_EX_LAYERED;
+            ::SetWindowLongW(m_Handle, GWL_EXSTYLE, currentStyle);
+            ::SetLayeredWindowAttributes(m_Handle, 0, opacity * 255, LWA_ALPHA);
+        }
+        else
+        {
+            ::SetLayeredWindowAttributes(m_Handle, 0, 255, LWA_ALPHA);
+
+            // Remove style
+            currentStyle &= ~WS_EX_LAYERED;
+            ::SetWindowLongW(m_Handle, GWL_EXSTYLE, currentStyle);
+        }
+
+        Refresh();
+    }
+
+    double Form::GetOpacity() const
+    {
+        auto currentStyle = ::GetWindowLongW(m_Handle, GWL_EXSTYLE);
+
+        // Without WX_ES_LAYERED style opacity isn't possible.
+        if (currentStyle & WS_EX_LAYERED == 0)
+            return 1.0;
+
+        BYTE alpha = 255;
+        DWORD flags = 0;
+        if (::GetLayeredWindowAttributes(m_Handle, 0, &alpha, &flags) != TRUE)
+            return 1.0;
+
+        // If LWA_ALPHA is set, we can calculate the opacity.
+        if (flags == LWA_ALPHA)
+            return alpha / 255.0;
+
+        return 1.0;
+    }
+
     void Form::SetFormBorderStyle(FormBorderStyle style)
     {
         if (style == FormBorderStyle::None)
