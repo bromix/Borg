@@ -1,7 +1,7 @@
 #pragma once
 #include "Borg/Ref.h"
 #include "Borg/Drawing/Color.h"
-#include "Borg/Drawing/Rectangle.h"
+#include "Borg/Drawing/Size.h"
 #include "Handle.h"
 
 namespace Borg::UI
@@ -31,6 +31,13 @@ namespace Borg::UI
          * @return Ref<UI::IControl> 
          */
         virtual Ref<UI::IControl> GetParent() const = 0;
+
+        /**
+         * @brief Gets the DPI value for the display device where the control is currently being displayed.
+         * 
+         * @return int 
+         */
+        virtual int DeviceDpi() const = 0;
 
         /**
          * @brief Brings the control to the front of the z-order.
@@ -80,6 +87,13 @@ namespace Borg::UI
          * @return Color
          */
         virtual Drawing::Color GetBackColor() const = 0;
+
+        /**
+         * @brief Gets the height and width of the control.
+         * 
+         * @return Drawing::Size 
+         */
+        virtual Drawing::Size GetSize() const = 0;
 
         /**
          * @brief Forces the control to invalidate its client area and immediately redraw itself and any child controls.

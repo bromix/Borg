@@ -11,6 +11,7 @@ namespace Borg::UI
         UI::Handle Handle() const override;
         void SetText(const String &text) override;
         Ref<UI::IControl> GetParent() const override;
+        int DeviceDpi() const override;
         void BringToFront() override;
         bool IsEnabled() const override;
         void SetEnabled(bool enabled) override;
@@ -18,6 +19,7 @@ namespace Borg::UI
         void SetVisible(bool visible) override;
         void SetBackColor(const Drawing::Color &color) override;
         Drawing::Color GetBackColor() const override;
+        Drawing::Size GetSize() const override;
         void Refresh() override;
 
         // TODO: move impl. to cpp

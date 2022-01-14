@@ -1,5 +1,6 @@
 #include "Borg/UI/Control.h"
 #include "Borg/Exception.h"
+#include "../Windows.h"
 
 namespace Borg::UI
 {
@@ -24,6 +25,19 @@ namespace Borg::UI
     Ref<UI::IControl> Control::GetParent() const
     {
         return Control::CreateFrom(::GetParent(m_Handle));
+    }
+
+    int Control::DeviceDpi() const
+    {
+        HMONITOR monitor = ::MonitorFromWindow(m_Handle, MONITOR_DEFAULTTONEAREST);
+        if (monitor == nullptr)
+            return 96;
+
+        UINT x, y;
+        if (::GetDpiForMonitor(monitor, MDT_DEFAULT, &x, &y) == S_OK)
+            return x;
+
+        return 96;
     }
 
     void Control::BringToFront()
@@ -60,6 +74,15 @@ namespace Borg::UI
     Drawing::Color Control::GetBackColor() const
     {
         return m_BackgroundColor;
+    }
+
+    Drawing::Size Control::GetSize() const
+    {
+        RECT rc{0};
+        if(::GetWindowRect(m_Handle, &rc) != TRUE)
+            throw InvalidOperationException("::GetWindowRect did not return TRUE.");
+
+        return Drawing::Size(rc.right - rc.left, rc.bottom - rc.top);
     }
 
     void Control::Refresh()
