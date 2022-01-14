@@ -14,6 +14,7 @@ namespace Borg::UI
         void SetOpacity(double opacity) override;
         double GetOpacity() const override;
         void SetFormBorderStyle(FormBorderStyle style) override;
+        FormBorderStyle GetFormBorderStyle() const override;
         void CenterToParent() override;
         void CenterToScreen() override;
         void SetShowInTaskbar(bool show) override;

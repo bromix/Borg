@@ -3,6 +3,27 @@
 
 namespace Borg::UI
 {
+    constexpr const long BORG_FORMBORDERSTYLE_SIZABLETOOLWINDOW_STYLE = WS_CAPTION | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_SYSMENU | WS_THICKFRAME | WS_OVERLAPPED | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
+    constexpr const long BORG_FORMBORDERSTYLE_SIZABLETOOLWINDOW_EXSTYLE = WS_EX_TOOLWINDOW | WS_EX_WINDOWEDGE | WS_EX_CONTROLPARENT;
+
+    constexpr const long BORG_FORMBORDERSTYLE_SIZABLE_STYLE = WS_CAPTION | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_SYSMENU | WS_THICKFRAME | WS_OVERLAPPED | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
+    constexpr const long BORG_FORMBORDERSTYLE_SIZABLE_EXSTYLE = WS_EX_WINDOWEDGE;
+
+    constexpr const long BORG_FORMBORDERSTYLE_FIXEDTOOLWINDOW_STYLE = WS_CAPTION | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_SYSMENU | WS_OVERLAPPED | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
+    constexpr const long BORG_FORMBORDERSTYLE_FIXEDTOOLWINDOW_EXSTYLE = WS_EX_TOOLWINDOW | WS_EX_WINDOWEDGE | WS_EX_CONTROLPARENT;
+
+    constexpr const long BORG_FORMBORDERSTYLE_FIXEDDIALOG_STYLE = WS_CAPTION | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_SYSMENU | WS_OVERLAPPED | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
+    constexpr const long BORG_FORMBORDERSTYLE_FIXEDDIALOG_EXSTYLE = WS_EX_DLGMODALFRAME | WS_EX_WINDOWEDGE;
+
+    constexpr const long BORG_FORMBORDERSTYLE_FIXEDSINGLE_STYLE = WS_CAPTION | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_SYSMENU | WS_OVERLAPPED | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
+    constexpr const long BORG_FORMBORDERSTYLE_FIXEDSINGLE_EXSTYLE = WS_EX_WINDOWEDGE;
+
+    constexpr const long BORG_FORMBORDERSTYLE_FIXED3D_STYLE = WS_CAPTION | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_SYSMENU | WS_OVERLAPPED | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
+    constexpr const long BORG_FORMBORDERSTYLE_FIXED3D_EXSTYLE = 0;
+
+    constexpr const long BORG_FORMBORDERSTYLE_NONE_STYLE = WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_OVERLAPPED | WS_MAXIMIZEBOX;
+    constexpr const long BORG_FORMBORDERSTYLE_NONE_EXSTYLE = 0;
+
     constexpr const wchar_t *BORG_UI_FORM_CLASSNAME = L"Borg::UI::Form";
 
     LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -183,43 +204,81 @@ namespace Borg::UI
 
         if (style == FormBorderStyle::None)
         {
-            ::SetWindowLong(m_Handle, GWL_STYLE, WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_OVERLAPPED | WS_MAXIMIZEBOX);
-            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles);
+            ::SetWindowLong(m_Handle, GWL_STYLE, BORG_FORMBORDERSTYLE_NONE_STYLE);
+            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_NONE_EXSTYLE);
         }
         else if (style == FormBorderStyle::Sizable)
         {
-            ::SetWindowLong(m_Handle, GWL_STYLE, WS_CAPTION | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_SYSMENU | WS_THICKFRAME | WS_OVERLAPPED | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
-            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles | WS_EX_WINDOWEDGE);
+            ::SetWindowLong(m_Handle, GWL_STYLE, BORG_FORMBORDERSTYLE_SIZABLE_STYLE);
+            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_SIZABLE_EXSTYLE);
         }
         else if (style == FormBorderStyle::FixedSingle)
         {
-            ::SetWindowLong(m_Handle, GWL_STYLE, WS_CAPTION | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_SYSMENU | WS_OVERLAPPED | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
-            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles | WS_EX_WINDOWEDGE);
+            ::SetWindowLong(m_Handle, GWL_STYLE, BORG_FORMBORDERSTYLE_FIXEDSINGLE_STYLE);
+            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_FIXEDSINGLE_EXSTYLE);
         }
         else if (style == FormBorderStyle::Fixed3D)
         {
-            ::SetWindowLong(m_Handle, GWL_STYLE, WS_CAPTION | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_SYSMENU | WS_OVERLAPPED | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
-            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles);
+            ::SetWindowLong(m_Handle, GWL_STYLE, BORG_FORMBORDERSTYLE_FIXED3D_STYLE);
+            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_FIXED3D_EXSTYLE);
         }
         else if (style == FormBorderStyle::FixedDialog)
         {
-            ::SetWindowLong(m_Handle, GWL_STYLE, WS_CAPTION | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_SYSMENU | WS_OVERLAPPED | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
-            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles | WS_EX_DLGMODALFRAME | WS_EX_WINDOWEDGE);
+            ::SetWindowLong(m_Handle, GWL_STYLE, BORG_FORMBORDERSTYLE_FIXEDDIALOG_STYLE);
+            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_FIXEDDIALOG_EXSTYLE);
         }
         else if (style == FormBorderStyle::FixedToolWindow)
         {
-            ::SetWindowLong(m_Handle, GWL_STYLE, WS_CAPTION | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_SYSMENU | WS_OVERLAPPED | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
-            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles | WS_EX_LEFT | WS_EX_LTRREADING | WS_EX_RIGHTSCROLLBAR | WS_EX_TOOLWINDOW | WS_EX_WINDOWEDGE | WS_EX_CONTROLPARENT | WS_EX_APPWINDOW);
+            ::SetWindowLong(m_Handle, GWL_STYLE, BORG_FORMBORDERSTYLE_FIXEDTOOLWINDOW_STYLE);
+            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_FIXEDTOOLWINDOW_EXSTYLE);
         }
         else if (style == FormBorderStyle::SizableToolWindow)
         {
-            ::SetWindowLong(m_Handle, GWL_STYLE, WS_CAPTION | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_SYSMENU | WS_THICKFRAME | WS_OVERLAPPED | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
-            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles | WS_EX_LEFT | WS_EX_LTRREADING | WS_EX_RIGHTSCROLLBAR | WS_EX_TOOLWINDOW | WS_EX_WINDOWEDGE | WS_EX_CONTROLPARENT | WS_EX_APPWINDOW);
+            ::SetWindowLong(m_Handle, GWL_STYLE, BORG_FORMBORDERSTYLE_SIZABLETOOLWINDOW_STYLE);
+            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_SIZABLETOOLWINDOW_EXSTYLE);
         }
         else
             throw InvalidEnumArgumentException("The value specified is outside the range of valid values.");
 
         Invalidate();
+    }
+
+    FormBorderStyle Form::GetFormBorderStyle() const
+    {
+        auto style = ::GetWindowLongW(m_Handle, GWL_STYLE);
+        auto exStyle = ::GetWindowLongW(m_Handle, GWL_EXSTYLE);
+
+        // IMPORTANT !!! The order is important. The values with the most flags must be compared first.
+
+        if ((style & BORG_FORMBORDERSTYLE_SIZABLETOOLWINDOW_STYLE) == BORG_FORMBORDERSTYLE_SIZABLETOOLWINDOW_STYLE &&
+            (exStyle & BORG_FORMBORDERSTYLE_SIZABLETOOLWINDOW_EXSTYLE) == BORG_FORMBORDERSTYLE_SIZABLETOOLWINDOW_EXSTYLE)
+            return FormBorderStyle::SizableToolWindow;
+
+        if ((style & BORG_FORMBORDERSTYLE_SIZABLE_STYLE) == BORG_FORMBORDERSTYLE_SIZABLE_STYLE &&
+            (exStyle & BORG_FORMBORDERSTYLE_SIZABLE_EXSTYLE) == BORG_FORMBORDERSTYLE_SIZABLE_EXSTYLE)
+            return FormBorderStyle::Sizable;
+
+        if ((style & BORG_FORMBORDERSTYLE_FIXEDTOOLWINDOW_STYLE) == BORG_FORMBORDERSTYLE_FIXEDTOOLWINDOW_STYLE &&
+            (exStyle & BORG_FORMBORDERSTYLE_FIXEDTOOLWINDOW_EXSTYLE) == BORG_FORMBORDERSTYLE_FIXEDTOOLWINDOW_EXSTYLE)
+            return FormBorderStyle::FixedToolWindow;
+
+        if ((style & BORG_FORMBORDERSTYLE_FIXEDDIALOG_STYLE) == BORG_FORMBORDERSTYLE_FIXEDDIALOG_STYLE &&
+            (exStyle & BORG_FORMBORDERSTYLE_FIXEDDIALOG_EXSTYLE) == BORG_FORMBORDERSTYLE_FIXEDDIALOG_EXSTYLE)
+            return FormBorderStyle::FixedDialog;
+
+        if ((style & BORG_FORMBORDERSTYLE_FIXEDSINGLE_STYLE) == BORG_FORMBORDERSTYLE_FIXEDSINGLE_STYLE &&
+            (exStyle & BORG_FORMBORDERSTYLE_FIXEDSINGLE_EXSTYLE) == BORG_FORMBORDERSTYLE_FIXEDSINGLE_EXSTYLE)
+            return FormBorderStyle::FixedSingle;
+
+        if ((style & BORG_FORMBORDERSTYLE_FIXED3D_STYLE) == BORG_FORMBORDERSTYLE_FIXED3D_STYLE &&
+            (exStyle & BORG_FORMBORDERSTYLE_FIXED3D_EXSTYLE) == BORG_FORMBORDERSTYLE_FIXED3D_EXSTYLE)
+            return FormBorderStyle::Fixed3D;
+
+        if ((style & BORG_FORMBORDERSTYLE_NONE_STYLE) == BORG_FORMBORDERSTYLE_NONE_STYLE &&
+            (exStyle & BORG_FORMBORDERSTYLE_NONE_EXSTYLE) == BORG_FORMBORDERSTYLE_NONE_EXSTYLE)
+            return FormBorderStyle::None;
+
+        throw InvalidOperationException("Could not determine FormBorderStyle.");
     }
 
     void Form::CenterToParent()

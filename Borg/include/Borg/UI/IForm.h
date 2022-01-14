@@ -77,6 +77,13 @@ namespace Borg::UI
         virtual void SetFormBorderStyle(FormBorderStyle style) = 0;
 
         /**
+         * @brief Gets the border style of the form.
+         * 
+         * @return FormBorderStyle 
+         */
+        virtual FormBorderStyle GetFormBorderStyle() const = 0;
+
+        /**
          * @brief Centers the position of the form within the bounds of the parent form.
          */
         virtual void CenterToParent() = 0;
