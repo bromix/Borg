@@ -90,6 +90,11 @@ namespace Borg::UI
         return GetBounds();
     }
 
+    void Control::SetSize(const Drawing::Size &size)
+    {
+        ::SetWindowPos(m_Handle, nullptr, 0, 0, size.Width, size.Height, SWP_NOMOVE | SWP_NOREPOSITION);
+    }
+
     Drawing::Point Control::GetLocation() const
     {
         return GetBounds();

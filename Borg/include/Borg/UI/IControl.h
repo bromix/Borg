@@ -103,6 +103,13 @@ namespace Borg::UI
         virtual Drawing::Size GetSize() const = 0;
 
         /**
+         * @brief Sets the height and width of the control.
+         * 
+         * @param size 
+         */
+        virtual void SetSize(const Drawing::Size &size) = 0;
+
+        /**
          * @brief Gets the coordinates of the upper-left corner of the control relative to the upper-left corner of its container.
          * 
          * @return Drawing::Point 
