@@ -6,12 +6,6 @@ namespace Borg::UI
 {
     Control::Control() {}
 
-    Control::Control(const UI::Handle &handle) : m_Handle(handle)
-    {
-        if (!handle)
-            throw ArgumentNullException("handle");
-    }
-
     UI::Handle Control::Handle() const
     {
         return m_Handle;
@@ -109,5 +103,17 @@ namespace Borg::UI
     {
         if(IsVisible())
             ::RedrawWindow(m_Handle, nullptr, nullptr, RDW_ERASE | RDW_INVALIDATE);
+    }
+
+    Ref<IControl> Control::CreateFrom(const UI::Handle &handle)
+    {
+        Ref<Control> control = CreateRef<Control>();
+        control->m_Handle = handle;
+        return control;
+    }
+
+    UI::Message::Result Control::WndProc(const UI::Message& message)
+    {
+        return DefWindowProcW(message.Handle, message.Msg, message.WParam, message.LParam);
     }
 }

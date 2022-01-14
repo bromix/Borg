@@ -1,5 +1,6 @@
 #pragma once
 #include "Borg/Ref.h"
+#include "Message.h"
 #include "Borg/Drawing/Color.h"
 #include "Borg/Drawing/Rectangle.h"
 #include "Handle.h"
@@ -127,5 +128,8 @@ namespace Borg::UI
          * @brief Invalidates the entire surface of the control and causes the control to be redrawn.
          */
         virtual void Invalidate() = 0;
+
+    protected:
+        virtual UI::Message::Result WndProc(const UI::Message& message) = 0;
     };
 }

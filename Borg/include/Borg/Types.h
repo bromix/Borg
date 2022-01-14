@@ -10,14 +10,14 @@ namespace Borg
      * @tparam Result
      * @tparam Args
      */
-    template <typename Result, typename... Args>
-    using Func = std::function<Result(Args &&...args)>;
+    template <typename TResult, typename... TArgs>
+    using Func = std::function<TResult(TArgs...args)>;
 
     /**
      * @brief Encapsulates a method that has zero or more Args and does not return a value.
      * https://docs.microsoft.com/en-us/dotnet/api/system.action
      * @tparam Args
      */
-    template <typename... Args>
-    using Action = std::function<void(Args &&...args)>;
+    template <typename... TArgs>
+    using Action = std::function<void(TArgs...args)>;
 }

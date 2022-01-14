@@ -9,7 +9,6 @@ namespace Borg::UI
     public:
         Form();
         Form(const Ref<UI::IForm> &owner);
-        Form(const UI::Handle &handle);
         Ref<IForm> GetOwner() const override;
         void SetOpacity(double opacity) override;
         double GetOpacity() const override;
@@ -21,12 +20,9 @@ namespace Borg::UI
         bool GetShowInTaskbar() const override;
         DialogResult ShowDialog() override;
 
-        // TODO: move impl. to cpp
-        static Ref<Form> CreateFrom(const UI::Handle &handle)
-        {
-            if (!handle)
-                return nullptr;
-            return CreateRef<Form>(handle);
-        }
+        static Ref<Form> CreateFrom(const UI::Handle &handle);
+
+    protected:
+        UI::Message::Result WndProc(const UI::Message &message) override;
     };
 }

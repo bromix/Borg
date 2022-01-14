@@ -7,7 +7,6 @@ namespace Borg::UI
     {
     public:
         Control();
-        Control(const UI::Handle &handle);
         UI::Handle Handle() const override;
         void SetText(const String &text) override;
         Ref<UI::IControl> GetParent() const override;
@@ -23,18 +22,13 @@ namespace Borg::UI
         Drawing::Size GetSize() const override;
         void SetSize(const Drawing::Size &size) override;
         Drawing::Point GetLocation() const override;
-        void SetLocation(const Drawing::Point& point) override;
+        void SetLocation(const Drawing::Point &point) override;
         void Invalidate() override;
 
-        // TODO: move impl. to cpp
-        static Ref<IControl> CreateFrom(const UI::Handle &handle)
-        {
-            if(!handle)
-                return nullptr;
-            return CreateRef<Control>(handle);
-        }
+        static Ref<IControl> CreateFrom(const UI::Handle &handle);
 
     protected:
+        UI::Message::Result WndProc(const UI::Message &message) override;
         Drawing::Color m_BackgroundColor;
         UI::Handle m_Handle;
     };

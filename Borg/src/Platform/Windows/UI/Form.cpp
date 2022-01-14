@@ -1,5 +1,6 @@
 #include "Borg/UI/Form.h"
 #include "Borg/Exception.h"
+#include "Borg/Types.h"
 
 namespace Borg::UI
 {
@@ -26,35 +27,39 @@ namespace Borg::UI
 
     constexpr const wchar_t *BORG_UI_FORM_CLASSNAME = L"Borg::UI::Form";
 
+    class WndProxy
+    {
+    public:
+        WndProxy(const Func<LRESULT, const UI::Message &> &wndProc) : m_wndProc(wndProc)
+        {
+        }
+
+        LRESULT operator()(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+        {
+            return m_wndProc({hWnd, message, wParam, lParam});
+        }
+
+    private:
+        Func<LRESULT, const UI::Message &> m_wndProc;
+    };
+
     LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
-        auto form = (Form *)GetWindowLongPtr(hWnd, GWLP_USERDATA);
+        WndProxy *wndProxy = nullptr;
 
-        switch (message)
+        if (message == WM_NCCREATE)
         {
-        case WM_SIZE:
-            // if (webview != nullptr)
-            //     webview->update_size();
-            break;
-        case WM_ERASEBKGND:
-        {
-            auto hdc = (HDC)wParam;
-            RECT rc;
-            GetClientRect(form->Handle(), &rc);
-            HBRUSH brush = ::CreateSolidBrush(form->GetBackColor().ToBgr());
-            auto ret = FillRect(hdc, &rc, brush);
-            return 1;
-            break;
+            LPCREATESTRUCT lpcs = reinterpret_cast<LPCREATESTRUCT>(lParam);
+            wndProxy = static_cast<WndProxy *>(lpcs->lpCreateParams);
+            ::SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(wndProxy));
         }
-        case WM_DESTROY:
-            PostQuitMessage(0);
-            break;
-        default:
-            return DefWindowProcW(hWnd, message, wParam, lParam);
-            break;
-        }
+        else
+            wndProxy = reinterpret_cast<WndProxy *>(::GetWindowLongPtr(hWnd, GWLP_USERDATA));
 
-        return 0;
+        if (wndProxy)
+            return (*wndProxy)(hWnd, message, wParam, lParam);
+
+        return DefWindowProcW(hWnd, message, wParam, lParam);
     }
 
     void registerForm(HINSTANCE hInst)
@@ -87,6 +92,9 @@ namespace Borg::UI
     {
         registerForm(GetModuleHandle(0));
 
+        WndProxy *wndProxy = new WndProxy([this](const UI::Message &message)
+                                          { return this->WndProc(message); });
+
         m_Handle = ::CreateWindowExW(
             WS_EX_LEFT, // the default.
             BORG_UI_FORM_CLASSNAME,
@@ -97,9 +105,9 @@ namespace Borg::UI
             nullptr,
             nullptr,
             GetModuleHandle(0),
-            nullptr);
+            wndProxy);
 
-        SetWindowLongPtr(m_Handle, GWLP_USERDATA, (LONG_PTR)this);
+        // SetWindowLongPtr(m_Handle, GWLP_USERDATA, (LONG_PTR)wndProxy);
 
         // Set the default background color.
         m_BackgroundColor = Drawing::Color::FromArgb(::GetSysColor(COLOR_WINDOW));
@@ -136,8 +144,6 @@ namespace Borg::UI
 
         SetShowInTaskbar(true);
     }
-
-    Form::Form(const UI::Handle &handle) : Control(handle) {}
 
     Ref<UI::IForm> Form::GetOwner() const
     {
@@ -328,5 +334,44 @@ namespace Borg::UI
         }
 
         return UI::DialogResult::None;
+    }
+
+    Ref<Form> Form::CreateFrom(const UI::Handle &handle)
+    {
+        Ref<Form> form = CreateRef<Form>();
+        form->m_Handle = handle;
+        return form;
+    }
+
+    UI::Message::Result Form::WndProc(const UI::Message &message)
+    {
+        switch (message.Msg)
+        {
+        case WM_ERASEBKGND:
+        {
+            auto hdc = (HDC)message.WParam;
+            RECT rc;
+            GetClientRect(m_Handle, &rc);
+            HBRUSH brush = ::CreateSolidBrush(GetBackColor().ToBgr());
+            auto ret = FillRect(hdc, &rc, brush);
+            return 1;
+        }
+        case WM_DESTROY:
+            PostQuitMessage(0);
+            break;
+        case WM_NCDESTROY:
+        {
+            WndProxy *wndProxy = reinterpret_cast<WndProxy *>(::GetWindowLongPtr(m_Handle, GWLP_USERDATA));
+            ::SetWindowLongPtr(m_Handle, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(nullptr));
+            if (wndProxy)
+            {
+                delete wndProxy;
+                wndProxy = nullptr;
+            }
+            break;
+        }
+        }
+
+        return Control::WndProc(message);
     }
 }
