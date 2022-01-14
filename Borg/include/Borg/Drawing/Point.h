@@ -7,6 +7,11 @@ namespace Borg::Drawing
     {
     public:
         /**
+         * @brief Default constructor.
+         */
+        Point() = default;
+
+        /**
          * @brief Initializes a new instance of the Point struct with the specified coordinates.
          * 
          * @param x 
