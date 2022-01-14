@@ -51,13 +51,13 @@ namespace Borg::UI
         ::ShowWindow(m_Handle, SW_SHOWDEFAULT);
     }
 
-    void Control::SetBackColor(const Color &color)
+    void Control::SetBackColor(const Drawing::Color &color)
     {
         m_BackgroundColor = color;
         Refresh();
     }
 
-    Color Control::GetBackColor() const
+    Drawing::Color Control::GetBackColor() const
     {
         return m_BackgroundColor;
     }

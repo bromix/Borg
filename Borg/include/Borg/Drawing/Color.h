@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 
-namespace Borg
+namespace Borg::Drawing
 {
     class Color
     {

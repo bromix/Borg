@@ -1,7 +1,7 @@
-#include "Borg/Color.h"
+#include "Borg/Drawing/Color.h"
 #include <gtest/gtest.h>
 
-using namespace Borg;
+using namespace Borg::Drawing;
 
 TEST(Color, FromArgb)
 {

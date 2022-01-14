@@ -81,7 +81,7 @@ namespace Borg::UI
         SetWindowLongPtr(m_Handle, GWLP_USERDATA, (LONG_PTR)this);
 
         // Set the default background color.
-        m_BackgroundColor = Color::FromArgb(::GetSysColor(COLOR_WINDOW));
+        m_BackgroundColor = Drawing::Color::FromArgb(::GetSysColor(COLOR_WINDOW));
 
         // Set default border style
         SetFormBorderStyle(UI::FormBorderStyle::Sizable);

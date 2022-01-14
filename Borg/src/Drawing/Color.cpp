@@ -1,6 +1,6 @@
-#include "Borg/Color.h"
+#include "Borg/Drawing/Color.h"
 
-namespace Borg
+namespace Borg::Drawing
 {
     uint8_t Color::A() const
     {

@@ -1,6 +1,6 @@
 #pragma once
 #include "Borg/Ref.h"
-#include "Borg/Color.h"
+#include "Borg/Drawing/Color.h"
 #include "Handle.h"
 
 namespace Borg::UI
@@ -71,14 +71,14 @@ namespace Borg::UI
          *
          * @param color
          */
-        virtual void SetBackColor(const Color &color) = 0;
+        virtual void SetBackColor(const Drawing::Color &color) = 0;
 
         /**
          * @brief Gets the background color for the control.
          *
          * @return Color
          */
-        virtual Color GetBackColor() const = 0;
+        virtual Drawing::Color GetBackColor() const = 0;
 
         /**
          * @brief Forces the control to invalidate its client area and immediately redraw itself and any child controls.
