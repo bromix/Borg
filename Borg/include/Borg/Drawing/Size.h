@@ -7,10 +7,15 @@ namespace Borg::Drawing
     {
     public:
         /**
+         * @brief Default constructor.
+         */
+        Size() = default;
+
+        /**
          * @brief Initializes a new instance of the Size structure from the specified dimensions.
-         * 
-         * @param width 
-         * @param height 
+         *
+         * @param width
+         * @param height
          */
         Size(uint32_t width, uint32_t height);
 
@@ -21,7 +26,7 @@ namespace Borg::Drawing
 
         /**
          * @brief Gets or sets the vertical component of this Size structure.
-         * 
+         *
          */
         uint32_t Height = 0;
 
