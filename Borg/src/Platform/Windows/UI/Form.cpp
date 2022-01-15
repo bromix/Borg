@@ -88,13 +88,16 @@ namespace Borg::UI
                            } });
     }
 
-    Form::Form() : Control()
+    Form::Form() : Form(nullptr) {}
+
+    Form::Form(const Ref<UI::IForm> &owner)
     {
         registerForm(GetModuleHandle(0));
 
         WndProxy *wndProxy = new WndProxy([this](const UI::Message &message)
                                           { return this->WndProc(message); });
 
+        UI::Handle hOwner = owner ? owner->Handle() : nullptr;
         m_Handle = ::CreateWindowExW(
             WS_EX_LEFT, // the default.
             BORG_UI_FORM_CLASSNAME,
@@ -102,39 +105,10 @@ namespace Borg::UI
             WS_OVERLAPPED,
             CW_USEDEFAULT, CW_USEDEFAULT,
             CW_USEDEFAULT, CW_USEDEFAULT,
-            nullptr,
+            hOwner,
             nullptr,
             GetModuleHandle(0),
             wndProxy);
-
-        // SetWindowLongPtr(m_Handle, GWLP_USERDATA, (LONG_PTR)wndProxy);
-
-        // Set the default background color.
-        m_BackgroundColor = Drawing::Color::FromArgb(::GetSysColor(COLOR_WINDOW));
-
-        // Set default border style
-        SetFormBorderStyle(UI::FormBorderStyle::Sizable);
-
-        SetShowInTaskbar(true);
-    }
-
-    Form::Form(const Ref<UI::IForm> &owner)
-    {
-        registerForm(GetModuleHandle(0));
-
-        m_Handle = ::CreateWindowExW(
-            WS_EX_LEFT, // the default.
-            BORG_UI_FORM_CLASSNAME,
-            nullptr,
-            WS_OVERLAPPED,
-            CW_USEDEFAULT, CW_USEDEFAULT,
-            CW_USEDEFAULT, CW_USEDEFAULT,
-            owner->Handle(),
-            nullptr,
-            GetModuleHandle(0),
-            nullptr);
-
-        SetWindowLongPtr(m_Handle, GWLP_USERDATA, (LONG_PTR)this);
 
         // Set the default background color.
         m_BackgroundColor = Drawing::Color::FromArgb(::GetSysColor(COLOR_WINDOW));
