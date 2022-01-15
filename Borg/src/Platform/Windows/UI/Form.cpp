@@ -368,8 +368,8 @@ namespace Borg::UI
                 delete wndProxy;
                 wndProxy = nullptr;
             }
-            break;
         }
+        break;
         }
 
         return Control::WndProc(message);

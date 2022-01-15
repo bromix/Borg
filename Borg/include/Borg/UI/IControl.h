@@ -1,6 +1,7 @@
 #pragma once
 #include "Borg/Ref.h"
 #include "Message.h"
+#include "Borg/EventArgs.h"
 #include "Borg/Drawing/Color.h"
 #include "Borg/Drawing/Rectangle.h"
 #include "Handle.h"
@@ -14,29 +15,29 @@ namespace Borg::UI
 
         /**
          * @brief Gets the window handle that the control is bound to.
-         * 
-         * @return Handle 
+         *
+         * @return Handle
          */
         virtual UI::Handle Handle() const = 0;
 
         /**
          * @brief Gets or sets the text associated with this control.
-         * 
-         * @param text 
+         *
+         * @param text
          */
         virtual void SetText(const String &text) = 0;
 
         /**
          * @brief Gets the parent container of the control.
-         * 
-         * @return Ref<UI::IControl> 
+         *
+         * @return Ref<UI::IControl>
          */
         virtual Ref<UI::IControl> GetParent() const = 0;
 
         /**
          * @brief Gets the DPI value for the display device where the control is currently being displayed.
-         * 
-         * @return int 
+         *
+         * @return int
          */
         virtual int DeviceDpi() const = 0;
 
@@ -47,31 +48,31 @@ namespace Borg::UI
 
         /**
          * @brief Gets a value indicating whether the control can respond to user interaction.
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         virtual bool IsEnabled() const = 0;
 
         /**
          * @brief Sets a value indicating whether the control can respond to user interaction.
-         * 
-         * @param enabled 
+         *
+         * @param enabled
          */
         virtual void SetEnabled(bool enabled) = 0;
 
         /**
          * @brief Gets a value indicating whether the control and all its child controls are displayed.
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         virtual bool IsVisible() const = 0;
-        
+
         /**
          * @brief Sets a value indicating whether the control and all its child controls are displayed.
-         * 
-         * @param visible 
+         *
+         * @param visible
          */
         virtual void SetVisible(bool visible) = 0;
 
@@ -91,38 +92,38 @@ namespace Borg::UI
 
         /**
          * @brief Gets the size and location of the control including its nonclient elements, in pixels, relative to the parent control.
-         * 
-         * @return Drawing::Rectangle 
+         *
+         * @return Drawing::Rectangle
          */
         virtual Drawing::Rectangle GetBounds() const = 0;
 
         /**
          * @brief Gets the height and width of the control.
-         * 
-         * @return Drawing::Size 
+         *
+         * @return Drawing::Size
          */
         virtual Drawing::Size GetSize() const = 0;
 
         /**
          * @brief Sets the height and width of the control.
-         * 
-         * @param size 
+         *
+         * @param size
          */
         virtual void SetSize(const Drawing::Size &size) = 0;
 
         /**
          * @brief Gets the coordinates of the upper-left corner of the control relative to the upper-left corner of its container.
-         * 
-         * @return Drawing::Point 
+         *
+         * @return Drawing::Point
          */
         virtual Drawing::Point GetLocation() const = 0;
 
         /**
          * @brief Sets the coordinates of the upper-left corner of the control relative to the upper-left corner of its container.
-         * 
-         * @param point 
+         *
+         * @param point
          */
-        virtual void SetLocation(const Drawing::Point& point) = 0;
+        virtual void SetLocation(const Drawing::Point &point) = 0;
 
         /**
          * @brief Invalidates the entire surface of the control and causes the control to be redrawn.
@@ -130,6 +131,21 @@ namespace Borg::UI
         virtual void Invalidate() = 0;
 
     protected:
-        virtual UI::Message::Result WndProc(const UI::Message& message) = 0;
+        /**
+         * @brief Raises the SizeChanged event.
+         * 
+         * @param e 
+         * 
+         * @remark This function is called if the Size property is changed by either a programmatic modification or user interaction.
+         */
+        virtual void OnSizeChanged (EventArgs e) = 0;
+
+        /**
+         * @brief Raises the Resize event.
+         *
+         * @param e
+         */
+        virtual void OnResize(const EventArgs &e) = 0;
+        virtual UI::Message::Result WndProc(const UI::Message &message) = 0;
     };
 }

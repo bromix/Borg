@@ -101,7 +101,7 @@ namespace Borg::UI
 
     void Control::Invalidate()
     {
-        if(IsVisible())
+        if (IsVisible())
             ::RedrawWindow(m_Handle, nullptr, nullptr, RDW_ERASE | RDW_INVALIDATE);
     }
 
@@ -112,8 +112,47 @@ namespace Borg::UI
         return control;
     }
 
-    UI::Message::Result Control::WndProc(const UI::Message& message)
+    void Control::OnSizeChanged(EventArgs e)
     {
+        // TODO: invoke EventHandler
+        OutputDebugStringA("OnSizeChanged\n");
+    }
+
+    void Control::OnResize(const EventArgs &e)
+    {
+        OutputDebugStringA("OnResize\n");
+    }
+
+    UI::Message::Result Control::WndProc(const UI::Message &message)
+    {
+        switch (message.Msg)
+        {
+        case WM_ENTERSIZEMOVE:
+            OutputDebugStringA("WM_ENTERSIZEMOVE\n");
+            break;
+        case WM_EXITSIZEMOVE:
+            OutputDebugStringA("WM_EXITSIZEMOVE\n");
+            break;
+        case WM_SIZE:
+        {
+            switch (message.WParam)
+            {
+            case SIZE_MINIMIZED:
+                OutputDebugStringA("Minimizing\n");
+                break;
+            case SIZE_MAXIMIZED:
+                OutputDebugStringA("Maximizing\n");
+                break;
+            case SIZE_RESTORED:
+                OutputDebugStringA("Restoring\n");
+                break;
+            default:
+                OnSizeChanged({});
+                break;
+            }
+        }
+        break;
+        }
         return DefWindowProcW(message.Handle, message.Msg, message.WParam, message.LParam);
     }
 }

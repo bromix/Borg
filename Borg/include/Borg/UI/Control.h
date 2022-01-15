@@ -28,6 +28,8 @@ namespace Borg::UI
         static Ref<IControl> CreateFrom(const UI::Handle &handle);
 
     protected:
+        void OnSizeChanged (EventArgs e) override;
+        void OnResize(const EventArgs &e) override;
         UI::Message::Result WndProc(const UI::Message &message) override;
         Drawing::Color m_BackgroundColor;
         UI::Handle m_Handle;
