@@ -122,6 +122,15 @@ namespace Borg::UI
     {
         switch (message.Msg)
         {
+        case WM_ERASEBKGND:
+        {
+            auto hdc = (HDC)message.WParam;
+            RECT rc;
+            GetClientRect(m_Handle, &rc);
+            HBRUSH brush = ::CreateSolidBrush(GetBackColor().ToBgr());
+            auto ret = FillRect(hdc, &rc, brush);
+            return 1;
+        }
         case WM_ENTERSIZEMOVE:
             OutputDebugStringA("WM_ENTERSIZEMOVE\n");
             break;
