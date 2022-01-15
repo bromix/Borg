@@ -61,7 +61,7 @@ namespace Borg::UI
         registerForm(GetModuleHandle(0));
 
         WndProxy *wndProxy = new WndProxy([this](const UI::Message &message)
-                                          { return this->WndProc(message); });
+                                          { return this->OnMessage(message); });
 
         UI::Handle hOwner = owner ? owner->Handle() : nullptr;
         m_Handle = ::CreateWindowExW(
@@ -283,7 +283,7 @@ namespace Borg::UI
         return form;
     }
 
-    UI::Message::Result Form::WndProc(const UI::Message &message)
+    UI::Message::Result Form::OnMessage(const UI::Message &message)
     {
         switch (message.Msg)
         {
@@ -303,6 +303,6 @@ namespace Borg::UI
         break;
         }
 
-        return Control::WndProc(message);
+        return Control::OnMessage(message);
     }
 }

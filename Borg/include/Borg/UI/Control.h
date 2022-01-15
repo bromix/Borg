@@ -29,7 +29,7 @@ namespace Borg::UI
 
     protected:
         void OnSizeChanged (EventArgs e) override;
-        UI::Message::Result WndProc(const UI::Message &message) override;
+        UI::Message::Result OnMessage(const UI::Message &message) override;
         Drawing::Color m_BackgroundColor;
         UI::Handle m_Handle;
     };

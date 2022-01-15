@@ -118,7 +118,7 @@ namespace Borg::UI
         OutputDebugStringA("OnSizeChanged\n");
     }
 
-    UI::Message::Result Control::WndProc(const UI::Message &message)
+    UI::Message::Result Control::OnMessage(const UI::Message &message)
     {
         switch (message.Msg)
         {

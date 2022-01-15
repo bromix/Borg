@@ -140,6 +140,6 @@ namespace Borg::UI
          */
         virtual void OnSizeChanged (EventArgs e) = 0;
 
-        virtual UI::Message::Result WndProc(const UI::Message &message) = 0;
+        virtual UI::Message::Result OnMessage(const UI::Message &message) = 0;
     };
 }
