@@ -147,9 +147,9 @@ namespace Borg::UI
             case SIZE_MAXIMIZED:
                 OutputDebugStringA("Maximizing\n");
                 break;
-            case SIZE_RESTORED:
-                OutputDebugStringA("Restoring\n");
-                break;
+            // case SIZE_RESTORED:
+            //     OutputDebugStringA("Restoring\n");
+            //     break;
             default:
                 OnSizeChanged({});
                 break;
