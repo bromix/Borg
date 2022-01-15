@@ -138,8 +138,8 @@ namespace Borg::UI
          * 
          * @remark This function is called if the Size property is changed by either a programmatic modification or user interaction.
          */
-        virtual void OnSizeChanged (EventArgs e) = 0;
+        virtual void onSizeChanged (EventArgs e) = 0;
 
-        virtual UI::Message::Result OnMessage(const UI::Message &message) = 0;
+        virtual UI::Message::Result onMessage(const UI::Message &message) = 0;
     };
 }

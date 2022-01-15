@@ -112,13 +112,13 @@ namespace Borg::UI
         return control;
     }
 
-    void Control::OnSizeChanged(EventArgs e)
+    void Control::onSizeChanged(EventArgs e)
     {
         // TODO: invoke EventHandler
-        OutputDebugStringA("OnSizeChanged\n");
+        OutputDebugStringA("onSizeChanged\n");
     }
 
-    UI::Message::Result Control::OnMessage(const UI::Message &message)
+    UI::Message::Result Control::onMessage(const UI::Message &message)
     {
         switch (message.Msg)
         {
@@ -151,7 +151,7 @@ namespace Borg::UI
             //     OutputDebugStringA("Restoring\n");
             //     break;
             default:
-                OnSizeChanged({});
+                onSizeChanged({});
                 break;
             }
         }

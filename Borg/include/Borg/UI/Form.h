@@ -23,6 +23,6 @@ namespace Borg::UI
         static Ref<Form> CreateFrom(const UI::Handle &handle);
 
     protected:
-        UI::Message::Result OnMessage(const UI::Message &message) override;
+        UI::Message::Result onMessage(const UI::Message &message) override;
     };
 }
