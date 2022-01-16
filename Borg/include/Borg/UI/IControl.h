@@ -39,7 +39,7 @@ namespace Borg::UI
          * 
          * @param parent 
          */
-        virtual void SetParent(const UI::IControl& parent) const = 0;
+        virtual void SetParent(const UI::IControl& parent) = 0;
 
         /**
          * @brief Gets the DPI value for the display device where the control is currently being displayed.
