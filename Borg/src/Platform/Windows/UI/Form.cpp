@@ -1,7 +1,7 @@
 #include "Borg/UI/Form.h"
 #include "Borg/Exception.h"
 #include "Borg/Types.h"
-#include "WndProc.h"
+#include "ClassFactory.h"
 
 namespace Borg::UI
 {
@@ -26,55 +26,23 @@ namespace Borg::UI
     constexpr const long BORG_FORMBORDERSTYLE_NONE_STYLE = WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_OVERLAPPED | WS_MAXIMIZEBOX;
     constexpr const long BORG_FORMBORDERSTYLE_NONE_EXSTYLE = 0;
 
-    constexpr const wchar_t *BORG_UI_FORM_CLASSNAME = L"Borg::UI::Form";
-
-    void registerForm(HINSTANCE hInst)
-    {
-        static std::once_flag createWindowOnce;
-        // FIXME: make this cleaner.
-        std::call_once(createWindowOnce, [hInst]()
-                       {
-                           WNDCLASSEXW wcex;
-                           wcex.cbSize = sizeof(WNDCLASSEXW);
-                           wcex.style = CS_HREDRAW | CS_VREDRAW;
-                           wcex.lpfnWndProc = WndProc;
-                           wcex.cbClsExtra = 0;
-                           wcex.cbWndExtra = 0;
-                           wcex.hInstance = hInst;
-                           wcex.hIcon = LoadIcon(hInst, IDI_APPLICATION);
-                           wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-                           wcex.hbrBackground = nullptr; //(HBRUSH)(COLOR_WINDOW + 1);
-                           wcex.lpszMenuName = NULL;
-                           wcex.lpszClassName = BORG_UI_FORM_CLASSNAME;
-                           wcex.hIconSm = LoadIcon(hInst, IDI_APPLICATION);
-                           if (!RegisterClassExW(&wcex))
-                           {
-                               MessageBoxA(nullptr, "Call to RegisterClassEx failed!", "Windows Desktop Guided Tour", 0);
-                               return;
-                           } });
-    }
-
     Form::Form() : Form(nullptr) {}
 
     Form::Form(const Ref<UI::IForm> &owner)
     {
-        registerForm(GetModuleHandle(0));
-
-        WndProxy *wndProxy = new WndProxy([this](const UI::Message &message)
-                                          { return this->onMessage(message); });
-
         UI::Handle hOwner = owner ? owner->Handle() : nullptr;
-        m_Handle = ::CreateWindowExW(
-            WS_EX_LEFT, // the default.
-            BORG_UI_FORM_CLASSNAME,
-            nullptr,
-            WS_OVERLAPPED,
-            CW_USEDEFAULT, CW_USEDEFAULT,
-            CW_USEDEFAULT, CW_USEDEFAULT,
-            hOwner,
-            nullptr,
-            GetModuleHandle(0),
-            wndProxy);
+
+        CREATESTRUCTW cs{0};
+        cs.lpszClass = L"BORG::UI::FORM";
+        cs.style = CS_HREDRAW | CS_VREDRAW | WS_OVERLAPPED;
+        cs.dwExStyle = WS_EX_LEFT;
+        cs.hwndParent = hOwner;
+        cs.x = CW_USEDEFAULT;
+        cs.y = CW_USEDEFAULT;
+        cs.cx = CW_USEDEFAULT;
+        cs.cy = CW_USEDEFAULT;
+        m_Handle = ClassFactory::Create(cs, [this](const UI::Message &message)
+                                          { return this->onMessage(message); });
 
         // Set the default background color.
         m_BackgroundColor = Drawing::Color::FromArgb(::GetSysColor(COLOR_WINDOW));
@@ -290,17 +258,6 @@ namespace Borg::UI
         case WM_DESTROY:
             PostQuitMessage(0);
             break;
-        case WM_NCDESTROY:
-        {
-            WndProxy *wndProxy = reinterpret_cast<WndProxy *>(::GetWindowLongPtr(m_Handle, GWLP_USERDATA));
-            ::SetWindowLongPtr(m_Handle, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(nullptr));
-            if (wndProxy)
-            {
-                delete wndProxy;
-                wndProxy = nullptr;
-            }
-        }
-        break;
         }
 
         return Control::onMessage(message);
