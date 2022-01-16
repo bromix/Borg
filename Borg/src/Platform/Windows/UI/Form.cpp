@@ -28,7 +28,7 @@ namespace Borg::UI
 
     Form::Form() : Form(nullptr) {}
 
-    Form::Form(const Ref<UI::IForm> &owner)
+    Form::Form(const Ref<UI::IForm> &owner) : Control()
     {
         UI::Handle hOwner = owner ? owner->Handle() : nullptr;
 
@@ -42,10 +42,7 @@ namespace Borg::UI
         cs.cx = CW_USEDEFAULT;
         cs.cy = CW_USEDEFAULT;
         m_Handle = ClassFactory::Create(cs, [this](const UI::Message &message)
-                                          { return this->onMessage(message); });
-
-        // Set the default background color.
-        m_BackgroundColor = Drawing::Color::FromArgb(::GetSysColor(COLOR_WINDOW));
+                                        { return this->onMessage(message); });
 
         // Set default border style
         SetFormBorderStyle(UI::FormBorderStyle::Sizable);

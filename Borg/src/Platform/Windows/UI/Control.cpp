@@ -4,7 +4,11 @@
 
 namespace Borg::UI
 {
-    Control::Control() {}
+    Control::Control()
+    {
+        // Set the default background color.
+        m_BackgroundColor = Drawing::Color::FromArgb(::GetSysColor(COLOR_WINDOW));
+    }
 
     UI::Handle Control::Handle() const
     {
