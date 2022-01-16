@@ -112,6 +112,20 @@ namespace Borg::UI
         virtual void SetSize(const Drawing::Size &size) = 0;
 
         /**
+         * @brief Gets the rectangle that represents the client area of the control.
+         * 
+         * @return Drawing::Rectangle 
+         */
+        virtual Drawing::Rectangle GetClientRectangle() const = 0;
+
+        /**
+         * @brief Gets the height and width of the client area of the control.
+         * 
+         * @return Drawing::Size 
+         */
+        virtual Drawing::Size GetClientSize() const = 0;
+
+        /**
          * @brief Gets the coordinates of the upper-left corner of the control relative to the upper-left corner of its container.
          *
          * @return Drawing::Point

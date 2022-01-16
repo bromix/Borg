@@ -21,6 +21,8 @@ namespace Borg::UI
         Drawing::Rectangle GetBounds() const override;
         Drawing::Size GetSize() const override;
         void SetSize(const Drawing::Size &size) override;
+        Drawing::Rectangle GetClientRectangle() const override;
+        Drawing::Size GetClientSize() const override;
         Drawing::Point GetLocation() const override;
         void SetLocation(const Drawing::Point &point) override;
         void Invalidate() override;

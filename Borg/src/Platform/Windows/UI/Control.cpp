@@ -93,6 +93,20 @@ namespace Borg::UI
         ::SetWindowPos(m_Handle, nullptr, 0, 0, size.Width, size.Height, SWP_NOMOVE | SWP_NOREPOSITION);
     }
 
+    Drawing::Rectangle Control::GetClientRectangle() const
+    {
+        RECT rc{0};
+        if (::GetClientRect(m_Handle, &rc) != TRUE)
+            throw InvalidOperationException("::GetClientRect did not return TRUE.");
+
+        return Drawing::Rectangle(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top);
+    }
+
+    Drawing::Size Control::GetClientSize() const
+    {
+        return GetClientRectangle();
+    }
+
     Drawing::Point Control::GetLocation() const
     {
         return GetBounds();
