@@ -10,7 +10,7 @@ namespace Borg::UI
         UI::Handle Handle() const override;
         void SetText(const String &text) override;
         Ref<UI::IControl> GetParent() const override;
-        void SetParent(const UI::IControl& parent) const override;
+        void SetParent(const UI::IControl& parent) override;
         int DeviceDpi() const override;
         void BringToFront() override;
         bool IsEnabled() const override;
