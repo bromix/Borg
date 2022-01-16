@@ -35,6 +35,13 @@ namespace Borg::UI
         virtual Ref<UI::IControl> GetParent() const = 0;
 
         /**
+         * @brief Sets the parent container of the control.
+         * 
+         * @param parent 
+         */
+        virtual void SetParent(const UI::IControl& parent) const = 0;
+
+        /**
          * @brief Gets the DPI value for the display device where the control is currently being displayed.
          *
          * @return int
