@@ -7,8 +7,10 @@ namespace Borg::UI
     {
         UI::Handle hParent = parent.Handle() ? parent.Handle() : nullptr;
 
+        WideCharBuffer clsName = Encoding::Convert<WideCharBuffer>(className);
+
         CREATESTRUCTW cs{0};
-        cs.lpszClass = Encoding::Convert<WideCharBuffer>(className);
+        cs.lpszClass = clsName;
         cs.style = WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
         cs.dwExStyle = WS_EX_LEFT;
         cs.hwndParent = hParent;
