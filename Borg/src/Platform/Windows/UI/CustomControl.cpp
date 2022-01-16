@@ -11,7 +11,7 @@ namespace Borg::UI
 
         CREATESTRUCTW cs{0};
         cs.lpszClass = clsName;
-        cs.style = WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+        cs.style = WS_VISIBLE | WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
         cs.dwExStyle = WS_EX_LEFT;
         cs.hwndParent = hParent;
         cs.x = 50;
