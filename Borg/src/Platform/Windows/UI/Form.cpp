@@ -34,14 +34,16 @@ namespace Borg::UI
 
         CREATESTRUCTW cs{0};
         cs.lpszClass = L"BORG::UI::FORM";
-        cs.style = CS_HREDRAW | CS_VREDRAW | WS_OVERLAPPED;
+        cs.style = WS_OVERLAPPED;
         cs.dwExStyle = WS_EX_LEFT;
         cs.hwndParent = hOwner;
         cs.x = CW_USEDEFAULT;
         cs.y = CW_USEDEFAULT;
         cs.cx = CW_USEDEFAULT;
         cs.cy = CW_USEDEFAULT;
-        m_Handle = ClassFactory::Create(cs, [this](const UI::Message &message)
+
+        auto classStyle = CS_HREDRAW | CS_VREDRAW;
+        m_Handle = ClassFactory::Create(cs, classStyle, [this](const UI::Message &message)
                                         { return this->onMessage(message); });
 
         // Set default border style

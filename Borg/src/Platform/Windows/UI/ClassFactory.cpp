@@ -18,18 +18,18 @@ namespace Borg::UI
         Func<LRESULT, const UI::Message &> m_wndProc;
     };
 
-    UI::Handle ClassFactory::Create(CREATESTRUCTW &cs, Func<LRESULT, const UI::Message &>&& onMessage)
+    UI::Handle ClassFactory::Create(CREATESTRUCTW &cs, UINT classStyle, Func<LRESULT, const UI::Message &> &&onMessage)
     {
         if (cs.hInstance == nullptr)
             cs.hInstance = ::GetModuleHandleW(nullptr);
 
         if (!isRegistered(cs.lpszClass))
-            registerClass(cs);
+            registerClass(cs, classStyle);
 
         return createClass(cs, std::move(onMessage));
     }
 
-    UI::Handle ClassFactory::createClass(CREATESTRUCTW &cs, Func<LRESULT, const UI::Message &>&& onMessage)
+    UI::Handle ClassFactory::createClass(CREATESTRUCTW &cs, Func<LRESULT, const UI::Message &> &&onMessage)
     {
         WndProxy *wndProxy = new WndProxy(std::move(onMessage));
 
@@ -52,11 +52,11 @@ namespace Borg::UI
         return found != m_RegisteredClasses.end();
     }
 
-    void ClassFactory::registerClass(CREATESTRUCTW &cs)
+    void ClassFactory::registerClass(CREATESTRUCTW &cs, UINT classStyle)
     {
         WNDCLASSEXW wcex;
         wcex.cbSize = sizeof(WNDCLASSEXW);
-        wcex.style = cs.style;
+        wcex.style = classStyle;
         wcex.lpfnWndProc = ClassFactory::WndProc;
         wcex.cbClsExtra = 0;
         wcex.cbWndExtra = 0;
