@@ -25,11 +25,6 @@ namespace Borg::UI
         return Control::CreateFrom(::GetParent(m_Handle));
     }
 
-    void Control::SetParent(const UI::IControl &parent)
-    {
-        ::SetParent(m_Handle, parent.Handle());
-    }
-
     int Control::DeviceDpi() const
     {
         HMONITOR monitor = ::MonitorFromWindow(m_Handle, MONITOR_DEFAULTTONEAREST);
