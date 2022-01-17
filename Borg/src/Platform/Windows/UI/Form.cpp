@@ -228,10 +228,15 @@ namespace Borg::UI
         return (exStyle & WS_EX_APPWINDOW) == WS_EX_APPWINDOW;
     }
 
-    UI::DialogResult Form::ShowDialog()
+    void Form::Show()
     {
         ::ShowWindow(m_Handle, SW_SHOWDEFAULT);
         ::SetWindowPos(m_Handle, nullptr, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER);
+    }
+
+    UI::DialogResult Form::ShowDialog()
+    {
+        Show();
 
         MSG msg;
         while (::GetMessage(&msg, nullptr, 0, 0))

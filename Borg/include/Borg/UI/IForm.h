@@ -109,6 +109,12 @@ namespace Borg::UI
         virtual bool GetShowInTaskbar() const = 0;
 
         /**
+         * @brief Shows the form as a non-modal dialog box.
+         * 
+         */
+        virtual void Show() = 0;
+
+        /**
          * @brief Shows the form as a modal dialog box.
          *
          * @return DialogResult
