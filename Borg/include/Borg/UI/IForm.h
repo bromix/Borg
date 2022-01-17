@@ -109,6 +109,11 @@ namespace Borg::UI
         virtual bool GetShowInTaskbar() const = 0;
 
         /**
+         * @brief Closes the form.
+         */
+        virtual void Close() = 0;
+
+        /**
          * @brief Shows the form as a non-modal dialog box.
          * 
          */

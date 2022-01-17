@@ -18,6 +18,7 @@ namespace Borg::UI
         void CenterToScreen() override;
         void SetShowInTaskbar(bool show) override;
         bool GetShowInTaskbar() const override;
+        void Close() override;
         void Show() override;
         UI::DialogResult ShowDialog() override;
 

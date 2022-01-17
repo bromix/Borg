@@ -233,6 +233,11 @@ namespace Borg::UI
         return (exStyle & WS_EX_APPWINDOW) == WS_EX_APPWINDOW;
     }
 
+    void Form::Close()
+    {
+        ::DestroyWindow(m_Handle);
+    }
+
     void Form::Show()
     {
         ::ShowWindow(m_Handle, SW_SHOWDEFAULT);
