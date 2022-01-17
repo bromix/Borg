@@ -3,6 +3,10 @@
 #include <future>
 #include <cstdint>
 
+/*
+Based on
+https://www.codeproject.com/Articles/1256352/CppEvent-How-to-Implement-Events-using-Standard-Cp
+*/
 namespace Borg
 {
     template <typename... Args>
