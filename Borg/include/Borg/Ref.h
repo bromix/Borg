@@ -14,6 +14,10 @@ namespace Borg
         return std::make_shared<T>(std::forward<Args>(args)...);
     }
 
+    // Taken from Hazel.
+    template <typename T>
+    using WeakRef = std::weak_ptr<T>;
+
     /**
      * @brief Optional cast of TSource to TTarget. Will return null if the cast is not possible.
      *
@@ -50,11 +54,5 @@ namespace Borg
         if (!target)
             throw InvalidCastException("Failed to cast TSource to TTarget");
         return target;
-    }
-
-    template <typename TTarget, typename TSource>
-    constexpr TTarget TryCast(TSource value)
-    {
-        return dynamic_cast<TTarget>(value);
     }
 }

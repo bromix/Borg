@@ -30,7 +30,7 @@ namespace Borg::UI
 
     Form::Form(const Ref<UI::IForm> &owner) : Control(owner)
     {
-        UI::Handle hOwner = UI::Handle::GetSafeFrom(m_InternalParent);
+        UI::Handle hOwner = UI::Handle::GetSafeFrom(m_InternalParent.lock());
 
         CREATESTRUCTW cs{0};
         cs.lpszClass = L"BORG::UI::FORM";
@@ -197,7 +197,7 @@ namespace Borg::UI
     void Form::CenterToParent()
     {
         auto parent = GetParent();
-        if (!parent)
+        if (parent.expired())
             CenterToScreen();
 
         // FIXME: calculate new position.
