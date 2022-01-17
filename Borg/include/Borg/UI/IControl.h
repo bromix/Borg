@@ -154,6 +154,8 @@ namespace Borg::UI
          */
         virtual void onSizeChanged (EventArgs e) = 0;
 
+        virtual void initialize(const Ref<UI::IControl>& thisControl) {}
+
         virtual UI::Message::Result onMessage(const UI::Message &message) = 0;
     };
 }

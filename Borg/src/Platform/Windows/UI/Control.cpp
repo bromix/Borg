@@ -136,6 +136,12 @@ namespace Borg::UI
         return control;
     }
 
+    void Control::initialize(const Ref<UI::IControl> &thisControl)
+    {
+        UI::IControl::initialize(thisControl);
+        m_Initialize = false;
+    }
+
     void Control::onSizeChanged(EventArgs e)
     {
         // TODO: invoke EventHandler
@@ -146,6 +152,10 @@ namespace Borg::UI
     {
         switch (message.Msg)
         {
+        case WM_SHOWWINDOW:
+            if(m_Initialize)
+                initialize(shared_from_this());
+            break;
         case WM_ERASEBKGND:
         {
             auto hdc = (HDC)message.WParam;

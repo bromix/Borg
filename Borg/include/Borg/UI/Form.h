@@ -4,7 +4,7 @@
 
 namespace Borg::UI
 {
-    class Form : public Control, public virtual IForm
+    class Form : public Control, public IForm
     {
     public:
         Form();
@@ -25,6 +25,7 @@ namespace Borg::UI
         static Ref<Form> CreateFrom(const UI::Handle &handle);
 
     protected:
+        void initialize(const Ref<UI::IForm> &thisForm) override;
         UI::Message::Result onMessage(const UI::Message &message) override;
     };
 }
