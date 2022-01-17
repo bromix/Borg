@@ -7,6 +7,6 @@ namespace Borg::UI
     {
     public:
         CustomControl(const String &className);
-        CustomControl(const Borg::WeakRef<UI::IControl> &parent, const String &className);
+        CustomControl(const Ref<UI::IControl> &parent, const String &className);
     };
 }

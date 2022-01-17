@@ -26,11 +26,11 @@ namespace Borg::UI
     constexpr const long BORG_FORMBORDERSTYLE_NONE_STYLE = WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_OVERLAPPED | WS_MAXIMIZEBOX;
     constexpr const long BORG_FORMBORDERSTYLE_NONE_EXSTYLE = 0;
 
-    Form::Form() : Form(WeakRef<UI::IForm>{}) {}
+    Form::Form() : Form(nullptr) {}
 
-    Form::Form(const WeakRef<UI::IForm> &owner) : Control(owner)
+    Form::Form(const Ref<UI::IForm> &owner) : Control(owner)
     {
-        UI::Handle hOwner = UI::Handle::GetSafeFrom(m_InternalParent.lock());
+        UI::Handle hOwner = UI::Handle::GetSafeFrom(m_InternalParent);
 
         CREATESTRUCTW cs{0};
         cs.lpszClass = L"BORG::UI::FORM";
@@ -52,9 +52,9 @@ namespace Borg::UI
         SetShowInTaskbar(true);
     }
 
-    WeakRef<UI::IForm> Form::GetOwner() const
+    Ref<UI::IForm> Form::GetOwner() const
     {
-        return {};
+        return nullptr;
     }
 
     void Form::SetOpacity(double opacity)
@@ -197,7 +197,7 @@ namespace Borg::UI
     void Form::CenterToParent()
     {
         auto parent = GetParent();
-        if (parent.expired())
+        if (!parent)
             CenterToScreen();
 
         // FIXME: calculate new position.

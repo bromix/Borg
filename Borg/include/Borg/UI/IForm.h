@@ -53,7 +53,7 @@ namespace Borg::UI
          *
          * @return Ref<IForm>
          */
-        virtual WeakRef<IForm> GetOwner() const = 0;
+        virtual Ref<IForm> GetOwner() const = 0;
 
         /**
          * @brief Sets the opacity level of the form.

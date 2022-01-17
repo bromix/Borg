@@ -10,10 +10,8 @@ namespace Borg::UI
         m_BackgroundColor = Drawing::Color::FromArgb(::GetSysColor(COLOR_WINDOW));
     }
 
-    Control::Control(const Borg::WeakRef<UI::IControl> &parent)
+    Control::Control(const Ref<UI::IControl> &parent) : m_InternalParent(parent)
     {
-        m_InternalParent = parent.lock();
-
         // Set the default background color.
         m_BackgroundColor = Drawing::Color::FromArgb(::GetSysColor(COLOR_WINDOW));
     }
@@ -28,7 +26,7 @@ namespace Borg::UI
         ::SetWindowTextW(m_Handle, Encoding::Convert<WideCharBuffer>(text));
     }
 
-    WeakRef<UI::IControl> Control::GetParent() const
+    Ref<UI::IControl> Control::GetParent() const
     {
         return m_InternalParent;
     }
