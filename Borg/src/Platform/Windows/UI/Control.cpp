@@ -85,7 +85,7 @@ namespace Borg::UI
 
     Drawing::Size Control::GetSize() const
     {
-        return GetBounds();
+        return GetBounds().GetSize();
     }
 
     void Control::SetSize(const Drawing::Size &size)
@@ -104,12 +104,12 @@ namespace Borg::UI
 
     Drawing::Size Control::GetClientSize() const
     {
-        return GetClientRectangle();
+        return GetClientRectangle().GetSize();
     }
 
     Drawing::Point Control::GetLocation() const
     {
-        return GetBounds();
+        return GetBounds().GetLocation();
     }
 
     void Control::SetLocation(const Drawing::Point &point)
