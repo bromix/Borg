@@ -5,7 +5,7 @@ namespace Borg::UI
     class WndProxy
     {
     public:
-        WndProxy(Func<LRESULT, const UI::Message &> &&wndProc) : m_wndProc(std::move(wndProc))
+        explicit WndProxy(Func<LRESULT, const UI::Message &> &&wndProc) : m_wndProc(std::move(wndProc))
         {
         }
 

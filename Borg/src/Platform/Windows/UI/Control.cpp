@@ -146,7 +146,7 @@ namespace Borg::UI
             RECT rc;
             GetClientRect(m_Handle, &rc);
             HBRUSH brush = ::CreateSolidBrush(GetBackColor().ToBgr());
-            auto ret = FillRect(hdc, &rc, brush);
+            FillRect(hdc, &rc, brush);
             return 1;
         }
         case WM_ENTERSIZEMOVE:

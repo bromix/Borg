@@ -85,7 +85,7 @@ namespace Borg::UI
         auto currentStyle = ::GetWindowLongW(m_Handle, GWL_EXSTYLE);
 
         // Without WX_ES_LAYERED style opacity isn't possible.
-        if (currentStyle & WS_EX_LAYERED == 0)
+        if ((currentStyle & WS_EX_LAYERED) == 0)
             return 1.0;
 
         BYTE alpha = 255;

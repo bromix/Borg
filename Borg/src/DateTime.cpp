@@ -9,14 +9,14 @@ namespace Borg
     {
     public:
         YearArgumentOutOfRangeException() : YearArgumentOutOfRangeException("year") {}
-        YearArgumentOutOfRangeException(const String &paramName) : ArgumentOutOfRangeException(paramName, "year is less than 1 or greater than 9999.") {}
+        explicit YearArgumentOutOfRangeException(const String &paramName) : ArgumentOutOfRangeException(paramName, "year is less than 1 or greater than 9999.") {}
     };
 
     class MonthArgumentOutOfRangeException : public ArgumentOutOfRangeException
     {
     public:
         MonthArgumentOutOfRangeException() : MonthArgumentOutOfRangeException("month") {}
-        MonthArgumentOutOfRangeException(const String &paramName) : ArgumentOutOfRangeException(paramName, "month is less than 1 or greater than 12.") {}
+        explicit MonthArgumentOutOfRangeException(const String &paramName) : ArgumentOutOfRangeException(paramName, "month is less than 1 or greater than 12.") {}
     };
 
     // ================
