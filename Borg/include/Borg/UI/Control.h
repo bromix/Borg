@@ -7,10 +7,10 @@ namespace Borg::UI
     {
     public:
         Control();
-        Control(const WeakRef<UI::IControl> &parent);
+        Control(const Borg::WeakRef<UI::IControl> &parent);
         UI::Handle Handle() const override;
         void SetText(const String &text) override;
-        WeakRef<UI::IControl> GetParent() const override;
+        Borg::WeakRef<UI::IControl> GetParent() const override;
         int DeviceDpi() const override;
         void BringToFront() override;
         bool IsEnabled() const override;
@@ -36,6 +36,6 @@ namespace Borg::UI
         Drawing::Color m_BackgroundColor;
         UI::Handle m_Handle;
 
-        WeakRef<UI::IControl> m_InternalParent;
+        Borg::WeakRef<UI::IControl> m_InternalParent;
     };
 }

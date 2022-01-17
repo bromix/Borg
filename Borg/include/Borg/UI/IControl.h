@@ -32,7 +32,7 @@ namespace Borg::UI
          *
          * @return Ref<UI::IControl>
          */
-        virtual WeakRef<UI::IControl> GetParent() const = 0;
+        virtual Borg::WeakRef<UI::IControl> GetParent() const = 0;
 
         /**
          * @brief Gets the DPI value for the display device where the control is currently being displayed.

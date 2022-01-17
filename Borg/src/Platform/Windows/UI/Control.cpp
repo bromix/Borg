@@ -4,10 +4,16 @@
 
 namespace Borg::UI
 {
-    Control::Control() : Control(WeakRef<UI::IControl>{}) {}
-
-    Control::Control(const WeakRef<UI::IControl> &parent): m_InternalParent(parent)
+    Control::Control()
     {
+        // Set the default background color.
+        m_BackgroundColor = Drawing::Color::FromArgb(::GetSysColor(COLOR_WINDOW));
+    }
+
+    Control::Control(const Borg::WeakRef<UI::IControl> &parent)
+    {
+        m_InternalParent = parent.lock();
+
         // Set the default background color.
         m_BackgroundColor = Drawing::Color::FromArgb(::GetSysColor(COLOR_WINDOW));
     }
