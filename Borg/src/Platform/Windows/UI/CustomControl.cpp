@@ -3,7 +3,7 @@
 
 namespace Borg::UI
 {
-    CustomControl::CustomControl(const Ref<UI::IControl> &parent, const String &className) : UI::Control(parent)
+    CustomControl::CustomControl(const WeakRef<UI::IControl> &parent, const String &className) : UI::Control(parent)
     {
         UI::Handle hParent = UI::Handle::GetSafeFrom(m_InternalParent.lock());
 
