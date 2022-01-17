@@ -28,9 +28,9 @@ namespace Borg::UI
 
     Form::Form() : Form(nullptr) {}
 
-    Form::Form(const UI::IForm* owner) : Control()
+    Form::Form(UI::IForm* owner) : Control(owner)
     {
-        UI::Handle hOwner = UI::Handle::GetSafeFrom(owner);
+        UI::Handle hOwner = UI::Handle::GetSafeFrom(m_Parent);
 
         CREATESTRUCTW cs{0};
         cs.lpszClass = L"BORG::UI::FORM";

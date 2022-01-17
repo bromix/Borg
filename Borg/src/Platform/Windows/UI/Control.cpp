@@ -4,7 +4,9 @@
 
 namespace Borg::UI
 {
-    Control::Control()
+    Control::Control() : Control(nullptr) {}
+
+    Control::Control(UI::IControl *parent): m_Parent(parent)
     {
         // Set the default background color.
         m_BackgroundColor = Drawing::Color::FromArgb(::GetSysColor(COLOR_WINDOW));
@@ -20,9 +22,9 @@ namespace Borg::UI
         ::SetWindowTextW(m_Handle, Encoding::Convert<WideCharBuffer>(text));
     }
 
-    Ref<UI::IControl> Control::GetParent() const
+    UI::IControl* Control::GetParent() const
     {
-        return Control::CreateFrom(::GetParent(m_Handle));
+        return m_Parent;
     }
 
     int Control::DeviceDpi() const
