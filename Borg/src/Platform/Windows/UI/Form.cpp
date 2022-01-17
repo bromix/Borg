@@ -235,7 +235,7 @@ namespace Borg::UI
 
     void Form::Close()
     {
-        ::DestroyWindow(m_Handle);
+        ::PostMessageW(m_Handle, WM_CLOSE, 0, 0);
     }
 
     void Form::Show()
@@ -269,6 +269,9 @@ namespace Borg::UI
     {
         switch (message.Msg)
         {
+        case WM_CLOSE:
+            ::DestroyWindow(m_Handle);
+            return 0;
         case WM_DESTROY:
             PostQuitMessage(0);
             break;
