@@ -187,6 +187,11 @@ namespace Borg
                 args...);
         }
 
+        operator bool() const
+        {
+            return !m_Handlers.empty();
+        }
+
     private:
         std::vector<HandlerType> getHandlersAsCopy() const
         {
