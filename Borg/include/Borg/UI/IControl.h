@@ -8,7 +8,7 @@
 
 namespace Borg::UI
 {
-    class IControl
+    class IControl: public std::enable_shared_from_this<IControl>
     {
     public:
         virtual ~IControl() = default;
