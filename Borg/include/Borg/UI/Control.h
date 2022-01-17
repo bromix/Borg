@@ -7,10 +7,10 @@ namespace Borg::UI
     {
     public:
         Control();
-        Control(UI::IControl *parent);
+        Control(const Ref<UI::IControl> &parent);
         UI::Handle Handle() const override;
         void SetText(const String &text) override;
-        UI::IControl* GetParent() const override;
+        Ref<UI::IControl> GetParent() const override;
         int DeviceDpi() const override;
         void BringToFront() override;
         bool IsEnabled() const override;
@@ -31,12 +31,12 @@ namespace Borg::UI
         static Ref<IControl> CreateFrom(const UI::Handle &handle);
 
     protected:
+        void assignParent(const Ref<UI::IControl> &parent);
         void onSizeChanged(EventArgs e) override;
         UI::Message::Result onMessage(const UI::Message &message) override;
         Drawing::Color m_BackgroundColor;
         UI::Handle m_Handle;
 
-        // Weak by design
-        UI::IControl *m_Parent;
+        Ref<UI::IControl> m_InternalParent;
     };
 }

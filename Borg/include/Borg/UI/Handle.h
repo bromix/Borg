@@ -1,4 +1,5 @@
 #pragma once
+#include "Borg/Ref.h"
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -33,7 +34,7 @@ namespace Borg::UI
         operator bool() const;
 
         template<typename T>
-        static UI::Handle GetSafeFrom(const T* control)
+        static UI::Handle GetSafeFrom(const Ref<T> control)
         {
             if(control == nullptr)
                 return nullptr;
