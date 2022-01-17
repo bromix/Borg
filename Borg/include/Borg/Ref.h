@@ -51,4 +51,10 @@ namespace Borg
             throw InvalidCastException("Failed to cast TSource to TTarget");
         return target;
     }
+
+    template <typename TTarget, typename TSource>
+    constexpr TTarget TryCast(TSource value)
+    {
+        return std::dynamic_cast<TTarget>(value);
+    }
 }
