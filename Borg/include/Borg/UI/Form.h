@@ -8,7 +8,7 @@ namespace Borg::UI
     {
     public:
         Form();
-        Form(const Ref<UI::IForm> &owner);
+        Form(const UI::IForm* owner);
         Ref<IForm> GetOwner() const override;
         void SetOpacity(double opacity) override;
         double GetOpacity() const override;

@@ -28,7 +28,7 @@ namespace Borg::UI
 
     Form::Form() : Form(nullptr) {}
 
-    Form::Form(const Ref<UI::IForm> &owner) : Control()
+    Form::Form(const UI::IForm* owner) : Control()
     {
         UI::Handle hOwner = owner ? owner->Handle() : nullptr;
 
