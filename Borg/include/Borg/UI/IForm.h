@@ -125,11 +125,5 @@ namespace Borg::UI
          * @return DialogResult
          */
         virtual DialogResult ShowDialog() = 0;
-
-    protected:
-        virtual void initialize(const Ref<UI::IForm>& thisForm)
-        {
-            UI::IControl::initialize(thisForm);
-        }
     };
 }

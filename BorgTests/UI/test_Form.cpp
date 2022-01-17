@@ -13,15 +13,15 @@ protected:
         UI::Form::onSizeChanged(e);
     }
 
-    void initialize(const Ref<UI::IForm>& thisForm) override
-    {
-        // auto control = CreateRef<UI::CustomControl>(shared_from_this(), "Button");
-        // control->SetBackColor(Drawing::Color::Red);
-        // control->SetLocation({0, 0});
-        // control->SetSize({100, 100});
-        // control->SetVisible(true);
-        UI::Form::initialize(thisForm);
-    }
+    // void initialize(const Ref<UI::IForm>& thisForm) override
+    // {
+    //     // auto control = CreateRef<UI::CustomControl>(shared_from_this(), "Button");
+    //     // control->SetBackColor(Drawing::Color::Red);
+    //     // control->SetLocation({0, 0});
+    //     // control->SetSize({100, 100});
+    //     // control->SetVisible(true);
+    //     UI::Form::initialize(thisForm);
+    // }
 };
 
 TEST(UIForm, DebugTest)

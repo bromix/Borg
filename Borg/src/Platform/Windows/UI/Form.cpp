@@ -265,19 +265,10 @@ namespace Borg::UI
         return form;
     }
 
-    void Form::initialize(const Ref<UI::IForm> &thisForm)
-    {
-        UI::Control::initialize(thisForm);
-    }
-
     UI::Message::Result Form::onMessage(const UI::Message &message)
     {
         switch (message.Msg)
         {
-        case WM_SHOWWINDOW:
-            if(m_Initialize)
-                initialize(RefCast<UI::IForm>(shared_from_this()));
-            break;
         case WM_CLOSE:
             ::DestroyWindow(m_Handle);
             return 0;
