@@ -3,9 +3,9 @@
 
 namespace Borg::UI
 {
-    CustomControl::CustomControl(const UI::IControl &parent, const String &className)
+    CustomControl::CustomControl(const UI::IControl *parent, const String &className)
     {
-        UI::Handle hParent = parent.Handle() ? parent.Handle() : nullptr;
+        UI::Handle hParent = UI::Handle::GetSafeFrom(parent);
 
         WideCharBuffer clsName = Encoding::Convert<WideCharBuffer>(className);
 
