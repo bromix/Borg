@@ -55,6 +55,6 @@ namespace Borg
     template <typename TTarget, typename TSource>
     constexpr TTarget TryCast(TSource value)
     {
-        return std::dynamic_cast<TTarget>(value);
+        return dynamic_cast<TTarget>(value);
     }
 }
