@@ -3,7 +3,7 @@
 
 namespace Borg::UI
 {
-    class CustomControl : public virtual UI::Control
+    class CustomControl : public UI::Control
     {
     public:
         CustomControl(const String &className);
