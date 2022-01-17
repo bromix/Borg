@@ -200,8 +200,13 @@ namespace Borg::UI
         if (!parent)
             CenterToScreen();
 
-        // FIXME: calculate new position.
-        throw NotImplementedException();
+        auto parentRect = parent->GetBounds();
+        auto thisSize = GetSize();
+
+        int32_t x = parentRect.X + (parentRect.Width - thisSize.Width) / 2;
+        int32_t y = parentRect.Y + (parentRect.Height - thisSize.Height) / 2;
+
+        SetLocation({x, y});
     }
 
     void Form::CenterToScreen()

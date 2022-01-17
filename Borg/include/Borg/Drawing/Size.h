@@ -17,18 +17,18 @@ namespace Borg::Drawing
          * @param width
          * @param height
          */
-        Size(uint32_t width, uint32_t height);
+        Size(int32_t width, int32_t height);
 
         /**
          * @brief Gets or sets the horizontal component of this Size structure.
          */
-        uint32_t Width = 0;
+        int32_t Width = 0;
 
         /**
          * @brief Gets or sets the vertical component of this Size structure.
          *
          */
-        uint32_t Height = 0;
+        int32_t Height = 0;
 
         bool operator==(const Size &rhs) const;
         bool operator!=(const Size &rhs) const;

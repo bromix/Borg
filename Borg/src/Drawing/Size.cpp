@@ -2,7 +2,7 @@
 
 namespace Borg::Drawing
 {
-    Size::Size(uint32_t width, uint32_t height) : Height(height), Width(width) {}
+    Size::Size(int32_t width, int32_t height) : Height(height), Width(width) {}
 
     bool Size::operator==(const Size &rhs) const
     {
