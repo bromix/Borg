@@ -26,9 +26,9 @@ namespace Borg::UI
     constexpr const long BORG_FORMBORDERSTYLE_NONE_STYLE = WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_OVERLAPPED | WS_MAXIMIZEBOX;
     constexpr const long BORG_FORMBORDERSTYLE_NONE_EXSTYLE = 0;
 
-    Form::Form() : Form(nullptr) {}
+    Form::Form() : Form(WeakRef<UI::IForm>{}) {}
 
-    Form::Form(const Ref<UI::IForm> &owner) : Control(owner)
+    Form::Form(const WeakRef<UI::IForm> &owner) : Control(owner)
     {
         UI::Handle hOwner = UI::Handle::GetSafeFrom(m_InternalParent.lock());
 
@@ -52,9 +52,9 @@ namespace Borg::UI
         SetShowInTaskbar(true);
     }
 
-    Ref<UI::IForm> Form::GetOwner() const
+    WeakRef<UI::IForm> Form::GetOwner() const
     {
-        return UI::Form::CreateFrom(::GetWindow(m_Handle, GW_OWNER));
+        return {};
     }
 
     void Form::SetOpacity(double opacity)

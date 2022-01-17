@@ -8,8 +8,8 @@ namespace Borg::UI
     {
     public:
         Form();
-        Form(const Ref<UI::IForm> &owner);
-        Ref<IForm> GetOwner() const override;
+        Form(const WeakRef<UI::IForm> &owner);
+        WeakRef<IForm> GetOwner() const override;
         void SetOpacity(double opacity) override;
         double GetOpacity() const override;
         void SetFormBorderStyle(FormBorderStyle style) override;
