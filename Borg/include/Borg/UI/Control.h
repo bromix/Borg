@@ -38,6 +38,6 @@ namespace Borg::UI
         UI::Handle m_Handle;
         bool m_Initialize = true;
 
-        Borg::Ref<UI::IControl> m_InternalParent;
+        Borg::WeakRef<UI::IControl> m_InternalParent;
     };
 }

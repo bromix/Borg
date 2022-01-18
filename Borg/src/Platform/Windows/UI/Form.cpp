@@ -32,7 +32,7 @@ namespace Borg::UI
 
     Form::Form(const Ref<UI::IForm> &owner) : Control(owner)
     {
-        UI::Handle hOwner = UI::Handle::GetSafeFrom(m_InternalParent);
+        UI::Handle hOwner = UI::Handle::GetSafeFrom(m_InternalParent.lock());
 
         CREATESTRUCTW cs{0};
         cs.lpszClass = L"BORG::UI::FORM";

@@ -31,7 +31,7 @@ namespace Borg::UI
 
     Ref<UI::IControl> Control::GetParent() const
     {
-        return m_InternalParent;
+        return m_InternalParent.lock();
     }
 
     int Control::DeviceDpi() const
