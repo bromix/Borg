@@ -266,10 +266,9 @@ namespace Borg::UI
 
     Ref<Form> Form::CreateFrom(const UI::Handle &handle)
     {
-        return nullptr;
-        // Ref<Form> form = CreateRef<Form>();
-        // form->m_Handle = handle;
-        // return form;
+        Ref<Form> form = CreateRef<Form>();
+        form->m_Impl->WrapHandle(handle);
+        return form;
     }
 
     void Form::onClosed(const UI::FormClosedEventArgs &e)

@@ -47,6 +47,11 @@ namespace Borg::UI::Windows
         return DefSubclassProc(hWnd, uMsg, wParam, lParam);
     }
 
+    void NativeWindow::WrapHandle(const UI::Handle &handle)
+    {
+        m_Handle = handle;
+    }
+
     void NativeWindow::CreateHandle(const CreateParams &cp)
     {
         registerWindowClass(cp);

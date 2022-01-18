@@ -12,6 +12,7 @@ namespace Borg::UI::Windows
         ~NativeWindow();
         UI::Handle Handle() const;
 
+        void WrapHandle(const UI::Handle &handle);
         void CreateHandle(const CreateParams &cp);
         LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
