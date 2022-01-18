@@ -27,6 +27,6 @@ namespace Borg::UI
 
     protected:
         void onClosed(const UI::FormClosedEventArgs &e) override;
-        UI::Message::Result onMessage(const UI::Message &message) override;
+        void onMessage(UI::Message &message) override;
     };
 }

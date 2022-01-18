@@ -32,12 +32,9 @@ namespace Borg::UI
         static Ref<IControl> CreateFrom(const UI::Handle &handle);
 
     protected:
+        class ControlImpl;
+        Ref<ControlImpl> m_Impl;
         void onSizeChanged(EventArgs e) override;
-        UI::Message::Result onMessage(const UI::Message &message) override;
-        Drawing::Color m_BackgroundColor;
-        UI::Handle m_Handle;
-        bool m_Initialize = true;
-
-        Borg::WeakRef<UI::IControl> m_InternalParent;
+        void onMessage(UI::Message &message) override;
     };
 }

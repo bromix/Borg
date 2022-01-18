@@ -6,3 +6,4 @@
 #include <shellscalingapi.h>
 #include <Lmcons.h>
 #include <wininet.h>
+#include <commctrl.h>

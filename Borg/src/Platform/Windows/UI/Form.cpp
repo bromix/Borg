@@ -1,7 +1,8 @@
 #include "Borg/UI/Form.h"
 #include "Borg/Exception.h"
 #include "Borg/Types.h"
-#include "ClassFactory.h"
+#include "ControlImpl.h"
+#include "CreateParams.h"
 
 namespace Borg::UI
 {
@@ -32,22 +33,21 @@ namespace Borg::UI
 
     Form::Form(const Ref<UI::IForm> &owner) : Control(owner)
     {
-        UI::Handle hOwner = UI::Handle::GetSafeFrom(m_InternalParent.lock());
+        UI::Handle hOwner = UI::Handle::GetSafeFrom(this->GetParent());
 
-        CREATESTRUCTW cs{0};
-        cs.lpszClass = L"BORG::UI::FORM";
-        cs.style = WS_OVERLAPPED;
-        cs.dwExStyle = WS_EX_LEFT;
-        cs.hwndParent = hOwner;
-        cs.x = CW_USEDEFAULT;
-        cs.y = CW_USEDEFAULT;
-        cs.cx = CW_USEDEFAULT;
-        cs.cy = CW_USEDEFAULT;
+        Windows::CreateParams cp;
+        cp.ClassName = L"BORG::UI::FORM";
+        cp.ClassStyle = CS_HREDRAW | CS_VREDRAW;
+        cp.ExStyle = WS_EX_LEFT;
+        cp.X = CW_USEDEFAULT;
+        cp.Y = CW_USEDEFAULT;
+        cp.Width = CW_USEDEFAULT;
+        cp.Height = CW_USEDEFAULT;
+        cp.Parent = hOwner;
+        cp.Style = WS_OVERLAPPED;
 
-        auto classStyle = CS_HREDRAW | CS_VREDRAW;
-        m_Handle = ClassFactory::Create(cs, classStyle, [this](const UI::Message &message)
-                                        { return this->onMessage(message); });
-
+        m_Impl->CreateHandle(cp);
+        
         // Set default border style
         SetFormBorderStyle(UI::FormBorderStyle::Sizable);
 
@@ -61,22 +61,22 @@ namespace Borg::UI
 
     void Form::SetOpacity(double opacity)
     {
-        auto currentStyle = ::GetWindowLongW(m_Handle, GWL_EXSTYLE);
+        auto currentStyle = ::GetWindowLongW(m_Impl->Handle(), GWL_EXSTYLE);
 
         if (opacity < 1.0)
         {
             // Add style.
             currentStyle |= WS_EX_LAYERED;
-            ::SetWindowLongW(m_Handle, GWL_EXSTYLE, currentStyle);
-            ::SetLayeredWindowAttributes(m_Handle, 0, opacity * 255, LWA_ALPHA);
+            ::SetWindowLongW(m_Impl->Handle(), GWL_EXSTYLE, currentStyle);
+            ::SetLayeredWindowAttributes(m_Impl->Handle(), 0, opacity * 255, LWA_ALPHA);
         }
         else
         {
-            ::SetLayeredWindowAttributes(m_Handle, 0, 255, LWA_ALPHA);
+            ::SetLayeredWindowAttributes(m_Impl->Handle(), 0, 255, LWA_ALPHA);
 
             // Remove style
             currentStyle &= ~WS_EX_LAYERED;
-            ::SetWindowLongW(m_Handle, GWL_EXSTYLE, currentStyle);
+            ::SetWindowLongW(m_Impl->Handle(), GWL_EXSTYLE, currentStyle);
         }
 
         Invalidate();
@@ -84,7 +84,7 @@ namespace Borg::UI
 
     double Form::GetOpacity() const
     {
-        auto currentStyle = ::GetWindowLongW(m_Handle, GWL_EXSTYLE);
+        auto currentStyle = ::GetWindowLongW(m_Impl->Handle(), GWL_EXSTYLE);
 
         // Without WX_ES_LAYERED style opacity isn't possible.
         if ((currentStyle & WS_EX_LAYERED) == 0)
@@ -92,7 +92,7 @@ namespace Borg::UI
 
         BYTE alpha = 255;
         DWORD flags = 0;
-        if (::GetLayeredWindowAttributes(m_Handle, 0, &alpha, &flags) != TRUE)
+        if (::GetLayeredWindowAttributes(m_Impl->Handle(), 0, &alpha, &flags) != TRUE)
             return 1.0;
 
         // If LWA_ALPHA is set, we can calculate the opacity.
@@ -107,7 +107,7 @@ namespace Borg::UI
         auto defaultExStyles = WS_EX_CONTROLPARENT;
 
         // Some styles we need to keep if they are already set.
-        auto currentExStyle = ::GetWindowLongW(m_Handle, GWL_EXSTYLE);
+        auto currentExStyle = ::GetWindowLongW(m_Impl->Handle(), GWL_EXSTYLE);
         if ((currentExStyle & WS_EX_LAYERED) == WS_EX_LAYERED)
             defaultExStyles |= WS_EX_LAYERED;
 
@@ -119,38 +119,38 @@ namespace Borg::UI
 
         if (style == FormBorderStyle::None)
         {
-            ::SetWindowLong(m_Handle, GWL_STYLE, BORG_FORMBORDERSTYLE_NONE_STYLE);
-            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_NONE_EXSTYLE);
+            ::SetWindowLong(m_Impl->Handle(), GWL_STYLE, BORG_FORMBORDERSTYLE_NONE_STYLE);
+            ::SetWindowLong(m_Impl->Handle(), GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_NONE_EXSTYLE);
         }
         else if (style == FormBorderStyle::Sizable)
         {
-            ::SetWindowLong(m_Handle, GWL_STYLE, BORG_FORMBORDERSTYLE_SIZABLE_STYLE);
-            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_SIZABLE_EXSTYLE);
+            ::SetWindowLong(m_Impl->Handle(), GWL_STYLE, BORG_FORMBORDERSTYLE_SIZABLE_STYLE);
+            ::SetWindowLong(m_Impl->Handle(), GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_SIZABLE_EXSTYLE);
         }
         else if (style == FormBorderStyle::FixedSingle)
         {
-            ::SetWindowLong(m_Handle, GWL_STYLE, BORG_FORMBORDERSTYLE_FIXEDSINGLE_STYLE);
-            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_FIXEDSINGLE_EXSTYLE);
+            ::SetWindowLong(m_Impl->Handle(), GWL_STYLE, BORG_FORMBORDERSTYLE_FIXEDSINGLE_STYLE);
+            ::SetWindowLong(m_Impl->Handle(), GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_FIXEDSINGLE_EXSTYLE);
         }
         else if (style == FormBorderStyle::Fixed3D)
         {
-            ::SetWindowLong(m_Handle, GWL_STYLE, BORG_FORMBORDERSTYLE_FIXED3D_STYLE);
-            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_FIXED3D_EXSTYLE);
+            ::SetWindowLong(m_Impl->Handle(), GWL_STYLE, BORG_FORMBORDERSTYLE_FIXED3D_STYLE);
+            ::SetWindowLong(m_Impl->Handle(), GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_FIXED3D_EXSTYLE);
         }
         else if (style == FormBorderStyle::FixedDialog)
         {
-            ::SetWindowLong(m_Handle, GWL_STYLE, BORG_FORMBORDERSTYLE_FIXEDDIALOG_STYLE);
-            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_FIXEDDIALOG_EXSTYLE);
+            ::SetWindowLong(m_Impl->Handle(), GWL_STYLE, BORG_FORMBORDERSTYLE_FIXEDDIALOG_STYLE);
+            ::SetWindowLong(m_Impl->Handle(), GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_FIXEDDIALOG_EXSTYLE);
         }
         else if (style == FormBorderStyle::FixedToolWindow)
         {
-            ::SetWindowLong(m_Handle, GWL_STYLE, BORG_FORMBORDERSTYLE_FIXEDTOOLWINDOW_STYLE);
-            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_FIXEDTOOLWINDOW_EXSTYLE);
+            ::SetWindowLong(m_Impl->Handle(), GWL_STYLE, BORG_FORMBORDERSTYLE_FIXEDTOOLWINDOW_STYLE);
+            ::SetWindowLong(m_Impl->Handle(), GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_FIXEDTOOLWINDOW_EXSTYLE);
         }
         else if (style == FormBorderStyle::SizableToolWindow)
         {
-            ::SetWindowLong(m_Handle, GWL_STYLE, BORG_FORMBORDERSTYLE_SIZABLETOOLWINDOW_STYLE);
-            ::SetWindowLong(m_Handle, GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_SIZABLETOOLWINDOW_EXSTYLE);
+            ::SetWindowLong(m_Impl->Handle(), GWL_STYLE, BORG_FORMBORDERSTYLE_SIZABLETOOLWINDOW_STYLE);
+            ::SetWindowLong(m_Impl->Handle(), GWL_EXSTYLE, defaultExStyles | BORG_FORMBORDERSTYLE_SIZABLETOOLWINDOW_EXSTYLE);
         }
         else
             throw InvalidEnumArgumentException("The value specified is outside the range of valid values.");
@@ -160,8 +160,8 @@ namespace Borg::UI
 
     FormBorderStyle Form::GetFormBorderStyle() const
     {
-        auto style = ::GetWindowLongW(m_Handle, GWL_STYLE);
-        auto exStyle = ::GetWindowLongW(m_Handle, GWL_EXSTYLE);
+        auto style = ::GetWindowLongW(m_Impl->Handle(), GWL_STYLE);
+        auto exStyle = ::GetWindowLongW(m_Impl->Handle(), GWL_EXSTYLE);
 
         // IMPORTANT !!! The order is important. The values with the most flags must be compared first.
 
@@ -222,32 +222,32 @@ namespace Borg::UI
 
     void Form::SetShowInTaskbar(bool show)
     {
-        auto exStyle = ::GetWindowLongW(m_Handle, GWL_EXSTYLE);
+        auto exStyle = ::GetWindowLongW(m_Impl->Handle(), GWL_EXSTYLE);
 
         if (show)
             exStyle |= WS_EX_APPWINDOW;
         else
             exStyle &= ~WS_EX_APPWINDOW;
 
-        ::SetWindowLongW(m_Handle, GWL_EXSTYLE, exStyle);
-        ::SetWindowPos(m_Handle, nullptr, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER);
+        ::SetWindowLongW(m_Impl->Handle(), GWL_EXSTYLE, exStyle);
+        ::SetWindowPos(m_Impl->Handle(), nullptr, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER);
     }
 
     bool Form::GetShowInTaskbar() const
     {
-        auto exStyle = ::GetWindowLongW(m_Handle, GWL_EXSTYLE);
+        auto exStyle = ::GetWindowLongW(m_Impl->Handle(), GWL_EXSTYLE);
         return (exStyle & WS_EX_APPWINDOW) == WS_EX_APPWINDOW;
     }
 
     void Form::Close()
     {
-        ::PostMessageW(m_Handle, WM_CLOSE, 0, 0);
+        ::PostMessageW(m_Impl->Handle(), WM_CLOSE, 0, 0);
     }
 
     void Form::Show()
     {
-        ::ShowWindow(m_Handle, SW_SHOWDEFAULT);
-        ::SetWindowPos(m_Handle, nullptr, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER);
+        ::ShowWindow(m_Impl->Handle(), SW_SHOWDEFAULT);
+        ::SetWindowPos(m_Impl->Handle(), nullptr, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER);
     }
 
     UI::DialogResult Form::ShowDialog()
@@ -266,9 +266,10 @@ namespace Borg::UI
 
     Ref<Form> Form::CreateFrom(const UI::Handle &handle)
     {
-        Ref<Form> form = CreateRef<Form>();
-        form->m_Handle = handle;
-        return form;
+        return nullptr;
+        // Ref<Form> form = CreateRef<Form>();
+        // form->m_Handle = handle;
+        // return form;
     }
 
     void Form::onClosed(const UI::FormClosedEventArgs &e)
@@ -276,20 +277,22 @@ namespace Borg::UI
         // TODO: emit FormClosed Events.
     }
 
-    UI::Message::Result Form::onMessage(const UI::Message &message)
+    void Form::onMessage(UI::Message &message)
     {
         switch (message.Msg)
         {
         case WM_CLOSE:
             // TODO: process onClosing()
             onClosed({});
-            ::DestroyWindow(m_Handle);
-            return 0;
+            ::DestroyWindow(m_Impl->Handle());
+            message.Result = 0;
+            return;
         case WM_DESTROY:
             PostQuitMessage(0);
-            return 0;
+            message.Result = 0;
+            return;
         }
 
-        return Control::onMessage(message);
+        Control::onMessage(message);
     }
 }

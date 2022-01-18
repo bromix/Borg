@@ -2,84 +2,88 @@
 #include "Borg/Exception.h"
 #include "Borg/UI/DpiHelper.h"
 #include "../Windows.h"
+#include "ControlImpl.h"
 
 namespace Borg::UI
 {
-    Control::~Control(){}
-
-    Control::Control()
+    Control::~Control()
     {
-        // Set the default background color.
-        m_BackgroundColor = Drawing::Color::FromArgb(::GetSysColor(COLOR_WINDOW));
     }
 
-    Control::Control(const Ref<UI::IControl> &parent) : m_InternalParent(parent)
+    Control::Control() : Control(nullptr) {}
+
+    Control::Control(const Ref<UI::IControl> &parent)
     {
-        // Set the default background color.
-        m_BackgroundColor = Drawing::Color::FromArgb(::GetSysColor(COLOR_WINDOW));
+        m_Impl = CreateRef<ControlImpl>();
+        m_Impl->OnMessage += [this](auto &message)
+        {
+            onMessage(message);
+        };
+        m_Impl->m_InternalParent = parent;
     }
 
     UI::Handle Control::Handle() const
     {
-        return m_Handle;
+        return m_Impl->Handle();
     }
 
     void Control::SetText(const String &text)
     {
-        ::SetWindowTextW(m_Handle, Encoding::Convert<WideCharBuffer>(text));
+        ::SetWindowTextW(m_Impl->Handle(), Encoding::Convert<WideCharBuffer>(text));
     }
 
     Ref<UI::IControl> Control::GetParent() const
     {
-        return m_InternalParent.lock();
+        return m_Impl->m_InternalParent.lock();
     }
 
     int Control::DeviceDpi() const
     {
-        Ref<UI::IControl> thisControl = std::const_pointer_cast<UI::IControl>(shared_from_this());
-        return DpiHelper::FromControl(thisControl).DeviceDpi();
+        return -1;
+        // Ref<UI::IControl> thisControl = std::const_pointer_cast<UI::IControl>(shared_from_this());
+        // return DpiHelper::FromControl(thisControl).DeviceDpi();
     }
 
     void Control::BringToFront()
     {
-        ::BringWindowToTop(m_Handle);
+        ::BringWindowToTop(m_Impl->Handle());
     }
 
     bool Control::IsEnabled() const
     {
-        return ::IsWindowEnabled(m_Handle) == TRUE;
+        return ::IsWindowEnabled(m_Impl->Handle()) == TRUE;
     }
 
     void Control::SetEnabled(bool enabled)
     {
-        ::EnableWindow(m_Handle, enabled ? TRUE : FALSE);
+        ::EnableWindow(m_Impl->Handle(), enabled ? TRUE : FALSE);
     }
 
     bool Control::IsVisible() const
     {
-        return ::IsWindowVisible(m_Handle) == TRUE;
+        return ::IsWindowVisible(m_Impl->Handle()) == TRUE;
     }
 
     void Control::SetVisible(bool visible)
     {
-        ::ShowWindow(m_Handle, SW_SHOWDEFAULT);
+        ::ShowWindow(m_Impl->Handle(), SW_SHOWDEFAULT);
     }
 
     void Control::SetBackColor(const Drawing::Color &color)
     {
-        m_BackgroundColor = color;
+        m_Impl->m_BackgroundColor = color;
         Invalidate();
     }
 
     Drawing::Color Control::GetBackColor() const
     {
-        return m_BackgroundColor;
+        return m_Impl->m_BackgroundColor;
     }
 
     Drawing::Rectangle Control::GetBounds() const
     {
         RECT rc{0};
-        if (::GetWindowRect(m_Handle, &rc) != TRUE)
+        if (::GetWindowRect(m_Impl->Handle(), &rc) != TRUE)
             throw InvalidOperationException("::GetWindowRect did not return TRUE.");
 
         return Drawing::Rectangle(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top);
@@ -92,13 +96,13 @@ namespace Borg::UI
 
     void Control::SetSize(const Drawing::Size &size)
     {
-        ::SetWindowPos(m_Handle, nullptr, 0, 0, size.Width, size.Height, SWP_NOMOVE | SWP_NOREPOSITION);
+        ::SetWindowPos(m_Impl->Handle(), nullptr, 0, 0, size.Width, size.Height, SWP_NOMOVE | SWP_NOREPOSITION);
     }
 
     Drawing::Rectangle Control::GetClientRectangle() const
     {
         RECT rc{0};
-        if (::GetClientRect(m_Handle, &rc) != TRUE)
+        if (::GetClientRect(m_Impl->Handle(), &rc) != TRUE)
             throw InvalidOperationException("::GetClientRect did not return TRUE.");
 
         return Drawing::Rectangle(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top);
@@ -116,20 +120,21 @@ namespace Borg::UI
 
     void Control::SetLocation(const Drawing::Point &point)
     {
-        ::SetWindowPos(m_Handle, nullptr, point.X, point.Y, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
+        ::SetWindowPos(m_Impl->Handle(), nullptr, point.X, point.Y, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
     }
 
     void Control::Invalidate()
     {
         if (IsVisible())
-            ::RedrawWindow(m_Handle, nullptr, nullptr, RDW_ERASE | RDW_INVALIDATE);
+            ::RedrawWindow(m_Impl->Handle(), nullptr, nullptr, RDW_ERASE | RDW_INVALIDATE);
     }
 
     Ref<IControl> Control::CreateFrom(const UI::Handle &handle)
     {
-        Ref<Control> control = CreateRef<Control>();
-        control->m_Handle = handle;
-        return control;
+        return nullptr;
+        // Ref<Control> control = CreateRef<Control>();
+        // control->m_Handle = handle;
+        // return control;
     }
 
     void Control::onSizeChanged(EventArgs e)
@@ -138,7 +143,7 @@ namespace Borg::UI
         OutputDebugStringA("onSizeChanged\n");
     }
 
-    UI::Message::Result Control::onMessage(const UI::Message &message)
+    void Control::onMessage(UI::Message &message)
     {
         switch (message.Msg)
         {
@@ -146,10 +151,11 @@ namespace Borg::UI
         {
             auto hdc = (HDC)message.WParam;
             RECT rc;
-            GetClientRect(m_Handle, &rc);
+            GetClientRect(m_Impl->Handle(), &rc);
             HBRUSH brush = ::CreateSolidBrush(GetBackColor().ToBgr());
             FillRect(hdc, &rc, brush);
-            return 1;
+            message.Result = 1;
+            return;
         }
         case WM_ENTERSIZEMOVE:
             OutputDebugStringA("WM_ENTERSIZEMOVE\n");
@@ -177,6 +183,7 @@ namespace Borg::UI
         }
         break;
         }
-        return DefWindowProcW(message.Handle, message.Msg, message.WParam, message.LParam);
+
+        message.Result = DefWindowProcW(message.Handle, message.Msg, message.WParam, message.LParam);
     }
 }

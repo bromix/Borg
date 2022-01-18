@@ -1,0 +1,25 @@
+#pragma once
+#include "Borg/UI/Handle.h"
+#include "Borg/UI/Message.h"
+#include "Borg/Events.h"
+#include "CreateParams.h"
+
+namespace Borg::UI::Windows
+{
+    class NativeWindow
+    {
+    public:
+        ~NativeWindow();
+        UI::Handle Handle() const;
+
+        void CreateHandle(const CreateParams &cp);
+        LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+        Borg::Event<Message &> OnMessage;
+    private:
+        void registerWindowClass(const CreateParams &cp);
+        void destroyHandle();
+        void releaseHandle();
+        UI::Handle m_Handle = nullptr;
+    };
+}
