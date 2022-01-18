@@ -12,6 +12,9 @@ namespace Borg::UI
         int DeviceDpi() const;
         double LogicalToDeviceUnitsScalingFactor() const;
 
+        template <typename T>
+        static T Scale(int deviceDpi, const T &value);
+
     private:
         DpiHelper() = default;
         double m_LogicalDpi = 96.0;
