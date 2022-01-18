@@ -25,6 +25,7 @@ namespace Borg::UI
         static Ref<Form> CreateFrom(const UI::Handle &handle);
 
     protected:
+        void onClosed(const UI::FormClosedEventArgs &e) override;
         UI::Message::Result onMessage(const UI::Message &message) override;
     };
 }

@@ -265,12 +265,18 @@ namespace Borg::UI
         return form;
     }
 
+    void Form::onClosed(const UI::FormClosedEventArgs &e)
+    {
+        // TODO: emit FormClosed Events.
+    }
+
     UI::Message::Result Form::onMessage(const UI::Message &message)
     {
         switch (message.Msg)
         {
         case WM_CLOSE:
             ::DestroyWindow(m_Handle);
+            onClosed({});
             return 0;
         case WM_DESTROY:
             PostQuitMessage(0);

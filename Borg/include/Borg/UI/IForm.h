@@ -1,5 +1,6 @@
 #pragma once
 #include "Borg/Ref.h"
+#include "EventArgs.h"
 #include "DialogResult.h"
 #include "IControl.h"
 
@@ -125,5 +126,13 @@ namespace Borg::UI
          * @return DialogResult
          */
         virtual DialogResult ShowDialog() = 0;
+
+    protected:
+        /**
+         * @brief Raises the FormClosed event.
+         * 
+         * @param e 
+         */
+        virtual void onClosed(const UI::FormClosedEventArgs &e) = 0;
     };
 }
