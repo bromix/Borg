@@ -1,5 +1,6 @@
 #include "Borg/UI/Control.h"
 #include "Borg/Exception.h"
+#include "Borg/UI/DpiHelper.h"
 #include "../Windows.h"
 
 namespace Borg::UI
@@ -33,15 +34,8 @@ namespace Borg::UI
 
     int Control::DeviceDpi() const
     {
-        HMONITOR monitor = ::MonitorFromWindow(m_Handle, MONITOR_DEFAULTTONEAREST);
-        if (monitor == nullptr)
-            return 96;
-
-        UINT x, y;
-        if (::GetDpiForMonitor(monitor, MDT_DEFAULT, &x, &y) == S_OK)
-            return x;
-
-        return 96;
+        Ref<UI::IControl> thisControl = std::const_pointer_cast<UI::IControl>(shared_from_this());
+        return DpiHelper::FromControl(thisControl).DeviceDpi();
     }
 
     void Control::BringToFront()
