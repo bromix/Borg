@@ -39,9 +39,8 @@ namespace Borg::UI
 
     int Control::DeviceDpi() const
     {
-        return -1;
-        // Ref<UI::IControl> thisControl = std::const_pointer_cast<UI::IControl>(shared_from_this());
-        // return DpiHelper::FromControl(thisControl).DeviceDpi();
+        Ref<UI::IControl> thisControl = std::const_pointer_cast<UI::IControl>(shared_from_this());
+        return DpiHelper::FromControl(thisControl).DeviceDpi();
     }
 
     void Control::BringToFront()
