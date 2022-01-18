@@ -7,6 +7,7 @@ namespace Borg::UI
     class Form : public Control, public IForm
     {
     public:
+        ~Form();
         Form();
         Form(const Ref<UI::IForm> &owner);
         Ref<IForm> GetOwner() const override;

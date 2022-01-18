@@ -26,6 +26,8 @@ namespace Borg::UI
     constexpr const long BORG_FORMBORDERSTYLE_NONE_STYLE = WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_OVERLAPPED | WS_MAXIMIZEBOX;
     constexpr const long BORG_FORMBORDERSTYLE_NONE_EXSTYLE = 0;
 
+    Form::~Form(){}
+
     Form::Form() : Form(nullptr) {}
 
     Form::Form(const Ref<UI::IForm> &owner) : Control(owner)

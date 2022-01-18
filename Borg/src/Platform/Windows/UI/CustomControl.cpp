@@ -3,6 +3,8 @@
 
 namespace Borg::UI
 {
+    CustomControl::~CustomControl() {}
+
     CustomControl::CustomControl(const String &className) : UI::Control()
     {
     }

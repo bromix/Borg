@@ -6,6 +6,7 @@ namespace Borg::UI
     class CustomControl : public UI::Control
     {
     public:
+        ~CustomControl();
         CustomControl(const String &className);
         CustomControl(const Ref<UI::IControl> &parent, const String &className);
     };

@@ -5,6 +5,8 @@
 
 namespace Borg::UI
 {
+    Control::~Control(){}
+
     Control::Control()
     {
         // Set the default background color.
