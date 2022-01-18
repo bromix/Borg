@@ -200,7 +200,10 @@ namespace Borg::UI
     {
         auto parent = GetParent();
         if (!parent)
+        {
             CenterToScreen();
+            return;
+        }
 
         auto parentRect = parent->GetBounds();
         auto thisSize = GetSize();
@@ -213,7 +216,8 @@ namespace Borg::UI
 
     void Form::CenterToScreen()
     {
-        throw NotImplementedException();
+        // FIXME:
+        //throw NotImplementedException();
     }
 
     void Form::SetShowInTaskbar(bool show)
