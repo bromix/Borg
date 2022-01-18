@@ -277,12 +277,13 @@ namespace Borg::UI
         switch (message.Msg)
         {
         case WM_CLOSE:
-            ::DestroyWindow(m_Handle);
+            // TODO: process onClosing()
             onClosed({});
+            ::DestroyWindow(m_Handle);
             return 0;
         case WM_DESTROY:
             PostQuitMessage(0);
-            break;
+            return 0;
         }
 
         return Control::onMessage(message);

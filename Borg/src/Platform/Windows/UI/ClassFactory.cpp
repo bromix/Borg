@@ -91,8 +91,10 @@ namespace Borg::UI
             ::SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(nullptr));
             if (wndProxy)
             {
+                (*wndProxy)(hWnd, message, wParam, lParam);
                 delete wndProxy;
                 wndProxy = nullptr;
+                return 0;
             }
         }
 
