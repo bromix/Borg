@@ -40,7 +40,7 @@ namespace Borg::UI::Windows
     {
         if(OnMessage)
         {
-            Message msg(hWnd, uMsg, wParam, lParam);
+            Message msg = {hWnd, uMsg, wParam, lParam};
             OnMessage(msg);
             return msg.Result;
         }

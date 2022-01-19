@@ -10,17 +10,14 @@ namespace Borg::UI
 #ifdef _WIN32
         using ResultType = LRESULT;
 
-        Message(const UI::Handle &handle, UINT msg, WPARAM wParam, LPARAM lParam);
-
-        UI::Handle Handle = nullptr;
-        UINT Msg = 0;
-        WPARAM WParam;
-        LPARAM LParam;
-        Message::ResultType Result = 0;
+        const UI::Handle Handle = nullptr;
+        const UINT Msg = 0;
+        const WPARAM WParam;
+        const LPARAM LParam;
+        Message::ResultType Result;
 #else
+        using ResultType = void;
         Message() = default;
-
-        using Result = void;
 #endif
     };
 }
