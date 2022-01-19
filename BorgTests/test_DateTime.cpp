@@ -233,6 +233,7 @@ TEST(DateTime, Parse)
     ASSERT_EQ(22, dateTime.Hour());
     ASSERT_EQ(59, dateTime.Minute());
     ASSERT_EQ(59, dateTime.Second());
+    ASSERT_EQ(DateTimeKindEnum::Utc, dateTime.Kind());
 
     dateTime = DateTime::Parse("2021-02-01T02:09:09Z");
     ASSERT_EQ(2021,  dateTime.Year());
@@ -241,4 +242,15 @@ TEST(DateTime, Parse)
     ASSERT_EQ(2, dateTime.Hour());
     ASSERT_EQ(9, dateTime.Minute());
     ASSERT_EQ(9, dateTime.Second());
+    ASSERT_EQ(DateTimeKindEnum::Utc, dateTime.Kind());
+
+    dateTime = DateTime::Parse("2022-01-19T19:13:34.305Z");
+    ASSERT_EQ(2022,  dateTime.Year());
+    ASSERT_EQ(1, dateTime.Month());
+    ASSERT_EQ(19, dateTime.Day());
+    ASSERT_EQ(19, dateTime.Hour());
+    ASSERT_EQ(13, dateTime.Minute());
+    ASSERT_EQ(34, dateTime.Second());
+    ASSERT_EQ(305, dateTime.Millisecond());
+    ASSERT_EQ(DateTimeKindEnum::Utc, dateTime.Kind());
 }

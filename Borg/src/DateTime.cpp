@@ -329,7 +329,7 @@ namespace Borg
 
     DateTime DateTime::Parse(const String &input)
     {
-        if(input.IsNull())
+        if (input.IsNull())
             throw ArgumentNullException("input");
 
         int year;
@@ -338,13 +338,26 @@ namespace Borg
         int hour;
         int minute;
         int second;
+        int milliSecond;
         char zulu;
         CharBuffer cb = Encoding::Convert<CharBuffer>(input);
-        int ret = std::sscanf(cb, "%d-%d-%dT%d:%d:%d%c", &year, &month, &day, &hour, &minute, &second, &zulu);
-        if (ret != 7)
+        int ret = std::sscanf(cb, "%d-%d-%dT%d:%d:%d.%d%c", &year, &month, &day, &hour, &minute, &second, &milliSecond, &zulu);
+
+        if (ret != 8)
+        {
+            milliSecond = 0;
+            ret = std::sscanf(cb, "%d-%d-%dT%d:%d:%d%c", &year, &month, &day, &hour, &minute, &second, &zulu);
+        }
+
+        if (ret < 7)
             throw FormatException("Input does not contain a valid string representation of a date and time.");
 
-        return DateTime(year, month, day, hour, minute, second, zulu == 'Z');
+        // We have to create the datetime as local, so that no timezone conversion is happening.
+        auto result = DateTime(year, month, day, hour, minute, second, milliSecond, DateTimeKindEnum::Local);
+
+        // At this point we can update the kind of datetime.
+        result.m_Kind = (zulu == 'Z') ? DateTimeKindEnum::Utc : DateTimeKindEnum::Local;
+        return result;
     }
 
     DateTime DateTime::operator+(const TimeSpan &timespan)
