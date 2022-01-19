@@ -45,7 +45,8 @@ namespace Borg::UI
 
     void Control::BringToFront()
     {
-        ::BringWindowToTop(m_Impl->Handle());
+        if(IsEnabled())
+            ::BringWindowToTop(m_Impl->Handle());
     }
 
     bool Control::IsEnabled() const

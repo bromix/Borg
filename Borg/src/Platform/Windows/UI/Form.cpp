@@ -198,7 +198,7 @@ namespace Borg::UI
 
     void Form::CenterToParent()
     {
-        auto parent = GetParent();
+        auto parent = this->GetParent();
         if (!parent)
         {
             CenterToScreen();
@@ -274,6 +274,8 @@ namespace Borg::UI
     void Form::onClosed(const UI::FormClosedEventArgs &e)
     {
         // TODO: emit FormClosed Events.
+        if(auto parent = this->GetOwner())
+            parent->BringToFront();
     }
 
     void Form::onMessage(UI::Message &message)
