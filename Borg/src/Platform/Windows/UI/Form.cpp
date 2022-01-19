@@ -266,6 +266,9 @@ namespace Borg::UI
 
     Ref<Form> Form::CreateFrom(const UI::Handle &handle)
     {
+        if (!handle)
+            return nullptr;
+
         Ref<Form> form = CreateRef<Form>();
         form->m_Impl->WrapHandle(handle);
         return form;
