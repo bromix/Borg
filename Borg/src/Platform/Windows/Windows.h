@@ -7,3 +7,7 @@
 #include <Lmcons.h>
 #include <wininet.h>
 #include <commctrl.h>
+
+// prevent name conflict with Path::GetTempFileName
+#undef GetTempFileName
+#undef GetTempPath
