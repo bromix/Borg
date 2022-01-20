@@ -182,6 +182,14 @@ TEST(DateTime, SubtractDate)
     ASSERT_EQ(0, diff5.Seconds());
 }
 
+TEST(DateTime, SubtractDate2)
+{
+    auto date1 = DateTime::Parse("2022-01-19T19:13:34.305Z");
+    auto date = date1.ToLocalTime();
+    auto date2 = DateTime::FromUnixEpochMilliseconds(1642616014000);
+    auto diff = date1 - date2;
+}
+
 TEST(DateTime, Compare)
 {
     auto date1 = DateTime::UtcNow();
