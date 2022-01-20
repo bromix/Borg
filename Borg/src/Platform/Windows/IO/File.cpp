@@ -1,7 +1,7 @@
-#include "Borg/System/IO/File.h"
-#include "../../Windows.h"
+#include "Borg/IO/File.h"
+#include "../Windows.h"
 
-namespace Borg::System::IO
+namespace Borg::IO
 {
     void File::Move(const Borg::String &sourceFileName, const Borg::String &destFileName)
     {

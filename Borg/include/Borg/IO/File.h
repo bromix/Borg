@@ -1,7 +1,7 @@
 #pragma once
 #include "Borg/String.h"
 
-namespace Borg::System::IO
+namespace Borg::IO
 {
     class File final
     {
