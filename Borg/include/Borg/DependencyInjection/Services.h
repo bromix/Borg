@@ -2,29 +2,37 @@
 #include <optional>
 #include "Borg/Types.h"
 #include "ServiceCollection.h"
+#include "DetailServices.h"
 
 namespace Borg::DependencyInjection
 {
     class Services final
     {
     public:
-        using ConfigureType = Action<ServiceCollection &>;
+        using ConfigureType = Detail::Services::ConfigureType;
+
         Services() = delete;
-        static void Configure(Services::ConfigureType configure);
+
+        static void Configure(Services::ConfigureType configure)
+        {
+            if (m_Services)
+                throw InvalidOperationException("Services::Configure can only be called once.");
+
+            m_Services = CreateRef<Detail::Services>(configure);
+        }
 
         template <typename ServiceType>
-        static Ref<ServiceType> GetService() noexcept
+        static Ref<ServiceType> GetService()
         {
-            if(!g_ServiceProvider)
-            {
-                g_Configure(*g_ServiceCollection.get());
-                g_ServiceProvider = g_ServiceCollection->BuildServiceProvider();
-            }
-            return g_ServiceProvider->GetService<ServiceType>();
+            if(!m_Services)
+                throw InvalidOperationException("Service::Configure was not called");
+
+            return m_Services->GetService<ServiceType>();
         }
+
     private:
-        static Ref<ServiceCollection> g_ServiceCollection;
-        static Services::ConfigureType g_Configure;
-        static Ref<ServiceProvider> g_ServiceProvider;
+        static Ref<Detail::Services> m_Services;
     };
+
+    Ref<Detail::Services> Services::m_Services;
 }
