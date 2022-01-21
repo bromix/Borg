@@ -1,6 +1,19 @@
 #pragma once
 #include "String.h"
 
+#ifdef _WIN32
+/*
+To avoid conflicts with the defines of Windows, we have
+undefine some of the windows functions. These functions
+only forward functions for ANSI or UNICODE.
+
+For example:
+#define GetTempFileName  GetTempFileNameW
+*/
+#undef GetTempPath
+#undef GetTempFileName
+#endif
+
 namespace Borg
 {
     class Path final
