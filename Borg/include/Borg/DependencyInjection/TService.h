@@ -1,4 +1,5 @@
 #pragma once
+#include "IService.h"
 
 namespace Borg::DependencyInjection
 {

@@ -24,7 +24,7 @@ namespace Borg::DependencyInjection
         {
         }
 
-        ServiceLifetime Lifetime() const;
+        inline ServiceLifetime Lifetime() const;
 
     private:
         /**

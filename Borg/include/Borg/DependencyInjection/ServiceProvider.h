@@ -17,9 +17,9 @@ namespace Borg::DependencyInjection
         ServiceMap m_Services;
     };
 
-    ServiceProvider::ServiceProvider(const ServiceMap &serviceMap) : m_Services(serviceMap) {}
+    inline ServiceProvider::ServiceProvider(const ServiceMap &serviceMap) : m_Services(serviceMap) {}
 
-    ServiceProvider::~ServiceProvider()
+    inline ServiceProvider::~ServiceProvider()
     {
         for (auto service : m_Services)
         {
