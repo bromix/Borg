@@ -38,7 +38,4 @@ namespace Borg::DependencyInjection
         static std::mutex m_ServicesLock;
         static Ref<Detail::Services> m_Services;
     };
-
-    std::mutex Services::m_ServicesLock;
-    Ref<Detail::Services> Services::m_Services;
 }
