@@ -15,6 +15,8 @@ namespace Borg::DependencyInjection
 
         static void Configure(Services::ConfigureType configure)
         {
+            std::lock_guard<std::mutex> lock(m_ServicesLock);
+
             if (m_Services)
                 throw InvalidOperationException("Services::Configure can only be called once.");
 
@@ -24,15 +26,19 @@ namespace Borg::DependencyInjection
         template <typename ServiceType>
         static Ref<ServiceType> GetService()
         {
-            if(!m_Services)
+            std::lock_guard<std::mutex> lock(m_ServicesLock);
+
+            if (!m_Services)
                 throw InvalidOperationException("Service::Configure was not called");
 
             return m_Services->GetService<ServiceType>();
         }
 
     private:
+        static std::mutex m_ServicesLock;
         static Ref<Detail::Services> m_Services;
     };
 
+    std::mutex Services::m_ServicesLock;
     Ref<Detail::Services> Services::m_Services;
 }
