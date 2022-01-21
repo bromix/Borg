@@ -20,7 +20,7 @@ namespace Borg::DependencyInjection
          *
          * @return Ref<ServiceProvider>
          */
-        Ref<ServiceProvider> BuildServiceProvider();
+        inline Ref<ServiceProvider> BuildServiceProvider();
 
         /**
          * @brief Adds a singleton service of the type specified in ServiceType with a callback to get an instance of the service.
