@@ -22,13 +22,13 @@ namespace Borg::Drawing
         /**
          * @brief Gets or sets the x-coordinate of this Point.
          */
-        int32_t X = 0;
+        int32_t X{0};
 
         /**
          * @brief Gets or sets the y-coordinate of this Point.
          * 
          */
-        int32_t Y = 0;
+        int32_t Y{0};
 
         bool operator==(const Drawing::Point &rhs) const;
         bool operator!=(const Drawing::Point &rhs) const;

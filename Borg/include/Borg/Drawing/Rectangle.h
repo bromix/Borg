@@ -8,6 +8,8 @@ namespace Borg::Drawing
     class Rectangle : public virtual Point, public virtual Size
     {
     public:
+        Rectangle() = default;
+
         /**
          * @brief Initializes a new instance of the Rectangle class with the specified location and size.
          *
@@ -31,6 +33,8 @@ namespace Borg::Drawing
          * @return Drawing::Size
          */
         Drawing::Size GetSize() const;
+
+        Drawing::Rectangle CenterTo(const Drawing::Rectangle &parent) const;
 
         bool operator==(const Drawing::Rectangle &rhs) const;
         bool operator!=(const Drawing::Rectangle &rhs) const;
