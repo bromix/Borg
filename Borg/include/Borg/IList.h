@@ -1,30 +1,14 @@
 #pragma once
-#include <vector>
+#include "ICollection.h"
 
 namespace Borg
 {
     template <typename T>
-    class IList
+    class IList : public virtual ICollection<T>
     {
     public:
-        using Iterator = typename std::vector<T>::iterator;
-
         virtual ~IList() = default;
 
         virtual void Add(const T &item) = 0;
-
-        Iterator begin() noexcept
-        {
-            return doBegin();
-        }
-
-        Iterator end() noexcept
-        {
-            return doEnd();
-        }
-
-    protected:
-        virtual Iterator doBegin() = 0;
-        virtual Iterator doEnd() = 0;
     };
 }
