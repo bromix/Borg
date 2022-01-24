@@ -28,7 +28,7 @@ namespace Borg::UI
     constexpr const long BORG_FORMBORDERSTYLE_NONE_STYLE = WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_OVERLAPPED | WS_MAXIMIZEBOX;
     constexpr const long BORG_FORMBORDERSTYLE_NONE_EXSTYLE = 0;
 
-    Form::~Form(){}
+    Form::~Form() {}
 
     Form::Form() : Form(nullptr) {}
 
@@ -48,7 +48,7 @@ namespace Borg::UI
         cp.Style = WS_OVERLAPPED;
 
         m_Impl->CreateHandle(cp);
-        
+
         // Set default border style
         SetFormBorderStyle(UI::FormBorderStyle::Sizable);
 
@@ -206,26 +206,16 @@ namespace Borg::UI
             return;
         }
 
-        auto parentRect = parent->GetBounds();
-        auto thisSize = GetSize();
-
-        int32_t x = parentRect.X + (parentRect.Width - thisSize.Width) / 2;
-        int32_t y = parentRect.Y + (parentRect.Height - thisSize.Height) / 2;
-
-        SetLocation({x, y});
+        auto centeredRect = this->GetBounds().CenterTo(parent->GetBounds());
+        SetLocation({centeredRect.X, centeredRect.Y});
     }
 
     void Form::CenterToScreen()
     {
         auto primaryMonitor = Screen::FromHandle(this->Handle());
 
-        auto monitorRect = primaryMonitor.GetBounds();
-        auto thisSize = GetSize();
-
-        int32_t x = monitorRect.X + (monitorRect.Width - thisSize.Width) / 2;
-        int32_t y = monitorRect.Y + (monitorRect.Height - thisSize.Height) / 2;
-
-        SetLocation({x, y});
+        auto centeredRect = this->GetBounds().CenterTo(primaryMonitor.GetBounds());
+        SetLocation({centeredRect.X, centeredRect.Y});
     }
 
     void Form::SetShowInTaskbar(bool show)
@@ -285,7 +275,7 @@ namespace Borg::UI
     void Form::onClosed(const UI::FormClosedEventArgs &e)
     {
         // TODO: emit FormClosed Events.
-        if(auto parent = this->GetOwner())
+        if (auto parent = this->GetOwner())
             parent->BringToFront();
     }
 
