@@ -34,6 +34,12 @@ namespace Borg::Drawing
          */
         Drawing::Size GetSize() const;
 
+        /**
+         * @brief Centers the position of the Rectangle within the bounds of the parent Rectangle.
+         * 
+         * @param parent 
+         * @return Drawing::Rectangle 
+         */
         Drawing::Rectangle CenterTo(const Drawing::Rectangle &parent) const;
 
         bool operator==(const Drawing::Rectangle &rhs) const;

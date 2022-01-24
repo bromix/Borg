@@ -41,3 +41,25 @@ TEST(DrawingRectangle, GetSize)
     ASSERT_EQ(100, sz.Width);
     ASSERT_EQ(200, sz.Height);
 }
+
+TEST(DrawingRectangle, CenterToBiggerParent)
+{
+    Rectangle parentRC = Rectangle(10, 20, 100, 200);
+    Rectangle childRC = Rectangle(10, 20, 50, 50);
+    Rectangle centeredRC = childRC.CenterTo(parentRC);
+    ASSERT_EQ(35, centeredRC.X);
+    ASSERT_EQ(95, centeredRC.Y);
+    ASSERT_EQ(50, centeredRC.Width);
+    ASSERT_EQ(50, centeredRC.Height);
+}
+
+TEST(DrawingRectangle, CenterToSmallerParent)
+{
+    Rectangle parentRC = Rectangle(10, 20, 50, 50);
+    Rectangle childRC = Rectangle(10, 20, 100, 200);
+    Rectangle centeredRC = childRC.CenterTo(parentRC);
+    ASSERT_EQ(-15, centeredRC.X);
+    ASSERT_EQ(-55, centeredRC.Y);
+    ASSERT_EQ(100, centeredRC.Width);
+    ASSERT_EQ(200, centeredRC.Height);
+}
