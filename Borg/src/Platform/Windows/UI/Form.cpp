@@ -1,5 +1,6 @@
 #include "Borg/UI/Form.h"
 #include "Borg/Exception.h"
+#include "Borg/Screen.h"
 #include "Borg/Types.h"
 #include "ControlImpl.h"
 #include "CreateParams.h"
@@ -216,8 +217,15 @@ namespace Borg::UI
 
     void Form::CenterToScreen()
     {
-        // FIXME:
-        //throw NotImplementedException();
+        auto primaryMonitor = Screen::FromHandle(this->Handle());
+
+        auto monitorRect = primaryMonitor.GetBounds();
+        auto thisSize = GetSize();
+
+        int32_t x = monitorRect.X + (monitorRect.Width - thisSize.Width) / 2;
+        int32_t y = monitorRect.Y + (monitorRect.Height - thisSize.Height) / 2;
+
+        SetLocation({x, y});
     }
 
     void Form::SetShowInTaskbar(bool show)
