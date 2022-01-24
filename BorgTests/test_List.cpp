@@ -6,14 +6,14 @@ using namespace Borg;
 
 TEST(List, Add)
 {
-    Ref<IList2<int>> numbers = CreateRef<List2<int>>();
+    Ref<IList<int>> numbers = CreateRef<List<int>>();
     numbers->Add(10);
 }
 
 TEST(List, ForLoop)
 {
     //Ref<IList2<int>> numbers = CreateRef<List2<int>>();
-    auto numbers = CreateRef<List2<int>>();
+    auto numbers = CreateRef<List<int>>();
     numbers->Add(10);
     numbers->Add(1);
     numbers->Add(11);

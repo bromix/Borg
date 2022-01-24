@@ -18,16 +18,16 @@ namespace Borg
         return result;
     }
 
-    IList<Screen> Screen::GetAllScreens()
+    Ref<IList<Screen>> Screen::GetAllScreens()
     {
-        List<Screen> screens;
+        Ref<IList<Screen>> screens = CreateRef<List<Screen>>();
 
         auto monitors = getMonitors();
 
         for (auto monitor : monitors)
         {
             Screen screen = Win32::Screen::FromHMonitor(monitor);
-            screens.push_back(screen);
+            screens->Add(screen);
         }
 
         return screens;

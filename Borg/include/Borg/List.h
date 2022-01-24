@@ -5,17 +5,7 @@
 namespace Borg
 {
     template <typename T>
-    class IList : public std::vector<T>
-    {
-    };
-
-    template <typename T>
-    class List : public IList<T>
-    {
-    };
-
-    template <typename T>
-    class List2 : public virtual IList2<T>
+    class List : public virtual IList<T>
     {
     public:
         void Add(const T &item) override

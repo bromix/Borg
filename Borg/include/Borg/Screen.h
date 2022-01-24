@@ -43,7 +43,7 @@ namespace Borg
          * 
          * @return IList<Screen> 
          */
-        static IList<Screen> GetAllScreens();
+        static Ref<IList<Screen>> GetAllScreens();
 
         /**
          * @brief Gets the primary display.

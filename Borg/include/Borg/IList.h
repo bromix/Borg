@@ -4,12 +4,12 @@
 namespace Borg
 {
     template <typename T>
-    class IList2
+    class IList
     {
     public:
         using Iterator = typename std::vector<T>::iterator;
 
-        virtual ~IList2() = default;
+        virtual ~IList() = default;
 
         virtual void Add(const T &item) = 0;
 
