@@ -1,4 +1,5 @@
-#include "Borg/Screen.h"
+#include "Win32Screen.h"
+#include "Windows.h"
 #include <vector>
 
 namespace Borg
@@ -17,29 +18,19 @@ namespace Borg
         return result;
     }
 
-    Screen Screen::PrimaryScreen()
+    IList<Screen> Screen::GetAllScreens()
     {
+        List<Screen> screens;
+
         auto monitors = getMonitors();
 
         for (auto monitor : monitors)
         {
-            MONITORINFOEXW monitorinfoex{};
-            monitorinfoex.cbSize = sizeof(MONITORINFOEXW);
-            if (::GetMonitorInfoW(monitor, &monitorinfoex) != TRUE)
-                throw InvalidOperationException("Failed to get monitor information.");
-            bool isPrimary = (monitorinfoex.dwFlags & MONITORINFOF_PRIMARY);
-            if (isPrimary)
-            {
-                Screen screen;
-                screen.m_IsPrimary = isPrimary;
-                screen.m_DeviceName = monitorinfoex.szDevice;
-                screen.m_Bounds = {monitorinfoex.rcMonitor.left, monitorinfoex.rcMonitor.top, monitorinfoex.rcMonitor.right, monitorinfoex.rcMonitor.bottom};
-                screen.m_WorkingArea = {monitorinfoex.rcWork.left, monitorinfoex.rcWork.top, monitorinfoex.rcWork.right, monitorinfoex.rcWork.bottom};
-                return screen;
-            }
+            Screen screen = Win32::Screen::FromHMonitor(monitor);
+            screens.push_back(screen);
         }
 
-        throw InvalidOperationException("Failed to get primary monitor.");
+        return screens;
     }
 
     Screen Screen::FromControl(const UI::IControl &control)
@@ -53,6 +44,26 @@ namespace Borg
         if (hMonitor == nullptr)
             throw InvalidOperationException("MonitorFromWindow failed");
 
-        throw InvalidOperationException("Failed to get monitor from handle.");
+        return Win32::Screen::FromHMonitor(hMonitor);
+    }
+
+    Screen Win32::Screen::FromHMonitor(HMONITOR monitor)
+    {
+        MONITORINFOEXW monitorinfoex{};
+        monitorinfoex.cbSize = sizeof(MONITORINFOEXW);
+
+        if (::GetMonitorInfoW(monitor, &monitorinfoex) != TRUE)
+            throw InvalidOperationException("Failed to get monitor information.");
+        return Win32::Screen::FromMonitorInfo(monitorinfoex);
+    }
+
+    Screen Win32::Screen::FromMonitorInfo(const MONITORINFOEXW &monitorInfo)
+    {
+        Screen screen;
+        screen.m_IsPrimary = monitorInfo.dwFlags & MONITORINFOF_PRIMARY;
+        screen.m_DeviceName = monitorInfo.szDevice;
+        screen.m_Bounds = {monitorInfo.rcMonitor.left, monitorInfo.rcMonitor.top, monitorInfo.rcMonitor.right, monitorInfo.rcMonitor.bottom};
+        screen.m_WorkingArea = {monitorInfo.rcWork.left, monitorInfo.rcWork.top, monitorInfo.rcWork.right, monitorInfo.rcWork.bottom};
+        return screen;
     }
 }

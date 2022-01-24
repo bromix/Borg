@@ -1,11 +1,12 @@
 #pragma once
+#include "Borg/List.h"
 #include "Borg/String.h"
 #include "Borg/Ref.h"
 #include "Borg/UI/IControl.h"
 
 namespace Borg
 {
-    class Screen final
+    class Screen
     {
     public:
         /**
@@ -38,6 +39,13 @@ namespace Borg
         Drawing::Rectangle GetWorkingArea() const;
 
         /**
+         * @brief Gets a list of all displays on the system.
+         * 
+         * @return IList<Screen> 
+         */
+        static IList<Screen> GetAllScreens();
+
+        /**
          * @brief Gets the primary display.
          *
          * @return Ref<Screen>
@@ -60,7 +68,8 @@ namespace Borg
          */
         static Screen FromHandle(const UI::Handle &handle);
 
-    private:
+    protected:
+        int32_t m_DeviceDpi{96};
         Drawing::Rectangle m_Bounds{0, 0, 0, 0};
         Drawing::Rectangle m_WorkingArea{0, 0, 0, 0};
         String m_DeviceName{"DISPLAY"};

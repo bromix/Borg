@@ -21,4 +21,16 @@ namespace Borg
     {
         return m_WorkingArea;
     }
+
+    Screen Screen::PrimaryScreen()
+    {
+        auto allScreens = GetAllScreens();
+        for(auto screen : allScreens)
+        {
+            if(screen.IsPrimary())
+                return screen;
+        }
+
+        throw InvalidOperationException("Failed to get primary monitor.");
+    }
 }
