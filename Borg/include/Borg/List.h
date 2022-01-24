@@ -12,16 +12,28 @@ namespace Borg
         {
             m_List.push_back(item);
         }
+
+        void Clear() override
+        {
+            m_List.clear();
+        }
+
+        int32_t GetCount() const override
+        {
+            return m_List.size();
+        }
+
     protected:
         Iterator doBegin() override
         {
             return m_List.begin();
         }
-        
+
         Iterator doEnd() override
         {
             return m_List.end();
         }
+
     private:
         std::vector<T> m_List;
     };

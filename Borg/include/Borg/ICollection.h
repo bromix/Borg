@@ -1,26 +1,17 @@
 #pragma once
-#include <vector>
+#include "IIterator.h"
 
 namespace Borg
 {
     template <typename T>
-    class ICollection
+    class ICollection : public virtual IIterator<T>
     {
     public:
-        using Iterator = typename std::vector<T>::iterator;
-
-        Iterator begin() noexcept
-        {
-            return doBegin();
-        }
-
-        Iterator end() noexcept
-        {
-            return doEnd();
-        }
-
-    protected:
-        virtual Iterator doBegin() = 0;
-        virtual Iterator doEnd() = 0;
+        /**
+         * @brief Gets the number of elements contained in the ICollection<T>.
+         * 
+         * @return int32_t 
+         */
+        virtual int32_t GetCount() const = 0;
     };
 }
