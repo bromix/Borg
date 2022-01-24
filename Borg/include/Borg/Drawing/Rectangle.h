@@ -16,7 +16,7 @@ namespace Borg::Drawing
          * @param width
          * @param height
          */
-        Rectangle(int32_t x, int32_t y, uint32_t width, uint32_t height);
+        Rectangle(int32_t x, int32_t y, int32_t width, int32_t height);
 
         /**
          * @brief Gets the coordinates of the upper-left corner of this Rectangle structure.
