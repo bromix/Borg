@@ -1,6 +1,5 @@
 #include "Borg/UI/Form.h"
 #include "Borg/Exception.h"
-#include "Borg/Screen.h"
 #include "Borg/Types.h"
 #include "ControlImpl.h"
 #include "CreateParams.h"
@@ -197,27 +196,6 @@ namespace Borg::UI
         throw InvalidOperationException("Could not determine FormBorderStyle.");
     }
 
-    void Form::CenterToParent()
-    {
-        auto parent = this->GetParent();
-        if (!parent)
-        {
-            CenterToScreen();
-            return;
-        }
-
-        auto centeredRect = this->GetBounds().CenterTo(parent->GetBounds());
-        SetLocation({centeredRect.X, centeredRect.Y});
-    }
-
-    void Form::CenterToScreen()
-    {
-        auto primaryMonitor = Screen::FromHandle(this->Handle());
-
-        auto centeredRect = this->GetBounds().CenterTo(primaryMonitor.GetBounds());
-        SetLocation({centeredRect.X, centeredRect.Y});
-    }
-
     void Form::SetShowInTaskbar(bool show)
     {
         auto exStyle = ::GetWindowLongW(m_Impl->Handle(), GWL_EXSTYLE);
@@ -259,7 +237,7 @@ namespace Borg::UI
             ::DispatchMessage(&msg);
         }
 
-        return UI::DialogResult::None;
+        return m_DialogResult;
     }
 
     Ref<Form> Form::CreateFrom(const UI::Handle &handle)
@@ -270,13 +248,6 @@ namespace Borg::UI
         Ref<Form> form = CreateRef<Form>();
         form->m_Impl->WrapHandle(handle);
         return form;
-    }
-
-    void Form::onClosed(const UI::FormClosedEventArgs &e)
-    {
-        // TODO: emit FormClosed Events.
-        if (auto parent = this->GetOwner())
-            parent->BringToFront();
     }
 
     void Form::onMessage(UI::Message &message)

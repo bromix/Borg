@@ -121,6 +121,20 @@ namespace Borg::UI
         virtual void Show() = 0;
 
         /**
+         * @brief Sets the dialog result for the form.
+         * 
+         * @param dialogResult 
+         */
+        virtual void SetDialogResult(UI::DialogResult dialogResult) = 0;
+
+        /**
+         * @brief Gets the dialog result for the form.
+         * 
+         * @return UI::DialogResult 
+         */
+        virtual UI::DialogResult GetDialogResult() const = 0;
+
+        /**
          * @brief Shows the form as a modal dialog box.
          *
          * @return DialogResult

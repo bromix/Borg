@@ -22,10 +22,12 @@ namespace Borg::UI
         void Close() override;
         void Show() override;
         UI::DialogResult ShowDialog() override;
-
+        void SetDialogResult(UI::DialogResult dialogResult) override;
+        UI::DialogResult GetDialogResult() const override;
         static Ref<Form> CreateFrom(const UI::Handle &handle);
 
     protected:
+        UI::DialogResult m_DialogResult{DialogResult::None};
         void onClosed(const UI::FormClosedEventArgs &e) override;
         void onMessage(UI::Message &message) override;
     };
