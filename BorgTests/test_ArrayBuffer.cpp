@@ -6,7 +6,7 @@ using namespace Borg;
 TEST(ArrayBuffer, Empty)
 {
     ArrayBuffer<wchar_t> ab;
-    ASSERT_EQ(0, ab.ByteLength());
+    ASSERT_EQ(0, ab.GetCapacity());
     ASSERT_TRUE(ab.IsEmpty());
 }
 

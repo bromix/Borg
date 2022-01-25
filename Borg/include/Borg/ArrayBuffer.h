@@ -14,17 +14,17 @@ namespace Borg
         /**
          * @brief Creates an ArrayBuffer with the given size in bytes.
          *
-         * @param byteLength
+         * @param capacity
          */
-        ArrayBuffer(std::size_t byteLength)
+        ArrayBuffer(std::size_t capacity)
         {
-            m_ByteLength = byteLength;
-            m_Ptr = new T[m_ByteLength];
+            m_Capacity = capacity;
+            m_Ptr = new T[m_Capacity];
         }
 
         ArrayBuffer(const ArrayBuffer<T> &input)
         {
-            m_ByteLength = input.m_ByteLength;
+            m_Capacity = input.m_Capacity;
             m_IsDetached = input.m_IsDetached;
 
             /*
@@ -34,9 +34,9 @@ namespace Borg
             */
             if (input.m_IsDetached)
                 m_Ptr = input.m_Ptr;
-            else if(input.m_ByteLength > 0 && input.m_Ptr != nullptr)
+            else if(input.m_Capacity > 0 && input.m_Ptr != nullptr)
             {
-                m_Ptr = new T[m_ByteLength];
+                m_Ptr = new T[m_Capacity];
                 copy(input);
             }
         }
@@ -56,9 +56,9 @@ namespace Borg
          *
          * @return std::size_t size in bytes.
          */
-        std::size_t ByteLength() const
+        std::size_t GetCapacity() const
         {
-            return m_ByteLength;
+            return m_Capacity;
         }
 
         /**
@@ -68,7 +68,7 @@ namespace Borg
          */
         std::size_t Length() const
         {
-            return m_ByteLength / sizeof(T);
+            return m_Capacity / sizeof(T);
         }
 
         /**
@@ -79,7 +79,7 @@ namespace Borg
          */
         bool IsEmpty() const
         {
-            return m_ByteLength == 0;
+            return m_Capacity == 0;
         }
 
         bool IsNull() const
@@ -150,13 +150,13 @@ namespace Borg
     protected:
         void copy(const ArrayBuffer<T> &input)
         {
-            memcpy_s(m_Ptr, m_ByteLength, input.m_Ptr, input.m_ByteLength);
+            memcpy_s(m_Ptr, m_Capacity, input.m_Ptr, input.m_Capacity);
         }
 
         void swap(ArrayBuffer<T> &&input)
         {
             std::swap(m_IsDetached, input.m_IsDetached);
-            std::swap(m_ByteLength, input.m_ByteLength);
+            std::swap(m_Capacity, input.m_Capacity);
             std::swap(m_Ptr, input.m_Ptr);
         }
 
@@ -166,12 +166,12 @@ namespace Borg
                 return;
             delete[] m_Ptr;
             m_Ptr = nullptr;
-            m_ByteLength = 0;
+            m_Capacity = 0;
             m_IsDetached = false;
         }
 
         bool m_IsDetached = false;
-        std::size_t m_ByteLength = 0;
+        std::size_t m_Capacity = 0;
         T *m_Ptr = nullptr;
     };
 } // namespace Borg

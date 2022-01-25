@@ -16,7 +16,7 @@ namespace Borg
 
         /**
          * @brief Creates a StringBuffer with the given length of "characters".
-         * @remark The length will be calculated into ByteLength for the internal buffer.
+         * @remark The length will be calculated into GetCapacity for the internal buffer.
          *
          * @param length
          */
@@ -24,18 +24,6 @@ namespace Borg
         {
             m_Ptr[length] = '\0';
         }
-
-        // EncodingBuffer(const T *input, bool createCopy = false) : ArrayBuffer<T>()
-        // {
-        //     if(input != nullptr)
-        //         prepareBuffer(input, createCopy);
-        // }
-
-        // EncodingBuffer(std::basic_string_view<T> input, bool createCopy = false)
-        //     : ArrayBuffer<T>()
-        // {
-        //     prepareBuffer(input, createCopy);
-        // }
 
         bool IsEmpty() const
         {
@@ -58,9 +46,9 @@ namespace Borg
             return length > 0 ? length - 1 : 0;
         }
 
-        std::size_t ByteLength() const
+        std::size_t GetCapacity() const
         {
-            return ArrayBuffer<T>::ByteLength();
+            return ArrayBuffer<T>::GetCapacity();
         }
 
         operator T *() const
@@ -114,14 +102,14 @@ namespace Borg
         void prepareBuffer(std::basic_string_view<T> input, bool createCopy = false)
         {
             // we add +1 because of the null-termination.
-            m_ByteLength = (input.length() + 1) * sizeof(T);
+            m_Capacity = (input.length() + 1) * sizeof(T);
 
             if (createCopy)
             {
                 m_IsDetached = false;
-                m_Ptr = new T[m_ByteLength];
+                m_Ptr = new T[m_Capacity];
                 m_Ptr[input.length()] = '\0'; // we must add the null-termination while copying.
-                memcpy_s(m_Ptr, m_ByteLength, input.data(), input.length() * sizeof(T));
+                memcpy_s(m_Ptr, m_Capacity, input.data(), input.length() * sizeof(T));
             }
             else
             {
