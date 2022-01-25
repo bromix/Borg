@@ -9,6 +9,9 @@ namespace Borg
     public:
         using Iterator = typename std::vector<T>::iterator;
 
+        List(std::initializer_list<T> &&list) : m_List(std::move(list)) {}
+        List(const std::initializer_list<T> &list) : m_List(list) {}
+
         /**
          * @brief Adds an object to the end of the List<T>.
          *
