@@ -8,15 +8,33 @@ namespace Borg::Drawing
     {
         return X == rhs.X && Y == rhs.Y;
     }
-    
+
     bool Point::operator!=(const Point &rhs) const
     {
         return !(*this == rhs);
     }
 
-    Point Point::operator+(const Drawing::Point& rhs)const
+    Point Point::operator-(const Drawing::Point &rhs) const
     {
-        Point result{X+rhs.X, Y+rhs.Y};
-        return result;
+        return {this->X - rhs.X, this->Y - rhs.Y};
+    }
+
+    Point &Point::operator-=(const Drawing::Point &rhs)
+    {
+        this->X -= rhs.X;
+        this->Y -= rhs.Y;
+        return *this;
+    }
+
+    Point Point::operator+(const Drawing::Point &rhs) const
+    {
+        return {this->X + rhs.X, this->Y + rhs.Y};
+    }
+
+    Point &Point::operator+=(const Drawing::Point &rhs)
+    {
+        this->X += rhs.X;
+        this->Y += rhs.Y;
+        return *this;
     }
 }
