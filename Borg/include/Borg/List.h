@@ -9,13 +9,10 @@ namespace Borg
     public:
         using Iterator = typename std::vector<T>::iterator;
 
-        List() = default;
-        List(std::vector<T> &&vec) : m_List(std::move(vec)) {}
-
         /**
          * @brief Adds an object to the end of the List<T>.
-         * 
-         * @param item 
+         *
+         * @param item
          */
         void Add(const T &item)
         {
@@ -32,8 +29,8 @@ namespace Borg
 
         /**
          * @brief Gets the number of elements contained in the List<T>.
-         * 
-         * @return int32_t 
+         *
+         * @return int32_t
          */
         int32_t GetCount() const
         {
@@ -42,9 +39,9 @@ namespace Borg
 
         /**
          * @brief Gets or sets the element at the specified index.
-         * 
-         * @param index 
-         * @return T& 
+         *
+         * @param index
+         * @return T&
          */
         T &operator[](int32_t index)
         {
