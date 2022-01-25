@@ -23,6 +23,11 @@ namespace Borg
             return m_List.size();
         }
 
+        T &operator[](int32_t index) override
+        {
+            return m_List[index];
+        }
+
     protected:
         Iterator doBegin() override
         {

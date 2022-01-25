@@ -8,5 +8,13 @@ namespace Borg
     {
     public:
         virtual ~IList() = default;
+
+        /**
+         * @brief Gets or sets the element at the specified index.
+         * 
+         * @param index 
+         * @return T& 
+         */
+        virtual T &operator[](int32_t index) = 0;
     };
 }
