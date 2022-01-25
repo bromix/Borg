@@ -25,7 +25,7 @@ namespace Borg
     Screen Screen::PrimaryScreen()
     {
         auto allScreens = GetAllScreens();
-        for(auto screen : *allScreens)
+        for(auto screen : allScreens)
         {
             if(screen.IsPrimary())
                 return screen;
