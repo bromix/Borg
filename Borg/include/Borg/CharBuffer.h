@@ -7,6 +7,8 @@ namespace Borg
     class CharBuffer : public EncodingBuffer<char>
     {
     public:
+        using CharType = char;
+
         CharBuffer() : EncodingBuffer<char>() {}
         CharBuffer(nullptr_t) : EncodingBuffer<char>() {}
         CharBuffer(const CharBuffer &input) : EncodingBuffer<char>(input) {}

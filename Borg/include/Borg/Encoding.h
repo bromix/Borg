@@ -18,10 +18,8 @@ namespace Borg
         Encoding() = delete;
 
 #ifdef _WIN32
-        using DefaultChar = wchar_t;
         using Default = WideCharBuffer;
 #else
-        using DefaultChar = char;
         using Default = CharBuffer;
 #endif
 

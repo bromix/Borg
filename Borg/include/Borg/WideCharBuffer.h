@@ -7,6 +7,8 @@ namespace Borg
     class WideCharBuffer final : public EncodingBuffer<wchar_t>
     {
     public:
+        using CharType = wchar_t;
+
         WideCharBuffer() : EncodingBuffer<wchar_t>() {}
         WideCharBuffer(nullptr_t) : EncodingBuffer<wchar_t>() {}
         WideCharBuffer(WideCharBuffer &&input) : EncodingBuffer<wchar_t>(std::move(input)) {}
