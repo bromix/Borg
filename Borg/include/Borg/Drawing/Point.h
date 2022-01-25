@@ -30,6 +30,8 @@ namespace Borg::Drawing
          */
         int32_t Y{0};
 
+        Point operator+(const Drawing::Point& rhs)const;
+
         bool operator==(const Drawing::Point &rhs) const;
         bool operator!=(const Drawing::Point &rhs) const;
     };

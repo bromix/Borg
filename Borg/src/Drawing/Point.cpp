@@ -13,4 +13,10 @@ namespace Borg::Drawing
     {
         return !(*this == rhs);
     }
+
+    Point Point::operator+(const Drawing::Point& rhs)const
+    {
+        Point result{X+rhs.X, Y+rhs.Y};
+        return result;
+    }
 }
