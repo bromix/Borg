@@ -56,7 +56,10 @@ namespace Borg::UI
 
     Ref<UI::IForm> Form::GetOwner() const
     {
-        return nullptr;
+        if (this->GetParent() == nullptr)
+            return nullptr;
+
+        return RefAs<UI::IForm>(this->GetParent());
     }
 
     void Form::SetOpacity(double opacity)
