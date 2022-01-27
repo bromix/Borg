@@ -181,11 +181,11 @@ namespace Borg
          */
         operator std::wstring() const;
 
-        BasicStringBuffer<Encoding::DefaultCharType> GetBuffer() const;
+        Encoding::DefaultStringBuffer GetBuffer() const;
 
     private:
         Encoding::DefaultCharType *m_Data = nullptr;
-        BasicStringBuffer<Encoding::DefaultCharType> m_Buffer = nullptr;
+        Encoding::DefaultStringBuffer m_Buffer = nullptr;
     };
 
     String operator+(const char *lhs, const String &rhs);
