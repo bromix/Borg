@@ -1,18 +1,18 @@
 #include "Windows.h"
 #include "Borg/Exception.h"
 #include "Borg/Encoding.h"
-#include "Borg/CharBuffer.h"
+#include "Borg/BasicStringBuffer.h"
 
 namespace Borg
 {
     template <>
-    static CharBuffer Encoding::Convert(const WideCharBuffer &input)
+    static BasicStringBuffer<char> Encoding::Convert(const BasicStringBuffer<wchar_t> &input)
     {
         if (input.IsNull())
             return nullptr;
 
         if (input.IsEmpty())
-            return CharBuffer::CopyFrom("");
+            return StringBuffer::CopyFrom("");
 
         if (input.Length() > static_cast<size_t>((std::numeric_limits<int>::max)()))
             throw OverflowException("Input string too long: size_t-length doesn't fit into int.");
@@ -39,7 +39,7 @@ namespace Borg
             //     error);
         }
 
-        CharBuffer utf8(utf8Length);
+        StringBuffer utf8(utf8Length);
 
         int result = ::WideCharToMultiByte(
             CP_UTF8,     // Source string is in UTF-8
@@ -65,13 +65,13 @@ namespace Borg
     }
 
     template <>
-    static WideCharBuffer Encoding::Convert(const CharBuffer &input)
+    static BasicStringBuffer<wchar_t> Encoding::Convert(const BasicStringBuffer<char> &input)
     {
         if (input.IsNull())
             return nullptr;
 
         if (input.IsEmpty())
-            return WideCharBuffer::CopyFrom(L"");
+            return WideStringBuffer::CopyFrom(L"");
 
         if (input.Length() > static_cast<size_t>((std::numeric_limits<int>::max)()))
             throw OverflowException("Input string too long: size_t-length doesn't fit into int.");
@@ -97,7 +97,7 @@ namespace Borg
             //     error);
         }
 
-        WideCharBuffer utf16(utf16Length);
+        WideStringBuffer utf16(utf16Length);
 
         int result = ::MultiByteToWideChar(
             CP_UTF8,    // Source string is in UTF-8

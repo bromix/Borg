@@ -24,7 +24,7 @@ namespace Borg
         url_components.dwUrlPathLength = -1;
         url_components.dwUserNameLength = -1;
 
-        WideCharBuffer buffer = Encoding::Convert<WideCharBuffer>(uri);
+        WideStringBuffer buffer = Encoding::Convert<WideStringBuffer>(uri);
         if (!InternetCrackUrlW(buffer, buffer.Length(), 0, &url_components))
         {
             // FIXME: process GetLastError();

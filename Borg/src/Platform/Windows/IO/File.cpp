@@ -6,8 +6,8 @@ namespace Borg::IO
     void File::Move(const Borg::String &sourceFileName, const Borg::String &destFileName)
     {
         // TODO: handle exceptions.
-        WideCharBuffer source = Encoding::Convert<WideCharBuffer>(sourceFileName);
-        WideCharBuffer dest = Encoding::Convert<WideCharBuffer>(destFileName);
+        WideStringBuffer source = Encoding::Convert<WideStringBuffer>(sourceFileName);
+        WideStringBuffer dest = Encoding::Convert<WideStringBuffer>(destFileName);
         ::MoveFileExW(source, dest, MOVEFILE_WRITE_THROUGH);
     }
 }

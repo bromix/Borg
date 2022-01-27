@@ -1,15 +1,13 @@
 #include "Borg/Borg.h"
-#include "Borg/CharBuffer.h"
-#include "Borg/WideCharBuffer.h"
 #include <gtest/gtest.h>
 
 using namespace Borg;
 
-TEST(CharBuffer, Size)
+TEST(StringBuffer, Size)
 {
     auto count = 10;
     auto size = sizeof(char) * (count + 1); // +1 because of null-termination
-    CharBuffer cb = CharBuffer(count);
+    StringBuffer cb = StringBuffer(count);
     ASSERT_EQ(count, cb.Length());
     ASSERT_EQ(size, cb.GetCapacity());
 }

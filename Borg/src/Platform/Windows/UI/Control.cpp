@@ -29,7 +29,7 @@ namespace Borg::UI
 
     void Control::SetText(const String &text)
     {
-        ::SetWindowTextW(m_Impl->Handle(), Encoding::Convert<WideCharBuffer>(text));
+        ::SetWindowTextW(m_Impl->Handle(), Encoding::Convert<WideStringBuffer>(text));
     }
 
     Ref<UI::IControl> Control::GetParent() const

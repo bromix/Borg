@@ -3,6 +3,8 @@
 
 namespace Borg
 {
+    class String;
+
     /**
      * @brief Provides information about, and means to manipulate, the current environment and platform. This class cannot be inherited.
      */
@@ -41,29 +43,29 @@ namespace Borg
 
         /**
          * @brief Gets the NetBIOS name of this local computer.
-         * 
-         * @return String 
+         *
+         * @return String
          */
         static String MachineName();
 
         /**
          * @brief Gets the user name of the person who is associated with the current thread.
-         * 
-         * @return String 
+         *
+         * @return String
          */
         static String UserName();
 
         /**
          * @brief Gets the newline string defined for this environment.
-         * 
-         * @return String 
+         *
+         * @return String
          */
         static String NewLine();
 
         /**
          * @brief Gets the command line for this process.
-         * 
-         * @return String 
+         *
+         * @return String
          */
         static String CommandLine();
     };

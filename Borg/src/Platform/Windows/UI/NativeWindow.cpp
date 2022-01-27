@@ -56,7 +56,7 @@ namespace Borg::UI::Windows
     {
         registerWindowClass(cp);
 
-        WideCharBuffer className = Encoding::Convert<WideCharBuffer>(cp.ClassName);
+        WideStringBuffer className = Encoding::Convert<WideStringBuffer>(cp.ClassName);
 
         HINSTANCE hInstance = ::GetModuleHandleW(nullptr);
 
@@ -80,7 +80,7 @@ namespace Borg::UI::Windows
     {
         HINSTANCE hInstance = ::GetModuleHandleW(nullptr);
 
-        WideCharBuffer className = Encoding::Convert<WideCharBuffer>(cp.ClassName);
+        WideStringBuffer className = Encoding::Convert<WideStringBuffer>(cp.ClassName);
 
         WNDCLASSEXW wcex;
         wcex.cbSize = sizeof(WNDCLASSEXW);

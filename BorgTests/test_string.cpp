@@ -1,6 +1,5 @@
 #include "Borg/String.h"
 #include "Borg/Encoding.h"
-#include "Borg/CharBuffer.h"
 #include <gtest/gtest.h>
 
 using namespace Borg;
@@ -164,18 +163,18 @@ TEST(String, toString)
     ASSERT_EQ(stdString, hello);
 }
 
-TEST(String, ToWideCharBuffer)
+TEST(String, ToWideStringBuffer)
 {
     String hello = "Hello";
-    auto cb = Encoding::Convert<WideCharBuffer>(hello).Detach();
+    auto cb = Encoding::Convert<WideStringBuffer>(hello).Detach();
 
     auto test = cb.Data();
 }
 
-TEST(String, ToCharBuffer)
+TEST(String, ToStringBuffer)
 {
     String hello = "Hello";
-    auto cb = Encoding::Convert<CharBuffer>(hello).Detach();
+    auto cb = Encoding::Convert<StringBuffer>(hello).Detach();
 
     auto test = cb.Data();
 }

@@ -1,6 +1,7 @@
 #pragma once
-#include "Encoding.h"
 #include <string>
+#include "Encoding.h"
+#include "BasicStringBuffer.h"
 
 namespace Borg
 {
@@ -15,10 +16,10 @@ namespace Borg
         String(const std::string &input);
         String(const std::wstring &input);
 
-        String(const CharBuffer &input);
-        String(CharBuffer &&input);
-        String(const WideCharBuffer &input);
-        String(WideCharBuffer &&input);
+        String(const StringBuffer &input);
+        String(StringBuffer &&input);
+        String(const WideStringBuffer &input);
+        String(WideStringBuffer &&input);
 
         String(const char *input, std::size_t length);
         String(const wchar_t *input, std::size_t length);
@@ -180,11 +181,11 @@ namespace Borg
          */
         operator std::wstring() const;
 
-        Encoding::Default GetBuffer() const;
+        BasicStringBuffer<Encoding::DefaultCharType> GetBuffer() const;
 
     private:
-        Encoding::Default::CharType *m_Data = nullptr;
-        Encoding::Default m_Buffer = nullptr;
+        Encoding::DefaultCharType *m_Data = nullptr;
+        BasicStringBuffer<Encoding::DefaultCharType> m_Buffer = nullptr;
     };
 
     String operator+(const char *lhs, const String &rhs);

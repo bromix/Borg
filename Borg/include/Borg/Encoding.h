@@ -1,6 +1,5 @@
 #pragma once
-#include "CharBuffer.h"
-#include "WideCharBuffer.h"
+#include "BasicStringBuffer.h"
 
 namespace Borg
 {
@@ -18,16 +17,19 @@ namespace Borg
         Encoding() = delete;
 
 #ifdef _WIN32
-        using Default = WideCharBuffer;
+        using DefaultCharType = wchar_t;
 #else
-        using Default = CharBuffer;
+        using DefaultCharType = char;
 #endif
+
+        using DefaultStringBuffer = BasicStringBuffer<Encoding::DefaultCharType>;
 
         template <typename TTo>
         static TTo Convert(const String &input)
         {
-            if (input.IsNull())
-                return nullptr;
+            // TODO: do we still need this?
+            // if (input.IsNull())
+            //     return nullptr;
             return Convert<TTo>(input.GetBuffer());
         }
 

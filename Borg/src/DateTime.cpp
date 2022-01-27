@@ -1,5 +1,6 @@
 #include "Borg/DateTime.h"
 #include "Borg/Exception.h"
+#include "Borg/Encoding.h"
 #include <chrono>
 #include <cmath>
 
@@ -340,7 +341,7 @@ namespace Borg
         int second;
         int milliSecond;
         char zulu;
-        CharBuffer cb = Encoding::Convert<CharBuffer>(input);
+        StringBuffer cb = Encoding::Convert<StringBuffer>(input);
         int ret = std::sscanf(cb, "%d-%d-%dT%d:%d:%d.%d%c", &year, &month, &day, &hour, &minute, &second, &milliSecond, &zulu);
 
         if (ret != 8)

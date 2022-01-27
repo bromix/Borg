@@ -9,9 +9,8 @@ namespace Borg
     {
     public:
         BasicStringBuffer() : ArrayBuffer<T>() {}
-
+        BasicStringBuffer(nullptr_t) : ArrayBuffer<T>() {}
         BasicStringBuffer(const BasicStringBuffer<T> &input) : ArrayBuffer<T>(input) {}
-
         BasicStringBuffer(BasicStringBuffer<T> &&input) : ArrayBuffer<T>(std::move(input)) {}
 
         /**
@@ -98,6 +97,16 @@ namespace Borg
             return *this;
         }
 
+        int CompareTo(const BasicStringBuffer<T> &rhs) const;
+        BasicStringBuffer<T> ToLower() const;
+        BasicStringBuffer<T> ToUpper() const;
+        bool StartsWith(const BasicStringBuffer<T> &input) const;
+        bool EndsWith(const BasicStringBuffer<T> &input) const;
+        BasicStringBuffer<T> Insert(int startIndex, const BasicStringBuffer<T> &input) const;
+
+        static BasicStringBuffer<T> CopyFrom(std::basic_string_view<T> input);
+        static BasicStringBuffer<T> ViewFrom(std::basic_string_view<T> input);
+
     protected:
         void prepareBuffer(std::basic_string_view<T> input, bool createCopy = false)
         {
@@ -118,4 +127,7 @@ namespace Borg
             }
         }
     };
+
+    using StringBuffer = BasicStringBuffer<char>;
+    using WideStringBuffer = BasicStringBuffer<wchar_t>;
 }
