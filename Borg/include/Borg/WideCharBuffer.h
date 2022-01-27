@@ -1,33 +1,33 @@
 #pragma once
-#include "EncodingBuffer.h"
+#include "BasicStringBuffer.h"
 #include <cwctype>
 
 namespace Borg
 {
-    class WideCharBuffer final : public EncodingBuffer<wchar_t>
+    class WideCharBuffer final : public BasicStringBuffer<wchar_t>
     {
     public:
         using CharType = wchar_t;
 
-        WideCharBuffer() : EncodingBuffer<wchar_t>() {}
-        WideCharBuffer(nullptr_t) : EncodingBuffer<wchar_t>() {}
-        WideCharBuffer(WideCharBuffer &&input) : EncodingBuffer<wchar_t>(std::move(input)) {}
+        WideCharBuffer() : BasicStringBuffer<wchar_t>() {}
+        WideCharBuffer(nullptr_t) : BasicStringBuffer<wchar_t>() {}
+        WideCharBuffer(WideCharBuffer &&input) : BasicStringBuffer<wchar_t>(std::move(input)) {}
 
         WideCharBuffer &operator=(WideCharBuffer &&input)
         {
-            EncodingBuffer<wchar_t>::operator=(std::move(input));
+            BasicStringBuffer<wchar_t>::operator=(std::move(input));
             return *this;
         }
 
-        WideCharBuffer(const WideCharBuffer &input) : EncodingBuffer<wchar_t>(input) {}
+        WideCharBuffer(const WideCharBuffer &input) : BasicStringBuffer<wchar_t>(input) {}
 
         WideCharBuffer &operator=(const WideCharBuffer &input)
         {
-            EncodingBuffer<wchar_t>::operator=(input);
+            BasicStringBuffer<wchar_t>::operator=(input);
             return *this;
         }
 
-        WideCharBuffer(std::size_t length) : EncodingBuffer<wchar_t>(length) {}
+        WideCharBuffer(std::size_t length) : BasicStringBuffer<wchar_t>(length) {}
 
         int CompareTo(const WideCharBuffer &rhs) const
         {

@@ -5,14 +5,14 @@
 namespace Borg
 {
     template <typename T>
-    class EncodingBuffer : protected ArrayBuffer<T>
+    class BasicStringBuffer : protected ArrayBuffer<T>
     {
     public:
-        EncodingBuffer() : ArrayBuffer<T>() {}
+        BasicStringBuffer() : ArrayBuffer<T>() {}
 
-        EncodingBuffer(const EncodingBuffer<T> &input) : ArrayBuffer<T>(input) {}
+        BasicStringBuffer(const BasicStringBuffer<T> &input) : ArrayBuffer<T>(input) {}
 
-        EncodingBuffer(EncodingBuffer<T> &&input) : ArrayBuffer<T>(std::move(input)) {}
+        BasicStringBuffer(BasicStringBuffer<T> &&input) : ArrayBuffer<T>(std::move(input)) {}
 
         /**
          * @brief Creates a StringBuffer with the given length of "characters".
@@ -20,7 +20,7 @@ namespace Borg
          *
          * @param length
          */
-        EncodingBuffer(std::size_t length) : ArrayBuffer<T>((length + 1) * sizeof(T))
+        BasicStringBuffer(std::size_t length) : ArrayBuffer<T>((length + 1) * sizeof(T))
         {
             m_Ptr[length] = '\0';
         }
@@ -68,7 +68,7 @@ namespace Borg
          *
          * @return StringBuffer<T>&
          */
-        EncodingBuffer<T> &Detach()
+        BasicStringBuffer<T> &Detach()
         {
             ArrayBuffer<T>::Detach();
             return *this;
@@ -86,13 +86,13 @@ namespace Borg
             return m_Ptr[index];
         }
 
-        EncodingBuffer<T> &operator=(const EncodingBuffer<T> &input)
+        BasicStringBuffer<T> &operator=(const BasicStringBuffer<T> &input)
         {
             ArrayBuffer<T>::operator=(input);
             return *this;
         }
 
-        EncodingBuffer<T> &operator=(EncodingBuffer<T> &&input)
+        BasicStringBuffer<T> &operator=(BasicStringBuffer<T> &&input)
         {
             ArrayBuffer<T>::operator=(std::move(input));
             return *this;

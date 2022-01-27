@@ -1,31 +1,31 @@
 #pragma once
-#include "EncodingBuffer.h"
+#include "BasicStringBuffer.h"
 #include <cctype>
 
 namespace Borg
 {
-    class CharBuffer : public EncodingBuffer<char>
+    class CharBuffer : public BasicStringBuffer<char>
     {
     public:
         using CharType = char;
 
-        CharBuffer() : EncodingBuffer<char>() {}
-        CharBuffer(nullptr_t) : EncodingBuffer<char>() {}
-        CharBuffer(const CharBuffer &input) : EncodingBuffer<char>(input) {}
+        CharBuffer() : BasicStringBuffer<char>() {}
+        CharBuffer(nullptr_t) : BasicStringBuffer<char>() {}
+        CharBuffer(const CharBuffer &input) : BasicStringBuffer<char>(input) {}
 
-        CharBuffer(CharBuffer &&input) : EncodingBuffer<char>(std::move(input)) {}
+        CharBuffer(CharBuffer &&input) : BasicStringBuffer<char>(std::move(input)) {}
 
-        CharBuffer(std::size_t length) : EncodingBuffer<char>(length) {}
+        CharBuffer(std::size_t length) : BasicStringBuffer<char>(length) {}
 
         CharBuffer &operator=(const CharBuffer &input)
         {
-            EncodingBuffer<char>::operator=(input);
+            BasicStringBuffer<char>::operator=(input);
             return *this;
         }
 
         CharBuffer &operator=(CharBuffer &&input)
         {
-            EncodingBuffer<char>::operator=(std::move(input));
+            BasicStringBuffer<char>::operator=(std::move(input));
             return *this;
         }
 
