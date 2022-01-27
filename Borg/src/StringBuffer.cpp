@@ -4,15 +4,15 @@
 namespace Borg
 {
     template <>
-    int BasicStringBuffer<char>::CompareTo(const BasicStringBuffer<char> &rhs) const
+    int StringBuffer::CompareTo(const StringBuffer &rhs) const
     {
         return strcmp(m_Ptr, rhs.m_Ptr);
     }
 
     template<>
-    BasicStringBuffer<char> BasicStringBuffer<char>::ToLower() const
+    StringBuffer StringBuffer::ToLower() const
     {
-        BasicStringBuffer<char> copy(*this);
+        StringBuffer copy(*this);
         for (std::size_t i = 0; i < copy.Length(); i++)
             copy[i] = std::tolower(copy[i]);
 
@@ -20,9 +20,9 @@ namespace Borg
     }
 
     template<>
-    BasicStringBuffer<char> BasicStringBuffer<char>::ToUpper() const
+    StringBuffer StringBuffer::ToUpper() const
     {
-        BasicStringBuffer<char> copy(*this);
+        StringBuffer copy(*this);
         for (std::size_t i = 0; i < copy.Length(); i++)
             copy[i] = std::toupper(copy[i]);
 
@@ -30,7 +30,7 @@ namespace Borg
     }
 
     template<>
-    bool BasicStringBuffer<char>::StartsWith(const BasicStringBuffer<char> &input) const
+    bool StringBuffer::StartsWith(const StringBuffer &input) const
     {
         if (input.Length() > Length())
             return false;
@@ -39,7 +39,7 @@ namespace Borg
     }
 
     template<>
-    bool BasicStringBuffer<char>::EndsWith(const BasicStringBuffer<char> &input) const
+    bool StringBuffer::EndsWith(const StringBuffer &input) const
     {
         if (input.Length() > Length())
             return false;
@@ -51,27 +51,27 @@ namespace Borg
     }
 
     template<>
-    BasicStringBuffer<char> BasicStringBuffer<char>::CopyFrom(std::basic_string_view<char> input)
+    StringBuffer StringBuffer::CopyFrom(std::basic_string_view<char> input)
     {
-        BasicStringBuffer<char> cb;
+        StringBuffer cb;
         cb.prepareStringBuffer(input, true);
         return cb;
     }
 
     template <>
-    BasicStringBuffer<char> BasicStringBuffer<char>::ViewFrom(std::basic_string_view<char> input)
+    StringBuffer StringBuffer::ViewFrom(std::basic_string_view<char> input)
     {
-        BasicStringBuffer<char> cb;
+        StringBuffer cb;
         cb.prepareStringBuffer(input, false);
         return cb;
     }
 
-    BasicStringBuffer<char> BasicStringBuffer<char>::Insert(int startIndex, const BasicStringBuffer<char> &input) const
+    StringBuffer StringBuffer::Insert(int startIndex, const StringBuffer &input) const
     {
         if (startIndex < 0 || startIndex > Length())
             throw ArgumentOutOfRangeException("startIndex");
 
-        BasicStringBuffer<char> newString = BasicStringBuffer<char>(Length() + input.Length());
+        StringBuffer newString = StringBuffer(Length() + input.Length());
 
         char *targetData = newString.m_Ptr;
         char *sourceData = m_Ptr;

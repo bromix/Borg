@@ -5,15 +5,15 @@
 namespace Borg
 {
     template<>
-    int BasicStringBuffer<wchar_t>::CompareTo(const BasicStringBuffer<wchar_t> &rhs) const
+    int WideStringBuffer::CompareTo(const WideStringBuffer &rhs) const
     {
         return wcscmp(m_Ptr, rhs.m_Ptr);
     }
 
     template<>
-    BasicStringBuffer<wchar_t> BasicStringBuffer<wchar_t>::ToLower() const
+    WideStringBuffer WideStringBuffer::ToLower() const
     {
-        BasicStringBuffer<wchar_t> copy(*this);
+        WideStringBuffer copy(*this);
         for (std::size_t i = 0; i < copy.Length(); i++)
             copy[i] = std::towlower(copy[i]);
 
@@ -21,9 +21,9 @@ namespace Borg
     }
 
     template<>
-    BasicStringBuffer<wchar_t> BasicStringBuffer<wchar_t>::ToUpper() const
+    WideStringBuffer WideStringBuffer::ToUpper() const
     {
-        BasicStringBuffer<wchar_t> copy(*this);
+        WideStringBuffer copy(*this);
         for (std::size_t i = 0; i < copy.Length(); i++)
             copy[i] = std::towupper(copy[i]);
 
@@ -31,7 +31,7 @@ namespace Borg
     }
 
     template<>
-    bool BasicStringBuffer<wchar_t>::StartsWith(const BasicStringBuffer<wchar_t> &input) const
+    bool WideStringBuffer::StartsWith(const WideStringBuffer &input) const
     {
         if (input.Length() > Length())
             return false;
@@ -40,7 +40,7 @@ namespace Borg
     }
 
     template<>
-    bool BasicStringBuffer<wchar_t>::EndsWith(const BasicStringBuffer<wchar_t> &input) const
+    bool WideStringBuffer::EndsWith(const WideStringBuffer &input) const
     {
         if (input.Length() > Length())
             return false;
@@ -52,28 +52,28 @@ namespace Borg
     }
 
     template<>
-    BasicStringBuffer<wchar_t> BasicStringBuffer<wchar_t>::CopyFrom(std::basic_string_view<wchar_t> input)
+    WideStringBuffer WideStringBuffer::CopyFrom(std::basic_string_view<wchar_t> input)
     {
-        BasicStringBuffer<wchar_t> wcb;
+        WideStringBuffer wcb;
         wcb.prepareStringBuffer(input, true);
         return wcb;
     }
 
     template<>
-    BasicStringBuffer<wchar_t> BasicStringBuffer<wchar_t>::ViewFrom(std::basic_string_view<wchar_t> input)
+    WideStringBuffer WideStringBuffer::ViewFrom(std::basic_string_view<wchar_t> input)
     {
-        BasicStringBuffer<wchar_t> wcb;
+        WideStringBuffer wcb;
         wcb.prepareStringBuffer(input, false);
         return wcb;
     }
 
     template<>
-    BasicStringBuffer<wchar_t> BasicStringBuffer<wchar_t>::Insert(int startIndex, const BasicStringBuffer<wchar_t> &input) const
+    WideStringBuffer WideStringBuffer::Insert(int startIndex, const WideStringBuffer &input) const
     {
         if (startIndex < 0 || startIndex > Length())
             throw ArgumentOutOfRangeException("startIndex");
 
-        BasicStringBuffer<wchar_t> newString = BasicStringBuffer<wchar_t>(Length() + input.Length());
+        WideStringBuffer newString = WideStringBuffer(Length() + input.Length());
 
         wchar_t *targetData = newString.m_Ptr;
         wchar_t *sourceData = m_Ptr;
