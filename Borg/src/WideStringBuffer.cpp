@@ -55,7 +55,7 @@ namespace Borg
     BasicStringBuffer<wchar_t> BasicStringBuffer<wchar_t>::CopyFrom(std::basic_string_view<wchar_t> input)
     {
         BasicStringBuffer<wchar_t> wcb;
-        wcb.prepareBuffer(input, true);
+        wcb.prepareStringBuffer(input, true);
         return wcb;
     }
 
@@ -63,7 +63,7 @@ namespace Borg
     BasicStringBuffer<wchar_t> BasicStringBuffer<wchar_t>::ViewFrom(std::basic_string_view<wchar_t> input)
     {
         BasicStringBuffer<wchar_t> wcb;
-        wcb.prepareBuffer(input, false);
+        wcb.prepareStringBuffer(input, false);
         return wcb;
     }
 

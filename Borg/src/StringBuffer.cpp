@@ -54,7 +54,7 @@ namespace Borg
     BasicStringBuffer<char> BasicStringBuffer<char>::CopyFrom(std::basic_string_view<char> input)
     {
         BasicStringBuffer<char> cb;
-        cb.prepareBuffer(input, true);
+        cb.prepareStringBuffer(input, true);
         return cb;
     }
 
@@ -62,7 +62,7 @@ namespace Borg
     BasicStringBuffer<char> BasicStringBuffer<char>::ViewFrom(std::basic_string_view<char> input)
     {
         BasicStringBuffer<char> cb;
-        cb.prepareBuffer(input, false);
+        cb.prepareStringBuffer(input, false);
         return cb;
     }
 

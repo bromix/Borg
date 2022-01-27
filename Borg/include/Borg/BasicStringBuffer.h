@@ -108,7 +108,7 @@ namespace Borg
         static BasicStringBuffer<T> ViewFrom(std::basic_string_view<T> input);
 
     protected:
-        void prepareBuffer(std::basic_string_view<T> input, bool createCopy = false)
+        void prepareStringBuffer(std::basic_string_view<T> input, bool createCopy = false)
         {
             // we add +1 because of the null-termination.
             m_Capacity = (input.length() + 1) * sizeof(T);
