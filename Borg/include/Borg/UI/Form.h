@@ -24,6 +24,10 @@ namespace Borg::UI
         UI::DialogResult ShowDialog() override;
         void SetDialogResult(UI::DialogResult dialogResult) override;
         UI::DialogResult GetDialogResult() const override;
+#ifdef _WIN32
+        void DragMove() override;
+#endif
+
         static Ref<Form> CreateFrom(const UI::Handle &handle);
 
     protected:

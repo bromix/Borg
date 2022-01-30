@@ -79,8 +79,8 @@ namespace Borg::UI
 
         /**
          * @brief Gets the border style of the form.
-         * 
-         * @return FormBorderStyle 
+         *
+         * @return FormBorderStyle
          */
         virtual UI::FormBorderStyle GetFormBorderStyle() const = 0;
 
@@ -96,16 +96,16 @@ namespace Borg::UI
 
         /**
          * @brief Sets a value indicating whether the form is displayed in the Windows taskbar.
-         * 
-         * @param show 
+         *
+         * @param show
          */
         virtual void SetShowInTaskbar(bool show) = 0;
 
         /**
          * @brief Gets a value indicating whether the form is displayed in the Windows taskbar.
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         virtual bool GetShowInTaskbar() const = 0;
 
@@ -116,21 +116,21 @@ namespace Borg::UI
 
         /**
          * @brief Shows the form as a non-modal dialog box.
-         * 
+         *
          */
         virtual void Show() = 0;
 
         /**
          * @brief Sets the dialog result for the form.
-         * 
-         * @param dialogResult 
+         *
+         * @param dialogResult
          */
         virtual void SetDialogResult(UI::DialogResult dialogResult) = 0;
 
         /**
          * @brief Gets the dialog result for the form.
-         * 
-         * @return UI::DialogResult 
+         *
+         * @return UI::DialogResult
          */
         virtual UI::DialogResult GetDialogResult() const = 0;
 
@@ -141,11 +141,19 @@ namespace Borg::UI
          */
         virtual DialogResult ShowDialog() = 0;
 
+#ifdef _WIN32
+        /**
+         * @brief Allows a window to be dragged by a mouse with its left button down over an exposed area of the window's client area.
+         * @remark Taken from WPF.
+         */
+        virtual void DragMove() = 0;
+#endif
+
     protected:
         /**
          * @brief Raises the FormClosed event.
-         * 
-         * @param e 
+         *
+         * @param e
          */
         virtual void onClosed(const UI::FormClosedEventArgs &e) = 0;
     };

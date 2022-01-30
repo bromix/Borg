@@ -13,6 +13,24 @@ namespace Borg::UI
         return m_DialogResult;
     }
 
+#ifdef _WIN32
+    void Form::DragMove()
+    {
+        /*
+        https://www.c-sharpcorner.com/UploadFile/GemingLeader/moving-a-form-without-the-title-bar/
+
+        This will simulate dragging via Titlebar.
+
+        FIXME: https://docs.microsoft.com/en-us/dotnet/api/system.windows.window.dragmove?view=windowsdesktop-6.0
+        */
+        ReleaseCapture();
+        ::SendMessage(this->Handle(),   // Form handle
+                      WM_NCLBUTTONDOWN, // Simulating the click
+                      HTCAPTION,        // Attaching it to the title bar
+                      0);               // No further options required
+    }
+#endif
+
     void Form::CenterToParent()
     {
         auto parent = this->GetParent();
