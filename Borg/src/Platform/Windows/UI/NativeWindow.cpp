@@ -50,6 +50,12 @@ namespace Borg::UI::Windows
 
     void NativeWindow::WrapHandle(const UI::Handle &handle)
     {
+        // If the handle is already wrapped, do nothing.
+        if(!m_IsWrapped)
+            destroyHandle();
+
+        // Set wrapped flag and store handle.
+        m_IsWrapped = true;
         m_Handle = handle;
     }
 

@@ -22,6 +22,7 @@ namespace Borg::UI::Windows
         void destroyHandle();
         void releaseHandle();
         
+        bool m_IsWrapped{ false };
         UINT_PTR m_SubClassWndProcId;
         UI::Handle m_Handle = nullptr;
     };
