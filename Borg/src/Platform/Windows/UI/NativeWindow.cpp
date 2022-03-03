@@ -28,6 +28,7 @@ namespace Borg::UI::Windows
 
     NativeWindow::~NativeWindow()
     {
+        OnMessage.Clear();
         releaseHandle();
     }
 
@@ -38,7 +39,7 @@ namespace Borg::UI::Windows
 
     LRESULT NativeWindow::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
-        if(OnMessage)
+        if (OnMessage)
         {
             Message msg = {hWnd, uMsg, wParam, lParam};
             OnMessage(msg);
@@ -72,8 +73,10 @@ namespace Borg::UI::Windows
             hInstance,
             nullptr);
 
-        static UINT_PTR g_SubClassWndProcId = 0;
-        ::SetWindowSubclass(m_Handle, &SubClassWndProc, g_SubClassWndProcId++, reinterpret_cast<DWORD_PTR>(this));
+        static UINT_PTR nID = 0;
+        nID++;
+        m_SubClassWndProcId = nID;
+        ::SetWindowSubclass(m_Handle, &SubClassWndProc, m_SubClassWndProcId, reinterpret_cast<DWORD_PTR>(this));
     }
 
     void NativeWindow::registerWindowClass(const CreateParams &cp)

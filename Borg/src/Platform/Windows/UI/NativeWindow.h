@@ -21,6 +21,8 @@ namespace Borg::UI::Windows
         void registerWindowClass(const CreateParams &cp);
         void destroyHandle();
         void releaseHandle();
+        
+        UINT_PTR m_SubClassWndProcId;
         UI::Handle m_Handle = nullptr;
     };
 }
