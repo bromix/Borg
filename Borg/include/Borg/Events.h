@@ -153,6 +153,15 @@ namespace Borg
             return false;
         }
 
+        /**
+         * @brief Clear all handlers
+         */
+        void Clear()
+        {
+            std::lock_guard<std::mutex> lock(m_HandlersLock);
+            m_Handlers.clear();
+        }
+
         void Call(Args... args) const
         {
             auto handlersCopy = getHandlersAsCopy();
