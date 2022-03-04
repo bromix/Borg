@@ -5,25 +5,20 @@ namespace Borg::UI::Windows
 {
     LRESULT CALLBACK SubClassWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData)
     {
-        NativeWindow *nativeWindow = reinterpret_cast<NativeWindow *>(dwRefData);
-
-        // Process messages
-        switch (uMsg)
+        // Restore the original window procedure.
+        if (uMsg == WM_NCDESTROY)
         {
-        case WM_NCDESTROY:
-            /*
-             * Restore the wndproc chain and call the old wndproc
-             */
-            RemoveWindowSubclass(hWnd, &SubClassWndProc, uIdSubclass);
+            RemoveWindowSubclass(hWnd, SubClassWndProc, uIdSubclass);
             return DefSubclassProc(hWnd, uMsg, wParam, lParam);
-        default:
-            return nativeWindow->WndProc(hWnd, uMsg, wParam, lParam);
         }
-    }
 
-    LRESULT CALLBACK WndProcDummy(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-    {
-        return DefWindowProcW(hWnd, message, wParam, lParam);
+        // If our pointer is of NativeWindow, call the WndProc.
+        NativeWindow *nativeWindow = reinterpret_cast<NativeWindow *>(dwRefData);
+        if (nativeWindow != nullptr)
+            return nativeWindow->WndProc(hWnd, uMsg, wParam, lParam);
+
+        // Fallback to default window procedure.
+        return DefSubclassProc(hWnd, uMsg, wParam, lParam);
     }
 
     NativeWindow::~NativeWindow()
@@ -51,7 +46,7 @@ namespace Borg::UI::Windows
     void NativeWindow::WrapHandle(const UI::Handle &handle)
     {
         // If the handle is already wrapped, do nothing.
-        if(!m_IsWrapped)
+        if (!m_IsWrapped)
             destroyHandle();
 
         // Set wrapped flag and store handle.
@@ -94,7 +89,7 @@ namespace Borg::UI::Windows
         WNDCLASSEXW wcex;
         wcex.cbSize = sizeof(WNDCLASSEXW);
         wcex.style = cp.ClassStyle;
-        wcex.lpfnWndProc = WndProcDummy;
+        wcex.lpfnWndProc = DefWindowProcW;
         wcex.cbClsExtra = 0;
         wcex.cbWndExtra = 0;
         wcex.hInstance = hInstance;
