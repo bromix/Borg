@@ -149,6 +149,14 @@ namespace Borg::UI
         virtual void DragMove() = 0;
 #endif
 
+        /**
+         * @brief Creates a wrapped IForm from a native handle.
+         *
+         * @param handle
+         * @return Ref<IForm>
+         */
+        static Ref<IForm> CreateWrappedForm(const UI::Handle &handle);
+
     protected:
         /**
          * @brief Raises the FormClosed event.
