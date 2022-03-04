@@ -28,7 +28,7 @@ namespace Borg::UI
         void DragMove() override;
 #endif
 
-        static Ref<Form> CreateFrom(const UI::Handle &handle);
+        static Ref<UI::IForm> CreateFrom(const UI::Handle &handle);
 
     protected:
         UI::DialogResult m_DialogResult{DialogResult::None};

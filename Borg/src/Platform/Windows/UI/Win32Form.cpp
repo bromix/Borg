@@ -243,7 +243,7 @@ namespace Borg::UI
         return m_DialogResult;
     }
 
-    Ref<Form> Form::CreateFrom(const UI::Handle &handle)
+    Ref<UI::IForm> Form::CreateFrom(const UI::Handle &handle)
     {
         if (!handle)
             return nullptr;
