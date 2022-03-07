@@ -190,6 +190,22 @@ TEST(DateTime, SubtractDate2)
     auto diff = date1 - date2;
 }
 
+TEST(TimeSpan, Subtract)
+{
+    auto date1 = DateTime(2010, 1, 1, 8, 0, 15);
+    auto date2 = DateTime(2010, 8, 18, 13, 30, 30);
+
+    // Calculate the interval between the two dates.
+    auto interval = date2 - date1;
+
+    // Check the days, hours, minutes, and seconds.
+    ASSERT_EQ(0, interval.Days());
+    ASSERT_EQ(0, interval.Hours());
+    ASSERT_EQ(0, interval.Minutes());
+    ASSERT_EQ(15, interval.Seconds());
+    
+}
+
 TEST(DateTime, Compare)
 {
     auto date1 = DateTime::UtcNow();
@@ -235,7 +251,7 @@ TEST(DateTime, NetworkEpoch)
 TEST(DateTime, Parse)
 {
     auto dateTime = DateTime::Parse("2021-12-12T22:59:59Z");
-    ASSERT_EQ(2021,  dateTime.Year());
+    ASSERT_EQ(2021, dateTime.Year());
     ASSERT_EQ(12, dateTime.Month());
     ASSERT_EQ(12, dateTime.Day());
     ASSERT_EQ(22, dateTime.Hour());
@@ -244,7 +260,7 @@ TEST(DateTime, Parse)
     ASSERT_EQ(DateTimeKindEnum::Utc, dateTime.Kind());
 
     dateTime = DateTime::Parse("2021-02-01T02:09:09Z");
-    ASSERT_EQ(2021,  dateTime.Year());
+    ASSERT_EQ(2021, dateTime.Year());
     ASSERT_EQ(2, dateTime.Month());
     ASSERT_EQ(1, dateTime.Day());
     ASSERT_EQ(2, dateTime.Hour());
@@ -253,7 +269,7 @@ TEST(DateTime, Parse)
     ASSERT_EQ(DateTimeKindEnum::Utc, dateTime.Kind());
 
     dateTime = DateTime::Parse("2022-01-19T19:13:34.305Z");
-    ASSERT_EQ(2022,  dateTime.Year());
+    ASSERT_EQ(2022, dateTime.Year());
     ASSERT_EQ(1, dateTime.Month());
     ASSERT_EQ(19, dateTime.Day());
     ASSERT_EQ(19, dateTime.Hour());
