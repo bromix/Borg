@@ -198,12 +198,11 @@ TEST(TimeSpan, Subtract)
     // Calculate the interval between the two dates.
     auto interval = date2 - date1;
 
-    // Check the days, hours, minutes, and seconds.
-    ASSERT_EQ(0, interval.Days());
-    ASSERT_EQ(0, interval.Hours());
-    ASSERT_EQ(0, interval.Minutes());
-    ASSERT_EQ(15, interval.Seconds());
-    
+    EXPECT_NEAR(19801815000.0, interval.TotalMilliseconds(), 0.1);
+    EXPECT_NEAR(19801815.0, interval.TotalSeconds(), 0.1);
+    EXPECT_NEAR(330030.25, interval.TotalMinutes(), 0.01);
+    EXPECT_NEAR(5500.50, interval.TotalHours(), 0.01);
+    EXPECT_NEAR(229.1, interval.TotalDays(), 0.1);
 }
 
 TEST(DateTime, Compare)

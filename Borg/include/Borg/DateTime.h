@@ -554,6 +554,6 @@ namespace Borg
         double m_TotalSeconds;
 
         int32_t m_Milliseconds;
-        double m_TotalMilliseconds;
+        double m_TotalMilliseconds = 0;
     };
 }
