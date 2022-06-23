@@ -4,10 +4,13 @@ namespace Borg::UI
 {
     Ref<IForm> IForm::CreateWrappedForm(const UI::Handle &handle)
     {
+        if (!handle)
+            return nullptr;
+
         return CreateRef<Win32WrappedForm>(handle);
     }
 
-    Win32WrappedForm::Win32WrappedForm(const UI::Handle &handle): m_Handle(handle)
+    Win32WrappedForm::Win32WrappedForm(const UI::Handle &handle) : m_Handle(handle)
     {
     }
 
@@ -141,7 +144,7 @@ namespace Borg::UI
 
     void Win32WrappedForm::BringToFront()
     {
-        if(IsEnabled())
+        if (IsEnabled())
             ::BringWindowToTop(m_Handle);
     }
 
@@ -229,7 +232,7 @@ namespace Borg::UI
         OutputDebugStringA("onSizeChanged\n");
     }
 
-    #ifdef _WIN32
+#ifdef _WIN32
     void Win32WrappedForm::DragMove()
     {
         /*
@@ -240,7 +243,7 @@ namespace Borg::UI
         FIXME: https://docs.microsoft.com/en-us/dotnet/api/system.windows.window.dragmove?view=windowsdesktop-6.0
         */
         ReleaseCapture();
-        ::SendMessage(m_Handle,   // Form handle
+        ::SendMessage(m_Handle,         // Form handle
                       WM_NCLBUTTONDOWN, // Simulating the click
                       HTCAPTION,        // Attaching it to the title bar
                       0);               // No further options required
