@@ -33,10 +33,10 @@ namespace Borg::UI
         operator Handle::Type() const;
         operator bool() const;
 
-        template<typename T>
+        template <typename T>
         static UI::Handle GetSafeFrom(const Ref<T> control)
         {
-            if(control == nullptr)
+            if (control == nullptr)
                 return nullptr;
             return control->Handle();
         }
